@@ -24,7 +24,6 @@
 
 // std-c and dependencies
 #include <sys/types.h>
-#include <sys/sysctl.h>
 #include <unistd.h>
 #include <fcntl.h>
 
