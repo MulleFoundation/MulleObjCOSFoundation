@@ -16,7 +16,7 @@ if( NOT MULLE_OBJC_OS_BASE_FOUNDATION_HEADER)
    message( STATUS "MULLE_OBJC_OS_BASE_FOUNDATION_HEADER is ${MULLE_OBJC_OS_BASE_FOUNDATION_HEADER}")
 
    #
-   # Add to list of header files.
+   # Add MULLE_OBJC_OS_BASE_FOUNDATION_HEADER to ALL_LOAD_HEADER_ONLY_LIBRARIES list.
    # Disable with: `mulle-sourcetree mark MulleObjCOSBaseFoundation no-cmakeadd`
    #
    set( ALL_LOAD_HEADER_ONLY_LIBRARIES

@@ -7,11 +7,11 @@ if( MULLE_TRACE_INCLUDE)
 endif()
 
 #
-# Generated from sourcetree: src/Base;no-delete,no-share,no-update;MulleObjCOSBaseFoundation
-# Disable with: `mulle-sourcetree mark src/Base no-link`
+# Generated from sourcetree: src/OSBase;no-delete,no-share,no-update;MulleObjCOSBaseFoundation
+# Disable with: `mulle-sourcetree mark src/OSBase no-link`
 #
 if( NOT MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY)
-   find_library( MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCOSBaseFoundation NO_CMAKE_SYSTEM_PATH)
+   find_library( MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCOSBaseFoundation NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH)
    message( STATUS "MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY is ${MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY}")
    #
    # The order looks ascending, but due to the way this file is read
@@ -19,8 +19,8 @@ if( NOT MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY)
    #
    if( MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY)
       #
-      # Add to MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
-      # Disable with: `mulle-sourcetree mark src/Base no-cmakeadd`
+      # Add MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
+      # Disable with: `mulle-sourcetree mark src/OSBase no-cmakeadd`
       #
       set( ALL_LOAD_DEPENDENCY_LIBRARIES
          ${ALL_LOAD_DEPENDENCY_LIBRARIES}
@@ -29,7 +29,7 @@ if( NOT MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY)
       )
       #
       # Inherit ObjC loader and link dependency info.
-      # Disable with: `mulle-sourcetree mark src/Base no-cmakeinherit`
+      # Disable with: `mulle-sourcetree mark src/OSBase no-cmakeinherit`
       #
       # // temporarily expand CMAKE_MODULE_PATH
       get_filename_component( _TMP_MULLE_OBJC_OS_BASE_FOUNDATION_ROOT "${MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY}" DIRECTORY)
@@ -37,7 +37,7 @@ if( NOT MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY)
       #
       #
       # Search for "DependenciesAndLibraries.cmake" to include.
-      # Disable with: `mulle-sourcetree mark src/Base no-cmakedependency`
+      # Disable with: `mulle-sourcetree mark src/OSBase no-cmakedependency`
       #
       foreach( _TMP_MULLE_OBJC_OS_BASE_FOUNDATION_NAME "MulleObjCOSBaseFoundation")
          set( _TMP_MULLE_OBJC_OS_BASE_FOUNDATION_DIR "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_ROOT}/include/${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_NAME}/cmake")
@@ -70,7 +70,7 @@ if( NOT MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY)
       endforeach()
       #
       # Search for "objc-loader.inc" in include directory.
-      # Disable with: `mulle-sourcetree mark src/Base no-cmakeloader`
+      # Disable with: `mulle-sourcetree mark src/OSBase no-cmakeloader`
       #
       if( NOT NO_INHERIT_OBJC_LOADERS)
          foreach( _TMP_MULLE_OBJC_OS_BASE_FOUNDATION_NAME "MulleObjCOSBaseFoundation")
@@ -96,7 +96,7 @@ endif()
 # Disable with: `mulle-sourcetree mark src/Posix no-link`
 #
 if( NOT MULLE_OBJC_POSIX_FOUNDATION_LIBRARY)
-   find_library( MULLE_OBJC_POSIX_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCPosixFoundation NO_CMAKE_SYSTEM_PATH)
+   find_library( MULLE_OBJC_POSIX_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCPosixFoundation NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH)
    message( STATUS "MULLE_OBJC_POSIX_FOUNDATION_LIBRARY is ${MULLE_OBJC_POSIX_FOUNDATION_LIBRARY}")
    #
    # The order looks ascending, but due to the way this file is read
@@ -104,7 +104,7 @@ if( NOT MULLE_OBJC_POSIX_FOUNDATION_LIBRARY)
    #
    if( MULLE_OBJC_POSIX_FOUNDATION_LIBRARY)
       #
-      # Add to MULLE_OBJC_POSIX_FOUNDATION_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
+      # Add MULLE_OBJC_POSIX_FOUNDATION_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
       # Disable with: `mulle-sourcetree mark src/Posix no-cmakeadd`
       #
       set( ALL_LOAD_DEPENDENCY_LIBRARIES
@@ -182,7 +182,7 @@ endif()
 #
 if( NOT (${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES "Linux"))
    if( NOT MULLE_OBJC_BSD_FOUNDATION_LIBRARY)
-      find_library( MULLE_OBJC_BSD_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCBSDFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCBSDFoundation NO_CMAKE_SYSTEM_PATH)
+      find_library( MULLE_OBJC_BSD_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCBSDFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCBSDFoundation NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH)
       message( STATUS "MULLE_OBJC_BSD_FOUNDATION_LIBRARY is ${MULLE_OBJC_BSD_FOUNDATION_LIBRARY}")
       #
       # The order looks ascending, but due to the way this file is read
@@ -190,7 +190,7 @@ if( NOT (${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES 
       #
       if( MULLE_OBJC_BSD_FOUNDATION_LIBRARY)
          #
-         # Add to MULLE_OBJC_BSD_FOUNDATION_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
+         # Add MULLE_OBJC_BSD_FOUNDATION_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
          # Disable with: `mulle-sourcetree mark src/BSD no-cmakeadd`
          #
          set( ALL_LOAD_DEPENDENCY_LIBRARIES
@@ -269,7 +269,7 @@ endif()
 #
 if( ${CMAKE_SYSTEM_NAME} MATCHES "Freebsd")
    if( NOT MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY)
-      find_library( MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCFreeBSDFoundation NO_CMAKE_SYSTEM_PATH)
+      find_library( MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCFreeBSDFoundation NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH)
       message( STATUS "MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY is ${MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY}")
       #
       # The order looks ascending, but due to the way this file is read
@@ -277,7 +277,7 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Freebsd")
       #
       if( MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY)
          #
-         # Add to MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
+         # Add MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
          # Disable with: `mulle-sourcetree mark src/FreeBSD no-cmakeadd`
          #
          set( ALL_LOAD_DEPENDENCY_LIBRARIES
@@ -356,7 +356,7 @@ endif()
 #
 if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
    if( NOT MULLE_OBJC_DARWIN_FOUNDATION_LIBRARY)
-      find_library( MULLE_OBJC_DARWIN_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCDarwinFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCDarwinFoundation NO_CMAKE_SYSTEM_PATH)
+      find_library( MULLE_OBJC_DARWIN_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCDarwinFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCDarwinFoundation NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH)
       message( STATUS "MULLE_OBJC_DARWIN_FOUNDATION_LIBRARY is ${MULLE_OBJC_DARWIN_FOUNDATION_LIBRARY}")
       #
       # The order looks ascending, but due to the way this file is read
@@ -364,7 +364,7 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
       #
       if( MULLE_OBJC_DARWIN_FOUNDATION_LIBRARY)
          #
-         # Add to MULLE_OBJC_DARWIN_FOUNDATION_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
+         # Add MULLE_OBJC_DARWIN_FOUNDATION_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
          # Disable with: `mulle-sourcetree mark src/Darwin no-cmakeadd`
          #
          set( ALL_LOAD_DEPENDENCY_LIBRARIES
@@ -443,7 +443,7 @@ endif()
 #
 if( ${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES "Linux")
    if( NOT MULLE_OBJC_LINUX_FOUNDATION_LIBRARY)
-      find_library( MULLE_OBJC_LINUX_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCLinuxFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCLinuxFoundation NO_CMAKE_SYSTEM_PATH)
+      find_library( MULLE_OBJC_LINUX_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCLinuxFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCLinuxFoundation NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH)
       message( STATUS "MULLE_OBJC_LINUX_FOUNDATION_LIBRARY is ${MULLE_OBJC_LINUX_FOUNDATION_LIBRARY}")
       #
       # The order looks ascending, but due to the way this file is read
@@ -451,7 +451,7 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES "Linu
       #
       if( MULLE_OBJC_LINUX_FOUNDATION_LIBRARY)
          #
-         # Add to MULLE_OBJC_LINUX_FOUNDATION_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
+         # Add MULLE_OBJC_LINUX_FOUNDATION_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
          # Disable with: `mulle-sourcetree mark src/Linux no-cmakeadd`
          #
          set( ALL_LOAD_DEPENDENCY_LIBRARIES
@@ -530,7 +530,7 @@ endif()
 #
 if( ${CMAKE_SYSTEM_NAME} MATCHES "Windows" OR ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
    if( NOT WINDOWS_LIBRARY)
-      find_library( WINDOWS_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}Windows${CMAKE_STATIC_LIBRARY_SUFFIX} Windows NO_CMAKE_SYSTEM_PATH)
+      find_library( WINDOWS_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}Windows${CMAKE_STATIC_LIBRARY_SUFFIX} Windows NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH)
       message( STATUS "WINDOWS_LIBRARY is ${WINDOWS_LIBRARY}")
       #
       # The order looks ascending, but due to the way this file is read
@@ -538,7 +538,7 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Windows" OR ${CMAKE_SYSTEM_NAME} MATCHES "Wind
       #
       if( WINDOWS_LIBRARY)
          #
-         # Add to WINDOWS_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
+         # Add WINDOWS_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
          # Disable with: `mulle-sourcetree mark src/Windows no-cmakeadd`
          #
          set( ALL_LOAD_DEPENDENCY_LIBRARIES

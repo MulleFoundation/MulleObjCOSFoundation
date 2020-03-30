@@ -1,3 +1,18 @@
+## 0.17.0
+
+* renamed Base to OSBase
+* cut dependency on MulleObjCInetFoundation, move some code to new MulleObjCOSInetFoundation
+* NSString's ``_stringBySimplifyingPath`` is now `mulleStringBySimplifyingPath`
+* NSTimeZone`s ``_GMTTimeZone`` is now `mulleGMTTimeZone`
+* adapted to changes in MulleObjC
+* add mulleWriteBytes:length: method to NSFileHandle
+* move NSConditionLock to MulleFoundation
+* fix NSCondition a little bit
+* fix timeIntervalSince1970 miscalculation in NSDate
+* add pre-cursory Windows subproject
+* add memory mapped NSData (read only) based on mulle-mmap
+
+
 ## 0.16.0
 
 * fix infinite recursion on Darwin
