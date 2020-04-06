@@ -13,6 +13,7 @@
 #import <MulleObjCOSBaseFoundation/private/NSTask-Private.h>
 
 // other libraries of MulleObjCPosixFoundation
+#import "NSError+Posix.h"
 
 // std-c and dependencies
 #include <sys/types.h>
@@ -53,6 +54,8 @@ static void   do_the_dup( int fd, id handle)
 - (void) launch
 {
    pid_t   pid;
+
+   MulleObjCSetPosixErrorDomain();
 
    // don't use vfork anymore (might do it on BSDs though)
    if( ! (pid = fork()))

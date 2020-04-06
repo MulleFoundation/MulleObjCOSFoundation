@@ -146,7 +146,7 @@ NSString   *NSFileTypeUnknown          = @"NSFileTypeUnknown";
       {
          if( [_delegate respondsToSelector:@selector(fileManager:shouldProceedAfterError:removingItemAtPath:)])
             if( ! [_delegate fileManager:self
-                shouldProceedAfterError:[NSError mulleCurrentError]
+                shouldProceedAfterError:[NSError mulleExtract]
                      removingItemAtPath:path])
                return( NO);
       }
@@ -184,7 +184,7 @@ NSString   *NSFileTypeUnknown          = @"NSFileTypeUnknown";
 {
    if( ! [self removeItemAtPath:path] && error)
    {
-      *error = [NSError mulleCurrentError];
+      *error = [NSError mulleExtract];
       return( NO);
    }
 

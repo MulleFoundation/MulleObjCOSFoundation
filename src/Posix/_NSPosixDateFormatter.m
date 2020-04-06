@@ -14,7 +14,7 @@
 
 // other files in this library
 #import <MulleObjCOSBaseFoundation/private/NSDate+OSBase-Private.h>
-#import "MulleObjCPOSIXError.h"
+#import "NSError+Posix.h"
 #import "NSLocale+Posix.h"
 #import "NSLocale+Posix-Private.h"
 

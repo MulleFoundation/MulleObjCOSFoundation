@@ -10,8 +10,9 @@
 
 #import "import-private.h"
 
-
 #import <MulleObjCOSBaseFoundation/private/NSPageAllocation-Private.h>
+
+#import "NSError+Posix.h"
 
 // std-c and dependencies
 #include <fcntl.h>
@@ -38,6 +39,8 @@
    ssize_t                  actual_len;
    ssize_t                  len;
    int                      fd;
+
+   MulleObjCSetPosixErrorDomain();
 
    filename = [path fileSystemRepresentation];
    fd = open( filename, O_RDONLY);
@@ -108,6 +111,8 @@
    // TODO: need to set POSIX errno domain here
    NSParameterAssert( [path length]);
 
+   MulleObjCSetPosixErrorDomain();
+
    new_path = flag ? [path stringByAppendingString:@"~"] : path;
    c_path   = [new_path fileSystemRepresentation];
 
@@ -158,7 +163,7 @@
       return( YES);
 
    if( p_error)
-      *p_error = MulleObjCErrorGetCurrentError();
+      *p_error = MulleObjCExtractError();
    return( NO);
 }
 

@@ -31,7 +31,8 @@ THE SOFTWARE.
 #import "import-private.h"
 
 #import <MulleObjCOSBaseFoundation/private/NSFileManager-Private.h>
-#import "MulleObjCPOSIXError.h"
+
+#import "NSError+Posix.h"
 
 // std-c and dependencies
 #include <dirent.h>
@@ -102,16 +103,17 @@ THE SOFTWARE.
           ofItemAtPath:(NSString *) path
                  error:(NSError **) error
 {
-
-   mode_t     mode;
    char       *s;
-   NSNumber   *nr;
-   NSDate     *date;
-   int        owner;
    int        group;
+   int        owner;
+   mode_t     mode;
+   NSDate     *date;
+   NSNumber   *nr;
 
    if( ! [attributes count])
       return( YES);
+
+   MulleObjCSetPosixErrorDomain();
 
    s     = [self fileSystemRepresentationWithPath:path];
    owner = -1;
@@ -131,7 +133,7 @@ THE SOFTWARE.
    {
       if( chown( s, owner, group))
       {
-            return( NO);
+         return( NO);
       }
    }
 
@@ -157,7 +159,7 @@ THE SOFTWARE.
 
       if( utimes( s, &timeval))
       {
-            return( NO);
+         return( NO);
       }
    }
 
@@ -171,6 +173,8 @@ THE SOFTWARE.
               withDestinationPath:(NSString *) otherpath
                             error:(NSError **) error
 {
+   MulleObjCSetPosixErrorDomain();
+
    abort();  // not yet coded
 }
 
@@ -194,12 +198,12 @@ THE SOFTWARE.
 
    switch( errno)
    {
-      case EEXIST :
-      case ENOENT :
-         return( errno);
+   case EEXIST :
+   case ENOENT :
+      return( errno);
 
-      default :
-         return( -1);
+   default :
+      return( -1);
    }
 }
 
@@ -214,25 +218,27 @@ THE SOFTWARE.
    NSString         *subpath;
    NSUInteger       i, n;
 
+   MulleObjCSetPosixErrorDomain();
+
    // first try simple case
    switch( [self _createDirectoryAtPath:path
                              attributes:attributes])
    {
-      case 0 :
-         if( ! attributes)
-            return( YES);
+   case 0 :
+      if( ! attributes)
+         return( YES);
 
-         /* remove NSFilePosixPermissions since its been done already */
-         attributes = [attributes mulleDictionaryByRemovingObjectForKey:NSFilePosixPermissions];
-         return( [self setAttributes:attributes
-                        ofItemAtPath:path
-                               error:error]);
-      case ENOENT:
-         if( createIntermediates)
-            break;
+      /* remove NSFilePosixPermissions since its been done already */
+      attributes = [attributes mulleDictionaryByRemovingObjectForKey:NSFilePosixPermissions];
+      return( [self setAttributes:attributes
+                     ofItemAtPath:path
+                            error:error]);
+   case ENOENT:
+      if( createIntermediates)
+         break;
 
-      default :
-            return( NO);
+   default :
+         return( NO);
    }
 
    // does not exist, create it
@@ -306,6 +312,8 @@ static unsigned int    permissons_for_current_uid_gid( struct stat *c_info)
 {
    struct stat   c_info;
 
+   MulleObjCSetPosixErrorDomain();
+
    return( stat_at_path( path, &c_info) ? NO : YES);
 }
 
@@ -315,6 +323,8 @@ static unsigned int    permissons_for_current_uid_gid( struct stat *c_info)
 {
    struct stat   c_info;
    BOOL          dummy;
+
+   MulleObjCSetPosixErrorDomain();
 
    if( ! isDir)
       isDir = &dummy;
@@ -332,6 +342,8 @@ static unsigned int    permissons_for_current_uid_gid( struct stat *c_info)
 {
    struct stat   c_info;
 
+   MulleObjCSetPosixErrorDomain();
+
    if( stat_at_path( path, &c_info))
       return( NO);
    return( permissons_for_current_uid_gid( &c_info) & 0444 ? YES : NO);
@@ -341,6 +353,8 @@ static unsigned int    permissons_for_current_uid_gid( struct stat *c_info)
 - (BOOL) isExecutableFileAtPath:(NSString *) path
 {
    struct stat   c_info;
+
+   MulleObjCSetPosixErrorDomain();
 
    if( stat_at_path( path, &c_info))
       return( NO);
@@ -356,6 +370,8 @@ static unsigned int    permissons_for_current_uid_gid( struct stat *c_info)
 {
    struct stat   c_info;
 
+   MulleObjCSetPosixErrorDomain();
+
    if( stat_at_path( path, &c_info))
       return( NO);
    return( permissons_for_current_uid_gid( &c_info) & 0222 ? YES : NO);
@@ -365,6 +381,8 @@ static unsigned int    permissons_for_current_uid_gid( struct stat *c_info)
 - (BOOL) isWritableFileAtPath:(NSString *) path
 {
    struct stat   c_info;
+
+   MulleObjCSetPosixErrorDomain();
 
    if( stat_at_path( path, &c_info))
       return( NO);
@@ -389,6 +407,8 @@ static unsigned int    permissons_for_current_uid_gid( struct stat *c_info)
    NSString         *filename;
    struct dirent    *entry;
    char             *s;
+
+   MulleObjCSetPosixErrorDomain();
 
    dir = opendir( [path fileSystemRepresentation]);
    if( ! dir)
@@ -497,6 +517,8 @@ static BOOL  is_symlink( char *c_path)
    NSString             *type;
    struct timespec      timespec;
 
+   MulleObjCSetPosixErrorDomain();
+
    c_path = [path fileSystemRepresentation];
    if( lstat( c_path, &c_info))
    {
@@ -517,14 +539,14 @@ static BOOL  is_symlink( char *c_path)
 
    switch( c_info.st_mode & S_IFMT)
    {
-      case S_IFBLK  : type = NSFileTypeBlockSpecial; break;
-      case S_IFCHR  : type = NSFileTypeCharacterSpecial; break;
-      case S_IFDIR  : type = NSFileTypeDirectory; break;
-      case S_IFIFO  : type = NSFileTypePipe; break;
-      case S_IFLNK  : type = NSFileTypeSymbolicLink; break;
-      case S_IFREG  : type = NSFileTypeRegular; break;
-      case S_IFSOCK : type = NSFileTypeSocket; break;
-      default       : type = NSFileTypeUnknown; break;
+   case S_IFBLK  : type = NSFileTypeBlockSpecial; break;
+   case S_IFCHR  : type = NSFileTypeCharacterSpecial; break;
+   case S_IFDIR  : type = NSFileTypeDirectory; break;
+   case S_IFIFO  : type = NSFileTypePipe; break;
+   case S_IFLNK  : type = NSFileTypeSymbolicLink; break;
+   case S_IFREG  : type = NSFileTypeRegular; break;
+   case S_IFSOCK : type = NSFileTypeSocket; break;
+   default       : type = NSFileTypeUnknown; break;
    }
 
    [dictionary setObject:type
@@ -593,6 +615,8 @@ static NSString   *link_contents( NSString *path)
 
 - (NSString *) pathContentOfSymbolicLinkAtPath:(NSString *) path
 {
+   MulleObjCSetPosixErrorDomain();
+
    return( [self _pathContentOfSymbolicLinkAtPath:path
                                       recursively:NO]);
 }
@@ -624,22 +648,22 @@ static NSString   *link_contents( NSString *path)
 }
 
 
-
 - (NSString *) destinationOfSymbolicLinkAtPath:(NSString *) path
                                          error:(NSError **) error
 {
    char      buf[ PATH_MAX + 1];  // might be too large for stack ?
    ssize_t   length;
 
+   MulleObjCSetPosixErrorDomain();
+
    length = readlink( [path fileSystemRepresentation], buf, PATH_MAX);
    if( length == -1)
    {
       if( error)
-         *error = [NSError errorWithDomain:NSPOSIXErrorDomain
-                                      code:errno
-                                  userInfo:nil];
+         *error = [NSError mulleExtract];
       return( nil);
    }
+
    buf[ length] = 0;
    return( [self stringWithFileSystemRepresentation:buf
                                              length:length + 1]);
@@ -678,6 +702,8 @@ static inline void   NSRaiseException( NSString *name,
 -(BOOL)_isDirectory:(NSString *)path {
     struct stat buf;
 
+   MulleObjCSetPosixErrorDomain();
+
     if(lstat([path fileSystemRepresentation],&buf)<0)
         return NO;
 
@@ -687,7 +713,8 @@ static inline void   NSRaiseException( NSString *name,
     return NO;
 }
 
--(BOOL)_errorHandler:handler src:(NSString *)src dest:(NSString *)dest operation:(NSString *)op {
+
+- (BOOL)_errorHandler:handler src:(NSString *)src dest:(NSString *)dest operation:(NSString *)op {
     if ([handler respondsToSelector:@selector(fileManager:shouldProceedAfterError:)]) {
         NSDictionary *errorInfo = [NSDictionary dictionaryWithObjectsAndKeys:
             src, @"Path",
@@ -705,6 +732,8 @@ static inline void   NSRaiseException( NSString *name,
 
 -(BOOL)movePath:(NSString *)src toPath:(NSString *)dest handler:handler {
     NSError *error = nil;
+
+   MulleObjCSetPosixErrorDomain();
 
     if ([handler respondsToSelector:@selector(fileManager:willProcessPath:)])
         [handler fileManager:self willProcessPath:src];
@@ -728,6 +757,8 @@ static inline void   NSRaiseException( NSString *name,
     BOOL isDirectory;
 
 //TODO fill error
+   MulleObjCSetPosixErrorDomain();
+
 
     if ([self fileExistsAtPath:srcPath isDirectory:&isDirectory] == NO)
         return NO;
@@ -848,8 +879,6 @@ static inline void   NSRaiseException( NSString *name,
     }
 
     return YES;
-
 }
-
 
 @end

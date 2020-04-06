@@ -10,6 +10,8 @@
 
 #import "import-private.h"
 
+#import "NSError+Posix.h"
+
 // std-c and dependencies
 #include <fcntl.h>
 #include <unistd.h>
@@ -27,12 +29,14 @@
    int    fd;
    int    posixMode;
 
+   MulleObjCSetPosixErrorDomain();
+
    // compiler should eliminate this
    switch( mode)
    {
-      case _MulleObjCOpenReadOnly:    posixMode = O_RDONLY; break;
-      case _MulleObjCOpenWriteOnly :  posixMode = O_WRONLY; break;
-      case _MulleObjCOpenReadWrite :  posixMode = O_RDWR; break;
+   case _MulleObjCOpenReadOnly:    posixMode = O_RDONLY; break;
+   case _MulleObjCOpenWriteOnly :  posixMode = O_WRONLY; break;
+   case _MulleObjCOpenReadWrite :  posixMode = O_RDWR; break;
    }
 
    s  = [path fileSystemRepresentation];
@@ -84,6 +88,8 @@ static id  NSInitFileHandleAndClose( NSFileHandle *self, int fd)
 {
    ssize_t  result;
 
+   MulleObjCSetPosixErrorDomain();
+
 retry:
    result = read( (int) _fd, buf, len);
    if( result == -1)
@@ -112,6 +118,8 @@ retry:
    NSParameterAssert( buf || ! len);
    NSParameterAssert( len != (size_t) -1);
 
+   MulleObjCSetPosixErrorDomain();
+
 retry:
    result = write( (int) _fd, buf, len);
    if( result == -1)
@@ -139,6 +147,8 @@ retry:
    off_t   result;
    int     posixMode;
 
+   MulleObjCSetPosixErrorDomain();
+
    // compiler should eliminate this
    switch( mode)
    {
@@ -148,8 +158,6 @@ retry:
    }
 
    result = lseek( (int) _fd, offset, posixMode);
-   if( result == (off_t) -1)
-      MulleObjCThrowErrnoException( @"lseek");
    return( (unsigned long long) result);
 }
 
@@ -158,7 +166,10 @@ retry:
 
 - (void) closeFile
 {
-   close( (int) _fd);
+   if( close( (int) _fd) == -1)
+   {
+      // raise or what ?
+   }
 }
 
 

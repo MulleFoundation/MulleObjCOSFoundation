@@ -17,6 +17,7 @@
 #import "import-private.h"
 
 #import "NSLocale+Posix.h"
+#import "NSError+Posix.h"
 
 // other files in this library
 #import "NSLocale+Posix-Private.h"
@@ -187,6 +188,8 @@ de_DE.plist
 {
    locale_t       xlocale;
    NSDictionary   *auxInfo;
+
+   MulleObjCSetPosixErrorDomain();
 
    xlocale = newlocale( LC_ALL_MASK, [name cString], NULL);
 
