@@ -20,6 +20,8 @@
 
 - (int) processIdentifier
 {
+   MulleObjCSetPosixErrorDomain();
+
    return( getpid());
 }
 

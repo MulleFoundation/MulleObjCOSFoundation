@@ -15,6 +15,7 @@
 #import <MulleObjCOSBaseFoundation/private/NSFileManager-Private.h>
 
 // other libraries of MulleObjCPosixFoundation
+#import "NSError+Posix.h"
 
 // std-c and dependencies
 #include <dirent.h>
@@ -38,6 +39,8 @@
    _dir = opendir( [path fileSystemRepresentation]);
    if( ! _dir)
    {
+      MulleObjCSetPosixErrorDomain();
+
       [self release];
       return( nil);
    }
@@ -49,9 +52,12 @@
    return( self);
 }
 
+
 - (NSString *) _nextEntry:(int *) is_dir
 {
    struct dirent    *entry;
+
+   MulleObjCSetPosixErrorDomain();
 
    *is_dir = -1;
 retry:

@@ -38,12 +38,12 @@ int   main( int argc, const char * argv[])
    // timeIntervalSinceReferenceDate returns seconds since 2001-01-01
    interval2 = [NSDate timeIntervalSinceReferenceDate] + NSTimeIntervalSince1970;
 
-   printf( "+\n (%.1f - %ld)\n", interval2, value);
+   fprintf( stderr, "+\n (%.1f - %ld)\n", interval2, value);
    check( interval2 >= value);
    check( interval2 < value + 10);
 
    interval = [date timeIntervalSince1970];
-   printf( "-\n (%.1f - %ld)\n", interval, value);
+   fprintf( stderr, "-\n (%.1f - %ld)\n", interval, value);
    check( interval >= value);
    check( interval < value + 10);
 

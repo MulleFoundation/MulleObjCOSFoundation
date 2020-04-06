@@ -8,7 +8,6 @@ endif()
 set( SOURCES
 Functions/NSLog.m
 Functions/mulle_posix_tm.c
-MulleObjCPOSIXError.m
 MulleObjCPOSIXString.m
 NSBundle+Posix.m
 NSCalendarDate+Posix.m
@@ -16,6 +15,7 @@ NSCondition.m
 NSData+Posix.m
 NSDate+Posix.m
 NSDirectoryEnumerator+Posix.m
+NSError+Posix.m
 NSFileHandle+Posix.m
 NSFileManager+Posix.m
 NSLocale+Posix.m

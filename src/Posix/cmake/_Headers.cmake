@@ -23,9 +23,9 @@ include-private.h
 )
 
 set( PUBLIC_HEADERS
-MulleObjCPOSIXError.h
 MulleObjCPosixFoundation.h
 NSCondition.h
+NSError+Posix.h
 NSLocale+Posix.h
 _NSPosixDateFormatter.h
 Timezone/tzfile.h

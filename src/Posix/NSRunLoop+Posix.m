@@ -13,6 +13,7 @@
 // other files in this library
 #import <MulleObjCOSBaseFoundation/private/NSRunLoop-Private.h>
 #import "NSDate+Posix-Private.h"
+#import "NSError+Posix.h"
 
 // std-c and dependencies
 #include <unistd.h>
@@ -310,6 +311,8 @@ posix_recalc:
       // _readSet stable in case of EINTR (assumed to be very rare)
       //
       //fprintf( stderr, "timeout: %lds.%06ldus\n", (long) timeout.tv_sec, (long) timeout.tv_usec);
+
+      MulleObjCSetPosixErrorDomain();
 
       rval = select( max + 1, &ctxt->_readSet, NULL, NULL, &timeout);
       if( rval == -1)

@@ -11,5 +11,5 @@
 #import "NSCondition.h"
 
 #import "NSLocale+Posix.h"
-#import "MulleObjCPOSIXError.h"
+#import "NSError+Posix.h"
 

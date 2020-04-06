@@ -44,7 +44,7 @@
 
    data = [self dataWithContentsOfFile:path];
    if( ! data)
-      *error = MulleObjCErrorGetCurrentError();
+      *error = MulleObjCExtractError();
    return( data);
 }
 

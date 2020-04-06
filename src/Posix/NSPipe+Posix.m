@@ -11,6 +11,7 @@
 #import "import-private.h"
 
 // other files in this library
+#import "NSError+Posix.h"
 
 // std-c and dependencies
 #include <unistd.h>
@@ -22,8 +23,10 @@ static id    NSInitPipe( NSPipe *self)
 {
    int   fds[ 2];
 
+   MulleObjCSetPosixErrorDomain();
+
    if( pipe( fds))
-      MulleObjCThrowErrnoException( @"pipe creation");
+      return( nil);
 
    self->_read  = [[NSFileHandle alloc] initWithFileDescriptor:fds[ 0]
                                                 closeOnDealloc:YES];
