@@ -11,6 +11,8 @@
 #import "import-private.h"
 
 // other files in this library
+#import "NSError+Posix.h"
+
 
 // std-c and dependencies
 #include <unistd.h>
