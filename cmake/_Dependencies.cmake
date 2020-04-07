@@ -69,7 +69,7 @@ if( NOT MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY)
          endif()
       endforeach()
       #
-      # Search for "objc-loader.inc" in include directory.
+      # Search for "MulleObjCLoader+<name>.h" in include directory.
       # Disable with: `mulle-sourcetree mark src/OSBase no-cmakeloader`
       #
       if( NOT NO_INHERIT_OBJC_LOADERS)
@@ -154,7 +154,7 @@ if( NOT MULLE_OBJC_POSIX_FOUNDATION_LIBRARY)
          endif()
       endforeach()
       #
-      # Search for "objc-loader.inc" in include directory.
+      # Search for "MulleObjCLoader+<name>.h" in include directory.
       # Disable with: `mulle-sourcetree mark src/Posix no-cmakeloader`
       #
       if( NOT NO_INHERIT_OBJC_LOADERS)
@@ -240,7 +240,7 @@ if( NOT (${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES 
             endif()
          endforeach()
          #
-         # Search for "objc-loader.inc" in include directory.
+         # Search for "MulleObjCLoader+<name>.h" in include directory.
          # Disable with: `mulle-sourcetree mark src/BSD no-cmakeloader`
          #
          if( NOT NO_INHERIT_OBJC_LOADERS)
@@ -327,7 +327,7 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Freebsd")
             endif()
          endforeach()
          #
-         # Search for "objc-loader.inc" in include directory.
+         # Search for "MulleObjCLoader+<name>.h" in include directory.
          # Disable with: `mulle-sourcetree mark src/FreeBSD no-cmakeloader`
          #
          if( NOT NO_INHERIT_OBJC_LOADERS)
@@ -414,7 +414,7 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             endif()
          endforeach()
          #
-         # Search for "objc-loader.inc" in include directory.
+         # Search for "MulleObjCLoader+<name>.h" in include directory.
          # Disable with: `mulle-sourcetree mark src/Darwin no-cmakeloader`
          #
          if( NOT NO_INHERIT_OBJC_LOADERS)
@@ -501,7 +501,7 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES "Linu
             endif()
          endforeach()
          #
-         # Search for "objc-loader.inc" in include directory.
+         # Search for "MulleObjCLoader+<name>.h" in include directory.
          # Disable with: `mulle-sourcetree mark src/Linux no-cmakeloader`
          #
          if( NOT NO_INHERIT_OBJC_LOADERS)
@@ -588,7 +588,7 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Windows" OR ${CMAKE_SYSTEM_NAME} MATCHES "Wind
             endif()
          endforeach()
          #
-         # Search for "objc-loader.inc" in include directory.
+         # Search for "MulleObjCLoader+<name>.h" in include directory.
          # Disable with: `mulle-sourcetree mark src/Windows no-cmakeloader`
          #
          if( NOT NO_INHERIT_OBJC_LOADERS)
