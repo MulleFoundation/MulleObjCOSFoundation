@@ -18,8 +18,7 @@
 #include <errno.h>
 
 
-@implementation NSBundle (Posix)
-
+@implementation NSBundle( Posix)
 
 + (BOOL) isBundleFilesystemExtension:(NSString *) extension
 {
@@ -49,6 +48,12 @@
 - (NSString *) _resourcePath
 {
    return( [self _posixResourcePath]);
+}
+
+
+- (NSString *) builtInPlugInsPath
+{
+   return( [[self resourcePath] stringByAppendingPathComponent:@"plugin"]);
 }
 
 

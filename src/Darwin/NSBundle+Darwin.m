@@ -114,6 +114,12 @@ static NSString   *resourcesPath( NSBundle *self)
 }
 
 
+- (NSString *) builtInPlugInsPath
+{
+   return( [[self resourcesPath] stringByAppendingPathComponent:@"PlugIns"]);
+}
+
+
 //
 // On Darwin, we have to differentiate between true bundles, frameworks
 // and "just" libraries
