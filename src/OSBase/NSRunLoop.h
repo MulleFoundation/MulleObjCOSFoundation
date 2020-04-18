@@ -74,6 +74,8 @@ extern NSString   *NSDefaultRunLoopMode;
 - (BOOL) runMode:(NSRunLoopMode) modeName
       beforeDate:(NSDate *) limitDate;
 
+- (NSDate *) limitDateForMode:(NSRunLoopMode) modeName;
+
 // Messages
 - (void) performSelector:(SEL) aSelector
                   target:(id) target
