@@ -459,7 +459,7 @@ void     (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path) 
 
    if( ! _executablePath)
    {
-      value = [self _executablePath];
+      value           = [self _executablePath];
       _executablePath = [value copy];
    }
    return( _executablePath);
