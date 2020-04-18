@@ -801,17 +801,6 @@ static NSRunLoop   *runLoopForThread( NSThread *thread)
 }
 
 
-- (struct MulleRunLoopMode *) mulleRunLoopModeForMode:(NSRunLoopMode) modeName
-{
-   struct MulleRunLoopMode   *mode;
-
-   mulle_thread_mutex_lock( &_lock);
-   mode = NSMapGet( _modeTable, modeName);
-   mulle_thread_mutex_unlock( &_lock);
-   return( mode);
-}
-
-
 - (NSArray *) _modes
 {
    NSMutableArray           *array;
@@ -978,6 +967,39 @@ static NSRunLoop   *runLoopForThread( NSThread *thread)
 }
 
 
+// enter locked
+- (struct MulleRunLoopMode *) _mulleRunLoopModeForMode:(NSRunLoopMode) modeName
+{
+   struct MulleRunLoopMode   *mode;
+
+   mode = NSMapGet( _modeTable, modeName);
+   if( ! mode)
+   {
+      // don't lock during "sure thing" malloc
+      mulle_thread_mutex_unlock( &_lock);
+      mode = MulleRunLoopModeCreate( MulleObjCInstanceGetAllocator( self),
+                                     modeName);
+      mulle_thread_mutex_lock( &_lock);
+
+      NSMapInsertKnownAbsent( _modeTable, modeName, mode);
+   }
+   return( mode);
+}
+
+
+- (struct MulleRunLoopMode *) mulleRunLoopModeForMode:(NSRunLoopMode) modeName
+{
+   struct MulleRunLoopMode   *mode;
+
+   mulle_thread_mutex_lock( &_lock);
+   {
+      mode = [self _mulleRunLoopModeForMode:modeName];
+   }
+   mulle_thread_mutex_unlock( &_lock);
+   return( mode);
+}
+
+
 - (void) performSelector:(SEL) sel
                   target:(id) target
                 argument:(id) argument
@@ -997,18 +1019,7 @@ static NSRunLoop   *runLoopForThread( NSThread *thread)
    {
       for( modeName in modeNames)
       {
-         mode = NSMapGet( _modeTable, modeName);
-         if( ! mode)
-         {
-            // don't lock during "sure thing" malloc
-            mulle_thread_mutex_unlock( &_lock);
-            mode = MulleRunLoopModeCreate( MulleObjCInstanceGetAllocator( self),
-                                           modeName);
-            mulle_thread_mutex_lock( &_lock);
-
-            NSMapInsertKnownAbsent( _modeTable, modeName, mode);
-         }
-
+         mode = [self _mulleRunLoopModeForMode:modeName];
          MulleRunLoopModeEnqueueMessage( mode, target, sel, argument, order);
       }
    }
