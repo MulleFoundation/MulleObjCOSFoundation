@@ -707,13 +707,17 @@ static NSRunLoop   *runLoopForThread( NSThread *thread)
 {
    NSDate                   *date;
    struct MulleRunLoopMode  *mode;
+   NSTimer                  *timer;
 
    date = nil;
    mode = [self mulleRunLoopModeForMode:modeName];
    if( mode)
    {
       _currentModeName = modeName;
-      date             = [self _limitDateForRunLoopMode:mode];
+      mulle_thread_mutex_lock( &_lock);
+      timer            = MulleRunLoopModeGetNextTimerToFire( mode);
+      date             = [[[timer fireDate] retain] autorelease];
+      mulle_thread_mutex_unlock( &_lock);
       _currentModeName = nil;
    }
    // should check for next timer here later

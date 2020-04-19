@@ -106,7 +106,6 @@ enum MulleRunLoopInputState
 
 @interface NSRunLoop( Future)
 
-- (NSDate *) _limitDateForRunLoopMode:(struct MulleRunLoopMode *) mode;
 - (enum MulleRunLoopInputState) _acceptInputForRunLoopMode:(struct MulleRunLoopMode *) mode
                                                 beforeDate:(NSDate *) limitDate;
 @end
