@@ -116,7 +116,7 @@ static NSString   *resourcesPath( NSBundle *self)
 
 - (NSString *) builtInPlugInsPath
 {
-   return( [[self resourcesPath] stringByAppendingPathComponent:@"PlugIns"]);
+   return( [resourcesPath(self) stringByAppendingPathComponent:@"PlugIns"]);
 }
 
 
@@ -240,7 +240,7 @@ static NSString   *resourcesPath( NSBundle *self)
    unsigned long                    i;
    unsigned long                    j;
 
-   data = [NSMutableData data];
+   data = [NSMutableData object];
 
    fileManager = [NSFileManager defaultManager];
    for( i = 0; s = (char *) _dyld_get_image_name( i); i++)

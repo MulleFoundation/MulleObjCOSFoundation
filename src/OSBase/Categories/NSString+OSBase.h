@@ -38,8 +38,19 @@
 
 + (instancetype) stringWithContentsOfFile:(NSString *) path;
 
-#pragma mark -
-#pragma mark mulle additions
+#pragma mark - mark mulle additions
+
+//
+// Because the MulleFoundation only accepts properly encoded strings
+// and NSData, it is impossible to load in text files, where maybe just a single
+// byte has been corrupted.
+//
+// So these methods will try to determine the correct encoding (as
+// initWithContentsOfFile : does) and  will replace offending characters with
+// the '?' character
+//
+- (instancetype) mulleInitWithLossyContentsOfFile:(NSString *) path;
++ (instancetype) mulleStringWithLossyContentsOfFile:(NSString *) path;
 
 - (NSString *) mulleStringBySimplifyingPath;  // just removes /./ and /../
 

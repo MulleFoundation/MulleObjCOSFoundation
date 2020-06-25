@@ -31,7 +31,7 @@ NSTimeInterval   MulleDateNow( void)
 }
 
 
-+ (instancetype) date
++ (NSDate *) date
 {
    NSTimeInterval    seconds;
 

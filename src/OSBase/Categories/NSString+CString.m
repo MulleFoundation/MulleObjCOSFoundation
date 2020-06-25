@@ -46,7 +46,7 @@
 - (instancetype) initWithCString:(char *) s
 {
    return( [self initWithBytes:s
-                        length:s ? strlen( s) + 1 : 0
+                        length:-1
                       encoding:[self _cStringEncoding]]);
 }
 

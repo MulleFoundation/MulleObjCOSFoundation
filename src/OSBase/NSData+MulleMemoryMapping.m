@@ -64,6 +64,16 @@
    return( (NSUInteger) _mulle_mmap_get_length( &self->_info));
 }
 
+
+- (struct mulle_data) mulleData
+{
+   struct mulle_data   data;
+
+   data = mulle_data_make( _mulle_mmap_get_data( &self->_info),
+                             _mulle_mmap_get_length( &self->_info));
+   return( data);
+}
+
 @end
 
 

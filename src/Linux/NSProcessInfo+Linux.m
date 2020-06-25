@@ -177,8 +177,7 @@ static void   unlazyArguments( NSProcessInfo *self)
 }
 
 
-#pragma mark -
-#pragma mark Environment
+#pragma mark - Environment
 
 static void   unlazyEnvironment( NSProcessInfo *self)
 {
@@ -196,8 +195,7 @@ static void   unlazyEnvironment( NSProcessInfo *self)
 }
 
 
-#pragma mark -
-#pragma mark Executable Path
+#pragma mark - Executable Path
 
 static void   unlazyExecutablePath( NSProcessInfo *self)
 {

@@ -17,6 +17,7 @@
 #import "NSFileManager.h"
 #import "NSPathUtilities.h"
 #import "NSData+OSBase.h"
+#import "NSString+CString.h"
 
 // std-c and dependencies
 
@@ -232,7 +233,7 @@
 
    manager    = [NSFileManager defaultManager];
    components = [path componentsSeparatedByString:NSFilePathComponentSeparator];
-   s          = [NSMutableString string];
+   s          = [NSMutableString object];
    for( component in components)
    {
       len = [component length];
@@ -391,14 +392,56 @@ static NSRange  getPathExtensionRange( NSString *self)
 }
 
 
+
+static NSStringEncoding  encodingForBOMOfData( NSData *p)
+{
+   struct mulle_data   data;
+   mulle_utf16_t       c16;
+   mulle_utf32_t       c32;
+   uint8_t             *bytes;
+
+   data = [p mulleData];
+   if( data.length >= 2)
+   {
+      bytes = data.bytes;
+      // length must be at least 2 now
+      c16   = (mulle_utf16_t) ((bytes[ 0] << 8) | bytes[ 1]);
+      if( mulle_utf16_get_bomcharacter() == c16)
+         return( NSUTF16BigEndianStringEncoding);
+
+      c16   = (mulle_utf16_t) ((bytes[ 1] << 8) | bytes[ 0]);
+      if( mulle_utf16_get_bomcharacter() == c16)
+         return( NSUTF16LittleEndianStringEncoding);
+
+      if( mulle_utf8_has_leading_bomcharacter( bytes, data.length))
+         return( NSUTF8StringEncoding);
+
+      if( data.length >= 4)
+      {
+         c32 = (mulle_utf32_t) ((bytes[ 0] << 24) |
+                                (bytes[ 1] << 16) |
+                                (bytes[ 2] << 8) |
+                                bytes[ 3]);
+         if( mulle_utf32_get_bomcharacter() == c32)
+            return( NSUTF32BigEndianStringEncoding);
+
+         c32 = (mulle_utf32_t) ((bytes[ 3] << 24) |
+                                (bytes[ 2] << 16) |
+                                (bytes[ 1] << 8) |
+                                bytes[ 0]);
+         if( mulle_utf32_get_bomcharacter() == c32)
+            return( NSUTF32LittleEndianStringEncoding);
+      }
+   }
+
+   return( 0);
+}
+
+
 - (instancetype) initWithContentsOfFile:(NSString *) path
 {
-   NSData             *data;
-   uint8_t            *bytes;
-   NSUInteger         length;
+   NSData            *data;
    NSStringEncoding   encoding;
-   mulle_utf16_t      c16;
-   mulle_utf32_t      c32;
 
    data = [NSData dataWithContentsOfFile:path];
    if( ! data)
@@ -407,61 +450,77 @@ static NSRange  getPathExtensionRange( NSString *self)
       return( nil);
    }
 
-   length   = [data length];
-   encoding = NSUTF8StringEncoding;
+   encoding = encodingForBOMOfData( data);
+   if( ! encoding)
+      encoding = [NSString defaultCStringEncoding];
 
-   do
-   {
-      if( ! length)
-         break;
-      // if length is odd, it must be 8 bit
-      if( length & 0x1)
-         break;
-
-      bytes = [data bytes];
-      c16   = (mulle_utf16_t) ((bytes[ 0] << 8) | bytes[ 1]);
-      if( mulle_utf16_get_bomcharacter() == c16)
-      {
-         encoding = NSUTF16BigEndianStringEncoding;
-         break;
-      }
-
-      c16   = (mulle_utf16_t) ((bytes[ 1] << 8) | bytes[ 0]);
-      if( mulle_utf16_get_bomcharacter() == c16)
-      {
-         encoding = NSUTF16LittleEndianStringEncoding;
-         break;
-      }
-
-      if( length < 4)
-         break;
-
-      c32 = (mulle_utf32_t) ((bytes[ 0] << 24) |
-                             (bytes[ 1] << 16) |
-                             (bytes[ 2] << 8) |
-                             bytes[ 3]);
-      if( mulle_utf32_get_bomcharacter() == c32)
-      {
-         encoding = NSUTF32BigEndianStringEncoding;
-         break;
-      }
-
-      c32 = (mulle_utf32_t) ((bytes[ 3] << 24) |
-                             (bytes[ 2] << 16) |
-                             (bytes[ 1] << 8) |
-                             bytes[ 0]);
-      if( mulle_utf32_get_bomcharacter() == c32)
-      {
-         encoding = NSUTF32LittleEndianStringEncoding;
-         break;
-      }
-   }
-   while( 0);
-
+#if 0
    return( [self initWithData:data
                      encoding:encoding]);
-
+#else
+   return( [self mulleInitWithDataNoCopy:data
+                                encoding:encoding]);
+#endif
 }
+
+
+- (instancetype) mulleInitWithLossyContentsOfFile:(NSString *) path
+{
+   NSMutableData      *data;
+   NSStringEncoding   encoding;
+
+   data = [NSMutableData dataWithContentsOfFile:path];
+   if( ! data)
+   {
+      [self release];
+      return( nil);
+   }
+
+   encoding = encodingForBOMOfData( data);
+   if( ! encoding)
+      encoding = [NSString defaultCStringEncoding];
+
+   /*
+    * flip bytes now, if needed
+    */
+   switch( encoding)
+   {
+#ifdef __BIG_ENDIAN__
+   case NSUTF16LittleEndianStringEncoding :
+#endif
+#ifdef __LITTLE_ENDIAN__
+   case NSUTF16BigEndianStringEncoding    :
+#endif
+      [data mulleSwapUTF16Characters];
+      encoding = NSUTF16StringEncoding;
+      break;
+
+#ifdef __BIG_ENDIAN__
+   case NSUTF32LittleEndianStringEncoding :
+#endif
+#ifdef __LITTLE_ENDIAN__
+   case NSUTF32BigEndianStringEncoding    :
+#endif
+      [data mulleSwapUTF32Characters];
+      encoding = NSUTF32StringEncoding;
+      break;
+   }
+
+   // do a lossy conversion for invalid characters
+   [data mulleReplaceInvalidCharactersWithASCIICharacter:'?'
+                                                encoding:encoding];
+
+   return( [self mulleInitWithDataNoCopy:data
+                                encoding:encoding]);
+}
+
+
++ (instancetype) mulleStringWithLossyContentsOfFile:(NSString *) path
+{
+   return( [[[self alloc] mulleInitWithLossyContentsOfFile:path] autorelease]);
+}
+
+
 
 - (BOOL) writeToFile:(NSString *) path
           atomically:(BOOL) flag
