@@ -71,8 +71,7 @@
 
 
 
-#pragma mark -
-#pragma mark NSLocking
+#pragma mark - NSLocking
 
 - (void) lock
 {

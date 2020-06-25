@@ -18,9 +18,9 @@
 
 - (id) initWithString:(NSString *) description
        calendarFormat:(NSString *) format
-               locale:(id) locale;
+               locale:(NSLocale *) locale;
 - (NSString *) descriptionWithCalendarFormat:(NSString *) format
-                                      locale:(id) locale;
-- (NSString *) descriptionWithLocale:(id) locale;
+                                      locale:(NSLocale *) locale;
+- (NSString *) descriptionWithLocale:(NSLocale *) locale;
 
 @end

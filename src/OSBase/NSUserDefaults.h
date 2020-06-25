@@ -31,9 +31,9 @@
 
 - (instancetype) init;
 
-- (id) objectForKey:(NSString *) key;
+- (id) objectForKey:(id) key;
 - (void) setObject:(id) value
-            forKey:(NSString *) key;
+            forKey:(id <NSCopying>) key;
 - (void) removeObjectForKey:(id) key;
 
 - (void) registerDefaults:(NSDictionary *) registrationDictionary;

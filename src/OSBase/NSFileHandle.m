@@ -211,7 +211,7 @@ static NSData   *readAllData( NSFileHandle *self, BOOL untilFullOrEOF)
    NSUInteger      length;
 
    length = NSPageSize();
-   data   = [NSMutableData data];
+   data   = [NSMutableData object];
    for(;;)
    {
       page = readDataOfLength( self, length, untilFullOrEOF);

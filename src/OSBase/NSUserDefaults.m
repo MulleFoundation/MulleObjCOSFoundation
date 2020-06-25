@@ -45,11 +45,13 @@ static NSString   *NSApplicationDomain  = @"NSApplicationDomain";
 }
 
 
-- (id) objectForKey:(NSString *) key
+- (id) objectForKey:(id) key
 {
    NSDictionary   *domain;
    NSString       *name;
    id             value;
+
+   NSParameterAssert( [key isKindOfClass:[NSString class]]);
 
    for( name in _searchList)
    {
@@ -77,17 +79,22 @@ static NSMutableDictionary   *applicationDomain( NSUserDefaults *self)
    return( domain);
 }
 
+
 - (void) setObject:(id) value
-            forKey:(NSString *) key
+            forKey:(id <NSCopying>) key
 {
+   NSParameterAssert( [(NSObject *) key isKindOfClass:[NSString class]]);
+
    [applicationDomain( self) setObject:value
                                forKey:key];
 }
 
 
-- (void) removeObjectForKey:(NSString *) key
+- (void) removeObjectForKey:(id) key
 {
    NSMutableDictionary  *domain;
+
+   NSParameterAssert( [key isKindOfClass:[NSString class]]);
 
    domain = [_domains objectForKey:NSApplicationDomain];
    [domain removeObjectForKey:key];

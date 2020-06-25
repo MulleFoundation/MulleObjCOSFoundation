@@ -170,8 +170,7 @@ static void   unlazyArguments( NSProcessInfo *self)
 }
 
 
-#pragma mark -
-#pragma mark Environment
+#pragma mark - Environment
 
 static void   unlazyEnvironment( NSProcessInfo *self)
 {
@@ -189,8 +188,7 @@ static void   unlazyEnvironment( NSProcessInfo *self)
 }
 
 
-#pragma mark -
-#pragma mark Executable Path
+#pragma mark - Executable Path
 
 static int   _NSGetExecutablePath( char **path)
 {
@@ -241,8 +239,7 @@ static void   unlazyExecutablePath( NSProcessInfo *self)
 }
 
 
-#pragma mark -
-#pragma mark Host and OS
+#pragma mark - Host and OS
 
 - (NSString *) hostName
 {

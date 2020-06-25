@@ -267,7 +267,7 @@ endif()
 # Generated from sourcetree: src/FreeBSD;no-delete,no-header,no-share,no-update,only-os-freebsd;MulleObjCFreeBSDFoundation
 # Disable with: `mulle-sourcetree mark src/FreeBSD no-link`
 #
-if( ${CMAKE_SYSTEM_NAME} MATCHES "Freebsd")
+if( ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
    if( NOT MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY)
       find_library( MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCFreeBSDFoundation NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH)
       message( STATUS "MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY is ${MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY}")

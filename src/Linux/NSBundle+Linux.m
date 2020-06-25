@@ -82,7 +82,7 @@ static int  collect_filesystem_libraries( struct dl_phdr_info *info,
 {
    NSMutableData  *data;
 
-   data = [NSMutableData data];
+   data = [NSMutableData object];
    dl_iterate_phdr( collect_filesystem_libraries, data);
    return( data);
 }

@@ -74,8 +74,7 @@ MULLE_OBJC_DEPENDS_ON_LIBRARY( MulleObjCStandardFoundation);
 }
 
 
-#pragma mark -
-#pragma mark conversions
+#pragma mark - conversions
 
 
 - (id) _dateWithCStringFormat:(char *) c_format

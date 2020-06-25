@@ -26,7 +26,6 @@ typedef NSUInteger   NSDataReadingOptions;
 
 @interface NSData( OSBase)
 
-+ (instancetype) dataWithContentsOfMappedFile:(NSString *) path;
 + (instancetype) dataWithContentsOfFile:(NSString *) path;
 + (instancetype) dataWithContentsOfFile:(NSString *) path
                                 options:(NSDataReadingOptions) options

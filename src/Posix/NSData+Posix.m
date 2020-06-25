@@ -24,6 +24,7 @@
 
 
 // could be anywhere
+// TODO: use mulle_mmap_get_system_pagesize
 + (void) load
 {
    _MulleObjCSetPageSize( sysconf(_SC_PAGESIZE));
@@ -51,6 +52,7 @@
    }
 
    buf = NULL;
+
    //
    // the length we get here is "our" length
    // or more, for simplicity we don't read more
@@ -68,6 +70,7 @@
          {
             allocator = MulleObjCInstanceGetAllocator( self);
             buf       = mulle_allocator_malloc( allocator, len);
+
             // The system guarantees to read the number of bytes requested
             // if the descriptor references a normal file that has that
             // many bytes left before the end-of-file, but in no other case
@@ -100,13 +103,15 @@
 - (BOOL) writeToFile:(NSString *) path
           atomically:(BOOL) flag
 {
-   NSString   *new_path;
-   ssize_t    len;
-   int        fd;
-   int        rval;
-   char       *c_path;
-   char       *c_new;
-   char       *c_old;
+   NSString            *new_path;
+   ssize_t             written;
+   int                 fd;
+   int                 rval;
+   char                *c_path;
+   char                *c_new;
+   char                *c_old;
+   NSUInteger          length;
+   struct mulle_data   data;
 
    // TODO: need to set POSIX errno domain here
    NSParameterAssert( [path length]);
@@ -120,11 +125,17 @@
    if( fd == -1)
       return( NO);
 
-   len = [self length];
-   if( write( fd, [self bytes], len) != len)
+   data = [self mulleData];
+   for(; data.length;)
    {
-      close( fd);
-      return( NO);
+      written = write( fd, data.bytes, data.length);
+      if( written == -1)
+      {
+         close( fd);
+         return( NO);
+      }
+      data.bytes   = &((char *) data.bytes)[ written];
+      data.length -= written;
    }
    close( fd);
 

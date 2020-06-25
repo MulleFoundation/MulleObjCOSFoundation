@@ -446,8 +446,7 @@ static void   unlazyExecutablePath( NSProcessInfo *self)
 }
 
 
-#pragma mark -
-#pragma mark Host and OS
+#pragma mark - Host and OS
 
 - (NSString *) hostName
 {
