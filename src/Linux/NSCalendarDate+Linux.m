@@ -10,11 +10,19 @@
 #import "import-private.h"
 
 // other files in this library
+#import <MulleObjCPosixFoundation/private/NSCalendarDate+Posix-Private.h>
 
 // other libraries of MulleObjCPosixFoundation
 
 // std-c and dependencies
 #include <time.h>
+
+
+@interface NSTimeZone( Posix)
+
+- (NSInteger) mulleSecondsFromGMTForTimeIntervalSince1970:(NSTimeInterval) interval;
+
+@end
 
 
 @implementation NSCalendarDate (Linux)
@@ -42,6 +50,18 @@
 
    return( [self initWithTimeIntervalSince1970:interval
                                       timeZone:tz]);
+}
+
+
+- (NSTimeInterval) timeIntervalSince1970
+{
+   struct tm   tmp;
+   time_t      value;
+
+   mulle_tm_with_mini_tm( &tmp, self->_tm.values);
+   value  = timegm( &tmp);
+   value -= [_timeZone mulleSecondsFromGMTForTimeIntervalSince1970:value];
+   return( (NSTimeInterval) value);
 }
 
 @end

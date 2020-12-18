@@ -12,8 +12,12 @@
 #ifndef _MulleObjCDarwinFoundation_import_private_h__
 #define _MulleObjCDarwinFoundation_import_private_h__
 
-#include "_MulleObjCDarwinFoundation-include-private.h"
-
 /* no headers */
+
+#ifdef __has_include
+# if __has_include( "_MulleObjCDarwinFoundation-include.h")
+#  include "_MulleObjCDarwinFoundation-include-private.h"
+# endif
+#endif
 
 #endif

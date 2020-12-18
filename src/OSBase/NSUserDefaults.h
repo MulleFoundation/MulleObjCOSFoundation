@@ -27,7 +27,6 @@
 }
 
 + (NSUserDefaults *)  standardUserDefaults;
-+ (void) resetStandardUserDefaults;
 
 - (instancetype) init;
 
@@ -43,6 +42,14 @@
 - (BOOL) synchronize;
 
 @end
+
+
+@interface NSUserDefaults( Future)
+
++ (void) resetStandardUserDefaults;
+
+@end
+
 
 
 // most of these will probably never be implemented, as they are

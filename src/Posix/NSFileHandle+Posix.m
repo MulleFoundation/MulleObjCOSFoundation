@@ -48,10 +48,16 @@
 }
 
 
+static int   close_void_ptr( void *p)
+{
+   return( close( (int)(intptr_t) p));
+}
+
+
 static id  NSInitFileHandleAndClose( NSFileHandle *self, int fd)
 {
    self->_fd     = (void *) (intptr_t) fd;
-   self->_closer = (void *) close;
+   self->_closer = close_void_ptr;
    return( self);
 }
 
@@ -91,7 +97,7 @@ static id  NSInitFileHandleAndClose( NSFileHandle *self, int fd)
    MulleObjCSetPosixErrorDomain();
 
 retry:
-   result = read( (int) _fd, buf, len);
+   result = read( (int)(intptr_t) _fd, buf, len);
    if( result == -1)
    {
       switch( errno)
@@ -121,7 +127,7 @@ retry:
    MulleObjCSetPosixErrorDomain();
 
 retry:
-   result = write( (int) _fd, buf, len);
+   result = write( (int)(intptr_t) _fd, buf, len);
    if( result == -1)
    {
       switch( errno)
@@ -157,19 +163,8 @@ retry:
    case _MulleObjCSeekEnd:  posixMode = SEEK_END; break;
    }
 
-   result = lseek( (int) _fd, offset, posixMode);
+   result = lseek( (int)(intptr_t) _fd, offset, posixMode);
    return( (unsigned long long) result);
-}
-
-
-#pragma mark - close
-
-- (void) closeFile
-{
-   if( close( (int) _fd) == -1)
-   {
-      // raise or what ?
-   }
 }
 
 

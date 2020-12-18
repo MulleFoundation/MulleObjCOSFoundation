@@ -82,10 +82,6 @@ NSString  *NSFileHandleOperationException = @"NSFileHandleOperationException";
 @implementation NSFileHandle
 
 
-static void   nop( int fd)
-{
-}
-
 #pragma mark - open
 
 //
@@ -94,11 +90,9 @@ static void   nop( int fd)
 //
 static id  NSInitFileHandle( NSFileHandle *self, void *fd)
 {
-   self->_fd     = fd;
-   self->_closer = nop;
+   self->_fd = fd;
    return( self);
 }
-
 
 - (instancetype) initWithFileDescriptor:(int) fd
 {
@@ -136,7 +130,10 @@ static id  NSInitFileHandle( NSFileHandle *self, void *fd)
 - (void) finalize
 {
    if( _closer)
-      (*_closer)( (int) (intptr_t) _fd);
+   {
+      (*_closer)( _fd);
+      _closer = NULL;
+   }
 }
 
 
@@ -148,13 +145,13 @@ static id  NSInitFileHandle( NSFileHandle *self, void *fd)
 
 - (int) _fileDescriptorForReading
 {
-   return( (int) _fd);
+   return( (int)(intptr_t) _fd);
 }
 
 
 - (int) _fileDescriptorForWriting
 {
-   return( (int) _fd);
+   return( (int)(intptr_t) _fd);
 }
 
 
@@ -211,7 +208,7 @@ static NSData   *readAllData( NSFileHandle *self, BOOL untilFullOrEOF)
    NSUInteger      length;
 
    length = NSPageSize();
-   data   = [NSMutableData object];
+   data   = [NSMutableData data];
    for(;;)
    {
       page = readDataOfLength( self, length, untilFullOrEOF);
@@ -305,6 +302,22 @@ static NSData   *readAllData( NSFileHandle *self, BOOL untilFullOrEOF)
 {
    [self _seek:offset
           mode:_MulleObjCSeekCur]; // TODO: check!
+}
+
+
+#pragma mark - close
+
+- (void) closeFile
+{
+   int   rval;
+
+   if( ! _closer)
+      return;
+
+   rval = (*_closer)( _fd);
+   if( rval == 0)
+      _closer = 0;
+   // raise or what ?
 }
 
 @end

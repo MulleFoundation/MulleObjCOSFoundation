@@ -8,8 +8,8 @@ if( MULLE_TRACE_INCLUDE)
 endif()
 
 #
-# Generated from sourcetree: MulleObjCOSBaseFoundation;no-link;
-# Disable with: `mulle-sourcetree mark MulleObjCOSBaseFoundation no-link`
+# Generated from sourcetree: MulleObjCOSBaseFoundation;no-build,no-delete,no-dependency,no-fs,no-link,no-update;
+# Disable with: `mulle-sourcetree mark MulleObjCOSBaseFoundation `
 #
 if( NOT MULLE_OBJC_OS_BASE_FOUNDATION_HEADER)
    find_file( MULLE_OBJC_OS_BASE_FOUNDATION_HEADER NAMES MulleObjCOSBaseFoundation/MulleObjCOSBaseFoundation.h MulleObjCOSBaseFoundation/MulleObjCOSBaseFoundation.h)

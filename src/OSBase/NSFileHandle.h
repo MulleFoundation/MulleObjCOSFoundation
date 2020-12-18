@@ -24,7 +24,7 @@ extern NSString  *NSFileHandleOperationException;
 @interface NSFileHandle : NSObject
 {
    void  *_fd;
-   void  (*_closer)( int);
+   int   (*_closer)( void *);
 }
 
 + (instancetype) fileHandleForReadingAtPath:(NSString *) path;
@@ -34,8 +34,6 @@ extern NSString  *NSFileHandleOperationException;
 + (instancetype) fileHandleWithNullDevice;
 
 - (instancetype) initWithFileDescriptor:(int) fd;
-- (instancetype) initWithFileDescriptor:(int) fd
-                         closeOnDealloc:(BOOL) flag;
 
 - (NSData *) availableData;
 - (NSData *) readDataToEndOfFile;
@@ -56,6 +54,8 @@ extern NSString  *NSFileHandleOperationException;
 // mulle addition, if len == -1, it will strlen bytes!!
 - (void) mulleWriteBytes:(void *) bytes
                   length:(NSUInteger) len;
+
+- (void) closeFile;
 
 @end
 

@@ -23,8 +23,7 @@
 #include <errno.h>
 
 
-# pragma mark -
-# pragma mark Allocations
+# pragma mark - Allocations
 
 void   *NSAllocateMemoryPages( NSUInteger size)
 {

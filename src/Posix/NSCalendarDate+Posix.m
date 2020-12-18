@@ -153,18 +153,6 @@ static void  set_mini_tm( NSCalendarDate *self, NSTimeInterval interval, int tzO
 }
 
 
-- (NSTimeInterval) timeIntervalSince1970
-{
-   struct tm   tmp;
-   time_t      value;
-
-   mulle_tm_with_mini_tm( &tmp, self->_tm.values);
-   value  = timegm( &tmp);
-   value -= [_timeZone mulleSecondsFromGMTForTimeIntervalSince1970:value];
-   return( (NSTimeInterval) value);
-}
-
-
 - (NSDate *) date
 {
    // convert to GMT

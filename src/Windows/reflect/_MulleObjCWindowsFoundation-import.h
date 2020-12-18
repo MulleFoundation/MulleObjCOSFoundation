@@ -13,15 +13,24 @@
 #define _MulleObjCWindowsFoundation_import_h__
 
 // How to tweak the following MulleObjCOSBaseFoundation #import
-//    remove:          `mulle-sourcetree mark MulleObjCOSBaseFoundation no-header`
-//    rename:          `mulle-sourcetree mark MulleObjCOSBaseFoundation set include whatever.h`
-//    toggle #import:  `mulle-sourcetree mark MulleObjCOSBaseFoundation [no-]import`
-//    toggle public:   `mulle-sourcetree mark MulleObjCOSBaseFoundation [no-]public`
-//    toggle optional: `mulle-sourcetree mark MulleObjCOSBaseFoundation [no-]require`
-//    remove for os:   `mulle-sourcetree mark MulleObjCOSBaseFoundation no-os-<osname>`
-# import <MulleObjCOSBaseFoundation/MulleObjCOSBaseFoundation.h>   // MulleObjCOSBaseFoundation
+//    remove:             `mulle-sourcetree mark MulleObjCOSBaseFoundation no-header`
+//    rename:             `mulle-sde dependency|library set MulleObjCOSBaseFoundation include whatever.h`
+//    toggle #import:     `mulle-sourcetree mark MulleObjCOSBaseFoundation [no-]import`
+//    toggle localheader: `mulle-sourcetree mark MulleObjCOSBaseFoundation [no-]localheader`
+//    toggle public:      `mulle-sourcetree mark MulleObjCOSBaseFoundation [no-]public`
+//    toggle optional:    `mulle-sourcetree mark MulleObjCOSBaseFoundation [no-]require`
+//    remove for os:      `mulle-sourcetree mark MulleObjCOSBaseFoundation no-os-<osname>`
+# if defined( __has_include) && __has_include("MulleObjCOSBaseFoundation.h")
+#   import "MulleObjCOSBaseFoundation.h"   // MulleObjCOSBaseFoundation
+# else
+#   import <MulleObjCOSBaseFoundation/MulleObjCOSBaseFoundation.h>   // MulleObjCOSBaseFoundation
+# endif
 
-#include "_MulleObjCWindowsFoundation-include.h"
+#ifdef __has_include
+# if __has_include( "_MulleObjCWindowsFoundation-include.h")
+#  include "_MulleObjCWindowsFoundation-include.h"
+# endif
+#endif
 
 
 #endif

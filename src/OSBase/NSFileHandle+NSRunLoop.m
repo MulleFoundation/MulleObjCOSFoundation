@@ -26,7 +26,7 @@ NSString  *NSFileHandleReadCompletionNotification = @"NSFileHandleReadCompletion
 
 @interface NSFileHandle( _NSFileDescriptor)  < _NSFileDescriptor>
 
-- (void) _notifyWithRunloop:(NSRunLoop *) runloop;
+- (void) _notifyWithRunLoop:(NSRunLoop *) runloop;
 
 @end
 
@@ -34,7 +34,7 @@ NSString  *NSFileHandleReadCompletionNotification = @"NSFileHandleReadCompletion
 @implementation NSFileHandle( _NSFileDescriptor)
 
 // the runloop notifies us, that there is stuff to read
-- (void) _notifyWithRunloop:(NSRunLoop *) runloop
+- (void) _notifyWithRunLoop:(NSRunLoop *) runloop
 {
    NSData         *data;
    NSDictionary   *info;

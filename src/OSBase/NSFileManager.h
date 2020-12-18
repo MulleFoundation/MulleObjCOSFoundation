@@ -58,6 +58,51 @@ extern NSString   *NSFileTypeUnknown;
 @end
 
 
+@protocol NSFileManagerDelegate
+
+@optional
+
+- (BOOL) fileManager:(NSFileManager *) fileManager
+shouldRemoveItemAtPath:(NSString *) path;
+
+- (BOOL) fileManager:(NSFileManager *) fileManager
+shouldMoveItemAtPath:(NSString *) srcPath
+              toPath:(NSString *) dstPath;
+
+- (BOOL) fileManager:(NSFileManager *)fileManager
+ shouldMoveItemAtPath:(NSString *) srcPath
+               toPath:(NSString *) dstPath;
+
+- (BOOL) fileManager:(NSFileManager *) fileManager
+shouldCopyItemAtPath:(NSString *) srcPath
+              toPath:(NSString *) dstPath;
+
+- (BOOL) fileManager:(NSFileManager *) fileManager
+shouldProceedAfterError:(NSError *) error
+  removingItemAtPath:(NSString *) path;
+
+- (BOOL) fileManager:(NSFileManager *) fileManager
+shouldProceedAfterError:(NSError *)error
+   copyingItemAtPath:(NSString *) srcPath
+              toPath:(NSString *) dstPath;
+
+- (BOOL) fileManager:(NSFileManager *) fileManager
+shouldLinkItemAtPath:(NSString *) srcPath
+              toPath:(NSString *) dstPath;
+
+- (BOOL) fileManager:(NSFileManager *) fileManager
+shouldProceedAfterError:(NSError *) error
+   linkingItemAtPath:(NSString *) srcPath
+              toPath:(NSString *) dstPath;
+
+- (BOOL)fileManager:(NSFileManager *)fileManager
+shouldProceedAfterError:(NSError *)error
+   movingItemAtPath:(NSString *)srcPath
+             toPath:(NSString *)dstPath;
+@end
+
+
+
 @interface NSFileManager : NSObject < MulleObjCSingleton>
 
 @property( assign) id   delegate;
@@ -144,41 +189,3 @@ extern NSString   *NSFileTypeUnknown;
 
 
 
-@protocol NSFileManagerDelegate
-
-@optional
-
-- (BOOL) fileManager:(NSFileManager *)fileManager
-shouldRemoveItemAtPath:(NSString *)path;
-
-- (BOOL) fileManager:(NSFileManager *)fileManager
-shouldProceedAfterError:(NSError *)error
-  removingItemAtPath:(NSString *)path;
-
-- (BOOL)fileManager:(NSFileManager *)fileManager
-shouldMoveItemAtPath:(NSString *)srcPath
-             toPath:(NSString *)dstPath;
-
-- (BOOL) fileManager:(NSFileManager *)fileManager
- shouldMoveItemAtPath:(NSString *)srcPath
-               toPath:(NSString *)dstPath;
-
-- (BOOL)fileManager:(NSFileManager *)fileManager
-shouldCopyItemAtPath:(NSString *)srcPath
-             toPath:(NSString *)dstPath;
-
-- (BOOL)fileManager:(NSFileManager *)fileManager
-shouldProceedAfterError:(NSError *)error
-  copyingItemAtPath:(NSString *)srcPath
-             toPath:(NSString *)dstPath;
-
-- (BOOL)fileManager:(NSFileManager *)fileManager
-shouldLinkItemAtPath:(NSString *)srcPath
-             toPath:(NSString *)dstPath;
-
-- (BOOL)fileManager:(NSFileManager *)fileManager
-shouldProceedAfterError:(NSError *)error
-  linkingItemAtPath:(NSString *)srcPath
-             toPath:(NSString *)dstPath;
-
-@end

@@ -8,8 +8,8 @@ if( MULLE_TRACE_INCLUDE)
 endif()
 
 #
-# Generated from sourcetree: MulleObjCPosixFoundation;no-link;
-# Disable with: `mulle-sourcetree mark MulleObjCPosixFoundation no-link`
+# Generated from sourcetree: MulleObjCPosixFoundation;no-build,no-delete,no-dependency,no-fs,no-link,no-update;
+# Disable with: `mulle-sourcetree mark MulleObjCPosixFoundation `
 #
 if( NOT MULLE_OBJC_POSIX_FOUNDATION_HEADER)
    find_file( MULLE_OBJC_POSIX_FOUNDATION_HEADER NAMES MulleObjCPosixFoundation/MulleObjCPosixFoundation.h MulleObjCPosixFoundation/MulleObjCPosixFoundation.h)

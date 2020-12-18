@@ -13,7 +13,7 @@
 
 @interface NSFileHandle( NSRunLoop)
 
-- (void) _notifyWithRunloop:(NSRunLoop *) runloop;
+- (void) _notifyWithRunLoop:(NSRunLoop *) runloop;
 
 @end
 

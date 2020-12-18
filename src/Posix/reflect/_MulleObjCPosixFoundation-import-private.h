@@ -12,8 +12,12 @@
 #ifndef _MulleObjCPosixFoundation_import_private_h__
 #define _MulleObjCPosixFoundation_import_private_h__
 
-#include "_MulleObjCPosixFoundation-include-private.h"
-
 /* no headers */
+
+#ifdef __has_include
+# if __has_include( "_MulleObjCPosixFoundation-include.h")
+#  include "_MulleObjCPosixFoundation-include-private.h"
+# endif
+#endif
 
 #endif
