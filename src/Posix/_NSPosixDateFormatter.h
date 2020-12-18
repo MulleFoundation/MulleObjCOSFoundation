@@ -12,6 +12,7 @@
 // this formatter uses xlocale and strftime, strptime
 // which is pretty much the 10.0 way
 // need to add natural language support later on
+// For the formatString contents look at the strftime man page.
 //
 @interface _NSPosixDateFormatter : NSDateFormatter
 

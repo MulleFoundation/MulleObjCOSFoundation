@@ -714,37 +714,30 @@ static inline void   NSRaiseException( NSString *name,
 }
 
 
-- (BOOL)_errorHandler:handler src:(NSString *)src dest:(NSString *)dest operation:(NSString *)op {
-    if ([handler respondsToSelector:@selector(fileManager:shouldProceedAfterError:)]) {
-        NSDictionary *errorInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-            src, @"Path",
-            [NSString stringWithFormat:@"%@: %s", op, strerror(errno)], @"Error",
-            dest, @"ToPath",
-            nil];
 
-        if ([handler fileManager:self shouldProceedAfterError:errorInfo])
-            return YES;
-    }
-
-    return NO;
-}
-
-
--(BOOL)movePath:(NSString *)src toPath:(NSString *)dest handler:handler {
-    NSError *error = nil;
+- (BOOL) movePath:(NSString *) src
+           toPath:(NSString *) dest
+          handler:(id) handler
+{
+   NSError *error = nil;
 
    MulleObjCSetPosixErrorDomain();
 
-    if ([handler respondsToSelector:@selector(fileManager:willProcessPath:)])
-        [handler fileManager:self willProcessPath:src];
+   if ([handler respondsToSelector:@selector(fileManager:willProcessPath:)])
+     [handler fileManager:self willProcessPath:src];
 
-    if ([self moveItemAtPath:src toPath:dest error:&error] == NO && handler != nil) {
-        [self _errorHandler:handler src:src dest:dest operation:[error description]];
-        return NO;
-    }
-
-    return YES;
+   if( [self moveItemAtPath:src toPath:dest error:&error] == NO)
+   {
+      if( [handler respondsToSelector:@selector(fileManager:shouldProceedAfterError:movingItemAtPath:toPath:)])
+         return( [handler fileManager:self
+              shouldProceedAfterError:error
+                     movingItemAtPath:src
+                               toPath:dest]);
+      return( NO);
+   }
+   return( YES);
 }
+
 
 - (BOOL)moveItemAtPath:(NSString *)srcPath toPath:(NSString *)dstPath error:(NSError **)error
 {
@@ -776,15 +769,25 @@ static inline void   NSRaiseException( NSString *name,
     return YES;
 }
 
--(BOOL)copyPath:(NSString *)src toPath:(NSString *)dest handler:handler {
-    NSError *error = nil;
-    if ([self copyItemAtPath:src toPath:dest error:&error] == NO && handler != nil) {
-        [self _errorHandler:handler src:src dest:dest operation:[error description]];
-        return NO;
-    }
 
-    return YES;
+- (BOOL) copyPath:(NSString *)src
+           toPath:(NSString *)dest
+          handler:(id) handler
+{
+   NSError *error = nil;
+
+   if ([self copyItemAtPath:src toPath:dest error:&error] == NO)
+   {
+      if( [handler respondsToSelector:@selector( fileManager:shouldProceedAfterError:copyingItemAtPath:toPath:)])
+         return( [handler fileManager:self
+              shouldProceedAfterError:error
+                    copyingItemAtPath:src
+                               toPath:dest]);
+      return( NO);
+   }
+   return( YES);
 }
+
 
 -(BOOL)copyItemAtPath:(NSString *)fromPath toPath:(NSString *)toPath error:(NSError **)error
 {

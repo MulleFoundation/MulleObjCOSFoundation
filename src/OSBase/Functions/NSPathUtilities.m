@@ -163,14 +163,16 @@ MULLE_OBJC_DEPENDS_ON_LIBRARY( MulleObjCStandardFoundation);
 
 
 + (NSUInteger) _getOwnedObjects:(id *) objects
-                         length:(NSUInteger) length
+                          count:(NSUInteger) count
 {
-   return( MulleObjCCopyObjects( objects, length, 5,
-                                                NSPathCache.NSFullUserName,
-                                                NSPathCache.NSHomeDirectory,
-                                                NSPathCache.NSOpenStepRootDirectory,
-                                                NSPathCache.NSTemporaryDirectory,
-                                                NSPathCache.NSUserName));
+   return( MulleObjCCopyObjects( objects,
+                                 count,
+                                 5,
+                                 NSPathCache.NSFullUserName,
+                                 NSPathCache.NSHomeDirectory,
+                                 NSPathCache.NSOpenStepRootDirectory,
+                                 NSPathCache.NSTemporaryDirectory,
+                                 NSPathCache.NSUserName));
 }
 
 

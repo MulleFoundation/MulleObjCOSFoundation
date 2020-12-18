@@ -23,8 +23,7 @@
 #include <unistd.h>
 
 
-# pragma mark -
-# pragma mark Allocations
+# pragma mark - Allocations
 
 static NSUInteger   _ns_page_size;
 static NSUInteger   _ns_log_page_size;

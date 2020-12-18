@@ -97,9 +97,9 @@ static inline void   SelfUnlock( void)
 
 // future "object" trace support
 + (NSUInteger) _getOwnedObjects:(id *) objects
-                         length:(NSUInteger) length
+                          count:(NSUInteger) count
 {
-   return( MulleObjCCopyObjects( objects, length, 1, Self._registeredBundleInfo));
+   return( MulleObjCCopyObjects( objects, count, 1, Self._registeredBundleInfo));
 }
 
 

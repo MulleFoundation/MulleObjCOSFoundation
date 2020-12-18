@@ -12,8 +12,12 @@
 #ifndef _MulleObjCWindowsFoundation_import_private_h__
 #define _MulleObjCWindowsFoundation_import_private_h__
 
-#include "_MulleObjCWindowsFoundation-include-private.h"
-
 /* no headers */
+
+#ifdef __has_include
+# if __has_include( "_MulleObjCWindowsFoundation-include.h")
+#  include "_MulleObjCWindowsFoundation-include-private.h"
+# endif
+#endif
 
 #endif

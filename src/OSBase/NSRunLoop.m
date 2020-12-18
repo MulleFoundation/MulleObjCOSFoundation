@@ -270,7 +270,7 @@ static NSString  *
    if( ! n)
       return( @"");
 
-   s        = [NSMutableString object];
+   s        = [NSMutableString string];
    sep      = nil;
    p        = array->items;
    sentinel = &p[ array->n];
@@ -1074,7 +1074,7 @@ static NSRunLoop   *runLoopForThread( NSThread *thread)
    struct MulleRunLoopMode   *mode;
    NSMapEnumerator           rover;
 
-   s = [NSMutableString object];
+   s = [NSMutableString string];
    // do this unlocked for debugging only
    {
       [s appendString:@"modes =\n{\n"];

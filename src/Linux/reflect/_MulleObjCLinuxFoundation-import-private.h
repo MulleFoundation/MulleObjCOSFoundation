@@ -12,8 +12,12 @@
 #ifndef _MulleObjCLinuxFoundation_import_private_h__
 #define _MulleObjCLinuxFoundation_import_private_h__
 
-#include "_MulleObjCLinuxFoundation-include-private.h"
-
 /* no headers */
+
+#ifdef __has_include
+# if __has_include( "_MulleObjCLinuxFoundation-include.h")
+#  include "_MulleObjCLinuxFoundation-include-private.h"
+# endif
+#endif
 
 #endif

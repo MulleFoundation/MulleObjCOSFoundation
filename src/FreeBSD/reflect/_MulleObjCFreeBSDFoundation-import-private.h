@@ -12,8 +12,12 @@
 #ifndef _MulleObjCFreeBSDFoundation_import_private_h__
 #define _MulleObjCFreeBSDFoundation_import_private_h__
 
-#include "_MulleObjCFreeBSDFoundation-include-private.h"
-
 /* no headers */
+
+#ifdef __has_include
+# if __has_include( "_MulleObjCFreeBSDFoundation-include.h")
+#  include "_MulleObjCFreeBSDFoundation-include-private.h"
+# endif
+#endif
 
 #endif

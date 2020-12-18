@@ -12,8 +12,12 @@
 #ifndef _MulleObjCBSDFoundation_import_private_h__
 #define _MulleObjCBSDFoundation_import_private_h__
 
-#include "_MulleObjCBSDFoundation-include-private.h"
-
 /* no headers */
+
+#ifdef __has_include
+# if __has_include( "_MulleObjCBSDFoundation-include.h")
+#  include "_MulleObjCBSDFoundation-include-private.h"
+# endif
+#endif
 
 #endif

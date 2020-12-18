@@ -13,15 +13,24 @@
 #define _MulleObjCDarwinFoundation_import_h__
 
 // How to tweak the following MulleObjCPosixFoundation #import
-//    remove:          `mulle-sourcetree mark MulleObjCPosixFoundation no-header`
-//    rename:          `mulle-sourcetree mark MulleObjCPosixFoundation set include whatever.h`
-//    toggle #import:  `mulle-sourcetree mark MulleObjCPosixFoundation [no-]import`
-//    toggle public:   `mulle-sourcetree mark MulleObjCPosixFoundation [no-]public`
-//    toggle optional: `mulle-sourcetree mark MulleObjCPosixFoundation [no-]require`
-//    remove for os:   `mulle-sourcetree mark MulleObjCPosixFoundation no-os-<osname>`
-# import <MulleObjCPosixFoundation/MulleObjCPosixFoundation.h>   // MulleObjCPosixFoundation
+//    remove:             `mulle-sourcetree mark MulleObjCPosixFoundation no-header`
+//    rename:             `mulle-sde dependency|library set MulleObjCPosixFoundation include whatever.h`
+//    toggle #import:     `mulle-sourcetree mark MulleObjCPosixFoundation [no-]import`
+//    toggle localheader: `mulle-sourcetree mark MulleObjCPosixFoundation [no-]localheader`
+//    toggle public:      `mulle-sourcetree mark MulleObjCPosixFoundation [no-]public`
+//    toggle optional:    `mulle-sourcetree mark MulleObjCPosixFoundation [no-]require`
+//    remove for os:      `mulle-sourcetree mark MulleObjCPosixFoundation no-os-<osname>`
+# if defined( __has_include) && __has_include("MulleObjCPosixFoundation.h")
+#   import "MulleObjCPosixFoundation.h"   // MulleObjCPosixFoundation
+# else
+#   import <MulleObjCPosixFoundation/MulleObjCPosixFoundation.h>   // MulleObjCPosixFoundation
+# endif
 
-#include "_MulleObjCDarwinFoundation-include.h"
+#ifdef __has_include
+# if __has_include( "_MulleObjCDarwinFoundation-include.h")
+#  include "_MulleObjCDarwinFoundation-include.h"
+# endif
+#endif
 
 
 #endif

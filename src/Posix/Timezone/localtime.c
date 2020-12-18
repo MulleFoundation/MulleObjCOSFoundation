@@ -2310,6 +2310,7 @@ char  *_mulle_get_zoneinfo_path()
 
 static void   _mulle__set_zoneinfo_path( char *path)
 {
+#pragma clang diagnostic ignored "-Wstring-compare"
    if( _TZDIR != TZDIR)
       free( _TZDIR);
    _TZDIR = strdup( path);

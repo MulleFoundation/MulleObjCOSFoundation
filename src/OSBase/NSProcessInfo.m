@@ -21,7 +21,6 @@
 // other libraries of MulleObjCPosixFoundation
 
 // std-c and dependencies
-#include <unistd.h>
 
 
 @implementation NSProcessInfo

@@ -133,7 +133,8 @@
    NSUInteger  other_len;
 
    len       = [self length];
-   hasSuffix = [self hasSuffix:NSFilePathComponentSeparator];
+   if( ! len)  // "" + "b" -> "b"
+      return( other);
 
    other_len      = [other length];
    otherHasSuffix = [other hasSuffix:NSFilePathComponentSeparator];
@@ -143,13 +144,12 @@
       other = [other substringWithRange:NSMakeRange( 0, other_len)];
    }
 
-   otherHasPrefix = [other hasPrefix:NSFilePathComponentSeparator];
-
+   hasSuffix      = [self hasSuffix:NSFilePathComponentSeparator];
    if( ! hasSuffix && ! other_len)
       return( self);
 
-   if( ! len)  // "" + "b" -> "b"
-      return( other);
+   otherHasPrefix = [other hasPrefix:NSFilePathComponentSeparator];
+
 
    //    S  P
    //  ---+----
@@ -233,7 +233,7 @@
 
    manager    = [NSFileManager defaultManager];
    components = [path componentsSeparatedByString:NSFilePathComponentSeparator];
-   s          = [NSMutableString object];
+   s          = [NSMutableString string];
    for( component in components)
    {
       len = [component length];

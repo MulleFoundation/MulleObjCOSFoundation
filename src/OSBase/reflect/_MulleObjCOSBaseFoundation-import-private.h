@@ -12,8 +12,12 @@
 #ifndef _MulleObjCOSBaseFoundation_import_private_h__
 #define _MulleObjCOSBaseFoundation_import_private_h__
 
-#include "_MulleObjCOSBaseFoundation-include-private.h"
-
 /* no headers */
+
+#ifdef __has_include
+# if __has_include( "_MulleObjCOSBaseFoundation-include.h")
+#  include "_MulleObjCOSBaseFoundation-include-private.h"
+# endif
+#endif
 
 #endif

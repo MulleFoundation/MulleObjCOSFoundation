@@ -78,13 +78,12 @@
 - (id) objectForInfoDictionaryKey:(NSString *) key;
 - (NSDictionary *) infoDictionary;
 
-- (NSString *) builtInPlugInsPath;
 
 @end
 
 
 // stuff we need to implement
-@interface NSBundle ( Missing)
+@interface NSBundle ( Future)
 
 + (NSString *) pathForResource:(NSString *) name
                         ofType:(NSString *) extension
@@ -99,6 +98,7 @@
 - (NSString *) privateFrameworksPath;
 - (NSString *) sharedFrameworksPath;
 - (NSString *) sharedSupportPath;
+- (NSString *) builtInPlugInsPath;
 
 @end
 

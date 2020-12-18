@@ -240,7 +240,7 @@ static NSString   *resourcesPath( NSBundle *self)
    unsigned long                    i;
    unsigned long                    j;
 
-   data = [NSMutableData object];
+   data = [NSMutableData data];
 
    fileManager = [NSFileManager defaultManager];
    for( i = 0; s = (char *) _dyld_get_image_name( i); i++)
