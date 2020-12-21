@@ -1,3 +1,9 @@
+## 0.18.0
+
+* improved NSFileManager a bit
+* fix NSFileHandle closing
+
+
 ### 0.17.1
 
 * new mulle-sde project structure
