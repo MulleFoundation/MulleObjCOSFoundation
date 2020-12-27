@@ -16,44 +16,29 @@
 //    remove:             `mulle-sourcetree mark src/OSBase no-header`
 //    rename:             `mulle-sde dependency|library set src/OSBase include whatever.h`
 //    toggle #import:     `mulle-sourcetree mark src/OSBase [no-]import`
-//    toggle localheader: `mulle-sourcetree mark src/OSBase [no-]localheader`
 //    toggle public:      `mulle-sourcetree mark src/OSBase [no-]public`
 //    toggle optional:    `mulle-sourcetree mark src/OSBase [no-]require`
 //    remove for os:      `mulle-sourcetree mark src/OSBase no-os-<osname>`
-# if defined( __has_include) && __has_include("MulleObjCOSBaseFoundation.h")
-#   import "MulleObjCOSBaseFoundation.h"   // src/OSBase
-# else
-#   import <MulleObjCOSBaseFoundation/MulleObjCOSBaseFoundation.h>   // src/OSBase
-# endif
+# import <MulleObjCOSBaseFoundation/MulleObjCOSBaseFoundation.h>   // src/OSBase
 
 // How to tweak the following src/Posix #import
 //    remove:             `mulle-sourcetree mark src/Posix no-header`
 //    rename:             `mulle-sde dependency|library set src/Posix include whatever.h`
 //    toggle #import:     `mulle-sourcetree mark src/Posix [no-]import`
-//    toggle localheader: `mulle-sourcetree mark src/Posix [no-]localheader`
 //    toggle public:      `mulle-sourcetree mark src/Posix [no-]public`
 //    toggle optional:    `mulle-sourcetree mark src/Posix [no-]require`
 //    remove for os:      `mulle-sourcetree mark src/Posix no-os-<osname>`
-# if defined( __has_include) && __has_include("MulleObjCPosixFoundation.h")
-#   import "MulleObjCPosixFoundation.h"   // src/Posix
-# else
-#   import <MulleObjCPosixFoundation/MulleObjCPosixFoundation.h>   // src/Posix
-# endif
+# import <MulleObjCPosixFoundation/MulleObjCPosixFoundation.h>   // src/Posix
 
 // How to tweak the following src/Windows #import
 //    remove:             `mulle-sourcetree mark src/Windows no-header`
 //    rename:             `mulle-sde dependency|library set src/Windows include whatever.h`
 //    toggle #import:     `mulle-sourcetree mark src/Windows [no-]import`
-//    toggle localheader: `mulle-sourcetree mark src/Windows [no-]localheader`
 //    toggle public:      `mulle-sourcetree mark src/Windows [no-]public`
 //    toggle optional:    `mulle-sourcetree mark src/Windows [no-]require`
 //    remove for os:      `mulle-sourcetree mark src/Windows no-os-<osname>`
 # if defined( _WIN32) || defined( __windows__)
-#  if defined( __has_include) && __has_include("Windows.h")
-#     import "Windows.h"   // src/Windows
-#  else
-#     import <Windows/Windows.h>   // src/Windows
-#  endif
+#  import <Windows/Windows.h>   // src/Windows
 # endif
 
 #ifdef __has_include

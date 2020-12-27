@@ -16,14 +16,9 @@
 //    remove:             `mulle-sourcetree mark mulle-mmap no-header`
 //    rename:             `mulle-sde dependency|library set mulle-mmap include whatever.h`
 //    toggle #import:     `mulle-sourcetree mark mulle-mmap [no-]import`
-//    toggle localheader: `mulle-sourcetree mark mulle-mmap [no-]localheader`
 //    toggle public:      `mulle-sourcetree mark mulle-mmap [no-]public`
 //    toggle optional:    `mulle-sourcetree mark mulle-mmap [no-]require`
 //    remove for os:      `mulle-sourcetree mark mulle-mmap no-os-<osname>`
-# if defined( __has_include) && __has_include("mulle-mmap.h")
-#   include "mulle-mmap.h"   // mulle-mmap
-# else
-#   include <mulle-mmap/mulle-mmap.h>   // mulle-mmap
-# endif
+# include <mulle-mmap/mulle-mmap.h>   // mulle-mmap
 
 #endif
