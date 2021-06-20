@@ -21,7 +21,7 @@ extern NSString  *NSFileHandleOperationException;
 
 // this class contains the abstract code for a NSFileHandle
 //
-@interface NSFileHandle : NSObject
+@interface NSFileHandle : NSObject <MulleObjCInputStream, MulleObjCOutputStream>
 {
    void  *_fd;
    int   (*_closer)( void *);

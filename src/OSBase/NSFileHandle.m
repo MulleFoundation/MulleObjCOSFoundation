@@ -17,7 +17,8 @@
 
 
 // https://developer.apple.com/documentation/foundation/nsfilehandleoperationexception
-NSString  *NSFileHandleOperationException = @"NSFileHandleOperationException";
+NSString *NSFileHandleOperationException                    = @"NSFileHandleOperationException";
+
 
 @implementation NSNullDeviceFileHandle
 

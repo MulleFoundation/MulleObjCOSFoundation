@@ -31,6 +31,9 @@
           maxLength:(NSUInteger) maxLength;
 - (void) getCString:(char *) bytes
           maxLength:(NSUInteger) maxLength
+           encoding:(NSStringEncoding) encoding;
+- (void) getCString:(char *) bytes
+          maxLength:(NSUInteger) maxLength
               range:(NSRange) aRange
      remainingRange:(NSRangePointer) leftoverRange;
 

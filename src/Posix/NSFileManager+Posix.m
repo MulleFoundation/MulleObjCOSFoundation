@@ -329,7 +329,10 @@ static unsigned int    permissons_for_current_uid_gid( struct stat *c_info)
    if( ! isDir)
       isDir = &dummy;
    if( stat_at_path( path, &c_info))
-      return( *isDir = NO);
+   {
+      *isDir = NO;
+      return( NO);
+   }
 
    *isDir = c_info.st_mode & S_IFDIR ? YES : NO;
    return( YES);
@@ -739,7 +742,9 @@ static inline void   NSRaiseException( NSString *name,
 }
 
 
-- (BOOL)moveItemAtPath:(NSString *)srcPath toPath:(NSString *)dstPath error:(NSError **)error
+- (BOOL) moveItemAtPath:(NSString *) srcPath
+                 toPath:(NSString *) dstPath
+                  error:(NSError **) error
 {
 
     /*
@@ -789,7 +794,9 @@ static inline void   NSRaiseException( NSString *name,
 }
 
 
--(BOOL)copyItemAtPath:(NSString *)fromPath toPath:(NSString *)toPath error:(NSError **)error
+-(BOOL)copyItemAtPath:(NSString *)fromPath
+               toPath:(NSString *)toPath
+                error:(NSError **)error
 {
     BOOL isDirectory;
 

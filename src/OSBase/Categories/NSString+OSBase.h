@@ -38,6 +38,11 @@
 
 + (instancetype) stringWithContentsOfFile:(NSString *) path;
 
+- (NSUInteger) completePathIntoString:(NSString **) outputName
+                        caseSensitive:(BOOL) flag
+                     matchesIntoArray:(NSArray **) outputArray
+                          filterTypes:(NSArray *) filterTypes;
+
 #pragma mark - mark mulle additions
 
 //

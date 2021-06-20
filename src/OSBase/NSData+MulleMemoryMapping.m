@@ -65,7 +65,7 @@
 }
 
 
-- (struct mulle_data) mulleData
+- (struct mulle_data) mulleCData
 {
    struct mulle_data   data;
 

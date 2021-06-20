@@ -69,7 +69,7 @@
              usedLength:NULL
                encoding:[self _cStringEncoding]
                 options:0
-                  range:NSMakeRange( 0, [self length])
+                  range:NSMakeRange( 0, -1)
          remainingRange:NULL])
    {
       [NSException raise:@"fail"
@@ -89,7 +89,7 @@
              usedLength:&usedLength
                encoding:[self _cStringEncoding]
                 options:0
-                  range:NSMakeRange( 0, [self length])
+                  range:NSMakeRange( 0, -1)
          remainingRange:NULL])
    {
       [NSException raise:@"fail"
@@ -121,4 +121,26 @@
    bytes[ usedLength] = 0;
 }
 
+
+- (void) getCString:(char *) bytes
+          maxLength:(NSUInteger) maxLength
+           encoding:(NSStringEncoding) encoding
+{
+   NSUInteger   usedLength;
+
+   NSParameterAssert( maxLength);
+
+   if( ! [self getBytes:bytes
+              maxLength:maxLength - 1
+             usedLength:&usedLength
+               encoding:encoding
+                options:0
+                  range:NSMakeRange( 0, -1)
+         remainingRange:NULL])
+   {
+      [NSException raise:@"fail"
+                  format:@"fail"];
+   }
+   bytes[ usedLength] = 0;  
+}          
 @end

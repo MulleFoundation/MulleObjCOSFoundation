@@ -13,10 +13,18 @@
 
 @interface NSFileHandle( NSRunLoop)
 
-- (void) _notifyWithRunLoop:(NSRunLoop *) runloop;
+- (void) readInBackgroundAndNotify;
+- (void) readInBackgroundAndNotifyForModes:(NSArray *) modes;
 
 @end
 
+// unused but defined to get thinks to link
+extern NSString  *NSFileHandleConnectionAcceptedNotification;
+extern NSString  *NSFileHandleDataAvailableNotification;
+extern NSString  *NSFileHandleReadToEndOfFileCompletionNotification;
+
+
+extern NSString  *NSFileHandleReadCompletionNotification;
 
 extern NSString  *NSFileHandleNotificationDataItem;
-extern NSString  *NSFileHandleReadCompletionNotification;
+extern NSString  *NSFileHandleNotificationFileHandleItem;

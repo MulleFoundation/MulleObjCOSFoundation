@@ -16,11 +16,6 @@
                                                  locale:(id) locale
                                   referenceCalendarDate:(NSCalendarDate *) today;
 
-// naming for compatibility
-+ (instancetype) dateWithNaturalLanguageString:(NSString *) string
-                                        locale:(id) locale;
-+ (instancetype) dateWithNaturalLanguageString:(NSString *) string;
-
 @end
 
 

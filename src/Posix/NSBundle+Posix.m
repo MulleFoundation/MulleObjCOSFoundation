@@ -75,7 +75,7 @@
 {
    NSDictionary                     *bundleInfo;
    NSBundle                         *bundle;
-   NSUInteger                       classAddress;
+   void                             *classAddress;
    struct _MulleObjCSharedLibrary   libInfo;
    NSString                         *path;
    NSString                         *bundlePath;
@@ -91,7 +91,7 @@
    if( ! classAddress)
       return( [NSBundle mainBundle]);
 
-   if( dladdr( (void *) classAddress, &info))
+   if( dladdr( classAddress, &info))
    {
       path = [[NSFileManager defaultManager] stringWithFileSystemRepresentation:(char *) info.dli_fname
                                                                          length:strlen( info.dli_fname)];
@@ -115,8 +115,8 @@
    // (Not caring right now)
    //
    libInfo.path  = nil;
-   libInfo.start = classAddress;
-   libInfo.end   = classAddress;
+   libInfo.start = (NSUInteger) classAddress;
+   libInfo.end   = (NSUInteger) classAddress;
 
    path          = [NSString stringWithFormat:@"/pseudoproc/memory/%llx", classAddress];
    bundle        = [[[self alloc] _mulleInitWithPath:path

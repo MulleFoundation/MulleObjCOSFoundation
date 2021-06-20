@@ -675,7 +675,7 @@ void     (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path) 
 {
    NSDictionary                     *bundleInfo;
    NSBundle                         *bundle;
-   NSUInteger                       classAddress;
+   void                             *classAddress;
    struct _MulleObjCSharedLibrary   libInfo;
    NSString                         *path;
    NSString                         *bundlePath;
@@ -700,7 +700,7 @@ void     (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path) 
    for( bundlePath in bundleInfo)
    {
       bundle = [bundleInfo objectForKey:bundlePath];
-      if( [bundle mulleContainsAddress:classAddress])
+      if( [bundle mulleContainsAddress:(NSUInteger) classAddress])
          return( bundle);
    }
 
@@ -887,6 +887,31 @@ NSString   *MulleObjCBundleLocalizedStringFromTable( NSBundle *bundle,
 {
    // darwin will have CFBundleIdentifier
    return( [[self infoDictionary] objectForKey:@"NSBundleIdentifier"]);
+}
+
+
+- (NSString *) developmentLocalization
+{
+   // darwin will have CFBundleDevelopmentRegion
+   return( [[self infoDictionary] objectForKey:@"NSBundleDevelopmentRegion"]);
+}
+
+
+- (NSArray *) localizations
+{
+   return( nil);
+}
+
+
+- (NSArray *) preferredLocalizations
+{
+   return( nil);
+}
+
+
+- (NSDictionary *) localizedInfoDictionary
+{
+   return( [self infoDictionary]);
 }
 
 @end

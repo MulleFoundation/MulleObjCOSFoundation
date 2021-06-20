@@ -78,6 +78,13 @@
 - (id) objectForInfoDictionaryKey:(NSString *) key;
 - (NSDictionary *) infoDictionary;
 
+- (NSString *) developmentLocalization;
+
+// these aren't doing anything ATM, they are just here because MulleEOF
+// wants them
+- (NSArray *) localizations;
+- (NSArray *) preferredLocalizations;
+- (NSDictionary *) localizedInfoDictionary;
 
 @end
 
