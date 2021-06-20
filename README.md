@@ -3,16 +3,46 @@
 #### 💻 Platform-dependent classes and categories like NSTask, NSPipe
 
 These classes build on **MulleObjCStandardFoundation** and provide OS-specific
-functionality. It also adds categories on NSString to deal with the native
-C String encoding
+functionality. This library also adds categories on NSString to deal with
+the native C String encoding of the platform.
 
 It builds differently on each platform.
 
-Build Status | Release Version
--------------|-----------------------------------
-[![Build Status](https://travis-ci.org/MulleFoundation/MulleObjCOSFoundation.svg?branch=release)](https://travis-ci.org/MulleFoundation/MulleObjCOSFoundation) | ![Mulle kybernetiK tag](https://img.shields.io/github/tag/MulleFoundation/MulleObjCOSFoundation.svg) [![Build Status](https://travis-ci.org/MulleFoundation/MulleObjCOSFoundation.svg?branch=release)](https://travis-ci.org/MulleFoundation/MulleObjCOSFoundation)
+> Note: a few tests may fail because of missing implementations.
 
-> Note: a few tests fail because of missing implementations.
+
+
+#### Classes
+
+Class                      | Description
+---------------------------|----------------------------------------
+`NSBundle`                 | Plugins and dynamic loading
+`NSDirectoryEnumerator`    | List folder contents of the filesystem
+`NSFileHandle`             | Wrapper for file descriptors (open)
+`NSFilemanager`            | Filesystem management, like file deletion
+`NSPipe`                   | Support for inter-process pipes
+`NSProcessInfo`            | Access to the environment and arguments
+`NSRunLoop`                | A wrapper around `select()` usually
+`NSTask`                   | Does vfork() and execvs() on Unix
+`NSTimer`                  | NSRunLoop bases timers
+`NSUserDefaults`           | Access to the program settings (registry)
+
+### You are here
+
+```
+   .-------------------------------------------------------------------.
+   | MulleFoundation                                                   |
+   '-------------------------------------------------------------------'
+   .----------------------------.
+   | Calendar                   |
+   '----------------------------'
+   .============================.
+   | OS                         |
+   '============================'
+```
+
+![Overview](overview.svg)
+
 
 ## Install
 
@@ -24,6 +54,7 @@ installation instructions.
 
 Parts of this library:
 
+```
 Copyright (c) 2006-2007 Christopher J. W. Lloyd
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -41,7 +72,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-
+```
 
 
 ## Authors

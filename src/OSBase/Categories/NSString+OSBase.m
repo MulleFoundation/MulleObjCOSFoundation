@@ -20,6 +20,8 @@
 #import "NSString+CString.h"
 
 // std-c and dependencies
+#import "import-private.h"
+
 
 #pragma clang diagnostic ignored "-Wparentheses"
 
@@ -126,51 +128,8 @@
 //
 - (NSString *) stringByAppendingPathComponent:(NSString *) other
 {
-   BOOL        hasSuffix;
-   BOOL        otherHasPrefix;
-   BOOL        otherHasSuffix;
-   NSUInteger  len;
-   NSUInteger  other_len;
-
-   len       = [self length];
-   if( ! len)  // "" + "b" -> "b"
-      return( other);
-
-   other_len      = [other length];
-   otherHasSuffix = [other hasSuffix:NSFilePathComponentSeparator];
-   if( otherHasSuffix)
-   {
-      --other_len;
-      other = [other substringWithRange:NSMakeRange( 0, other_len)];
-   }
-
-   hasSuffix      = [self hasSuffix:NSFilePathComponentSeparator];
-   if( ! hasSuffix && ! other_len)
-      return( self);
-
-   otherHasPrefix = [other hasPrefix:NSFilePathComponentSeparator];
-
-
-   //    S  P
-   //  ---+----
-   //    0  0     add '/'
-   //    0  1     just concat
-   //    1  0     just concat
-   //    1  1     remove '/'
-
-   if( ! (otherHasPrefix ^ hasSuffix))
-   {
-      if( hasSuffix) // case 1 1
-      {
-         if( other_len == 1)
-            return( [self substringWithRange:NSMakeRange( 0, len - 1)]);
-         other = [other substringFromIndex:1];
-      }
-      else          // case 0 0
-         other = [NSFilePathComponentSeparator stringByAppendingString:other];
-   }
-
-   return( [self stringByAppendingString:other]);
+   return( [self mulleStringByAppendingComponent:other
+                               separatedByString:NSFilePathComponentSeparator]);
 }
 
 
@@ -400,7 +359,7 @@ static NSStringEncoding  encodingForBOMOfData( NSData *p)
    mulle_utf32_t       c32;
    uint8_t             *bytes;
 
-   data = [p mulleData];
+   data = [p mulleCData];
    if( data.length >= 2)
    {
       bytes = data.bytes;
@@ -440,7 +399,7 @@ static NSStringEncoding  encodingForBOMOfData( NSData *p)
 
 - (instancetype) initWithContentsOfFile:(NSString *) path
 {
-   NSData            *data;
+   NSData             *data;
    NSStringEncoding   encoding;
 
    data = [NSData dataWithContentsOfFile:path];
@@ -547,5 +506,105 @@ static NSStringEncoding  encodingForBOMOfData( NSData *p)
                        error:error]);
 }
 
+
+// complete like bash here, if the file exists and is a directory
+// complete with '/', if that isn't part of the name. If it is
+// use it as directory.
+// Otherwise if it it doesn't exist. Use lastPath component as prefix
+// and enumerate dir
+//
+- (NSUInteger) completePathIntoString:(NSString **) outputName
+                        caseSensitive:(BOOL) flag
+                     matchesIntoArray:(NSArray **) outputArray
+                          filterTypes:(NSArray *) filterTypes
+{
+   NSFileManager           *fileManager;
+   NSDirectoryEnumerator   *rover;
+   NSString                *prefix;
+   NSString                *directory;
+   NSString                *fileName;
+   NSString                *matchName;
+   NSString                *extension;
+   NSString                *maxName;
+   id                      set;
+   NSUInteger              n;
+   NSUInteger              length;
+   NSUInteger              maxLength;
+   BOOL                    isDirectory;
+   NSMutableArray          *array;
+
+
+   fileManager = [NSFileManager defaultManager];
+   if( [fileManager fileExistsAtPath:self
+                         isDirectory:&isDirectory])
+   {
+      prefix    = @"";
+      directory = nil;
+      if( isDirectory)
+      {
+         if( ! [self hasSuffix:NSFilePathComponentSeparator])
+         {
+            if( outputName)
+               *outputName = [self stringByAppendingString:NSFilePathComponentSeparator];
+            if( outputArray)
+               *outputArray = nil;
+            return( 1);
+         }
+         directory = self;
+      }
+   }
+   else
+   {
+      prefix    = [self lastPathComponent];
+      directory = [self stringByDeletingLastPathComponent];
+   }
+
+   if( ! flag)
+      prefix = [prefix lowercaseString];
+
+   // use a set, if we have very many file extensions
+   set = filterTypes;
+   if( [set count] > 16)
+      set = [NSSet setWithArray:filterTypes];
+
+   maxName   = nil;
+   maxLength = 0;
+   n         = 0;
+   array     = nil;
+
+   rover = [fileManager enumeratorAtPath:directory];
+   while( fileName = [rover nextObject])
+   {
+      if( set)
+      {
+         extension = [fileName pathExtension];
+         if( ! [set containsObject:extension])
+            continue;
+      }
+
+      // for matching conver to lowercase if needed
+      matchName = flag ? fileName : [fileName lowercaseString];
+      if( ! [matchName hasPrefix:prefix])
+         continue;
+
+      if( outputArray && ! array)
+         array = [NSMutableArray array];
+      [array addObject:fileName];
+      ++n;
+
+      length = [fileName length];
+      if( length > maxLength)
+      {
+         maxName   = fileName;
+         maxLength = length;
+      }
+   }
+
+   if( outputName)
+      *outputName = maxName;
+   if( outputArray)
+      *outputArray = array;
+   return( n);
+}
 
 @end

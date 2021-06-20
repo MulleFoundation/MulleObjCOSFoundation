@@ -50,8 +50,8 @@ enum _MulleObjCIsDirectoryState
 @interface NSDirectoryEnumerator( Future)
 
 - (instancetype) initWithFileManager:(NSFileManager *) manager
-                  rootPath:(NSString *) root
-             inheritedPath:(NSString *) inherited;
+                            rootPath:(NSString *) root
+                       inheritedPath:(NSString *) inherited;
 - (NSString *) _nextEntry:(enum _MulleObjCIsDirectoryState *) is_dir;
 - (void) _close;
 

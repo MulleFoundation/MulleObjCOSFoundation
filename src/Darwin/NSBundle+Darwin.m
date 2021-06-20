@@ -398,6 +398,19 @@ static BOOL  hasFrameworkExtension( NSString *s)
 }
 
 
+- (NSString *) developmentLocalization
+{
+   id              value;
+   NSDictionary   *info;
+
+   info  = [self infoDictionary];
+   value = [info objectForKey:@"CFBundleDevelopmentRegion"];
+   if( value)
+      return( value);
+   return( [info objectForKey:@"NSBundleDevelopmentRegion"]);
+}
+
+
 
 - (BOOL) preflightAndReturnError:(NSError **) error
 {

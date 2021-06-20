@@ -61,8 +61,8 @@ void   NSLogv( NSString *format, va_list args)
    //
    @autoreleasepool
    {
-      s = [NSString stringWithFormat:format
-                           arguments:args];
+      s = [NSString mulleStringWithFormat:format
+                                arguments:args];
       cString = [s cString];
       syslog( __NSLogPriority, "%s", cString);
       fprintf( stderr, "%s\n", cString);

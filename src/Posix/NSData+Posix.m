@@ -125,7 +125,7 @@
    if( fd == -1)
       return( NO);
 
-   data = [self mulleData];
+   data = [self mulleCData];
    for(; data.length;)
    {
       written = write( fd, data.bytes, data.length);

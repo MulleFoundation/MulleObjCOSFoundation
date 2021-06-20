@@ -9,6 +9,7 @@ tmp.*
 *.unused
 *.after
 *.before
+.gdb_history
 
 build-*.d/
 *.dSYM/
@@ -36,6 +37,7 @@ xcuserdata/
 
 environment-host-*.sh
 environment-user-*.sh
+!environment-host-ci-*.sh
 
 # dynamically .mulle-sourcetree-fix is boring
 .mulle-sourcetree-fix

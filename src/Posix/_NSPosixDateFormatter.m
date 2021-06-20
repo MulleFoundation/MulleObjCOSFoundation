@@ -57,10 +57,10 @@ MULLE_OBJC_DEPENDS_ON_LIBRARY( MulleObjCStandardFoundation);
    size_t   length;
 
    if( _cformat)
-      MulleObjCObjectDeallocateMemory( self, _cformat);
+      MulleObjCInstanceDeallocateMemory( self, _cformat);
 
    length   = [format cStringLength];
-   _cformat = MulleObjCObjectAllocateNonZeroedMemory( self, length + 1);
+   _cformat = MulleObjCInstanceAllocateNonZeroedMemory( self, length + 1);
    [format getCString:_cformat
             maxLength:length+1];
 

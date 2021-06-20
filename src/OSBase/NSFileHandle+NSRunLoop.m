@@ -20,8 +20,19 @@
 #import "NSPageAllocation.h"
 
 
-NSString  *NSFileHandleNotificationDataItem       = @"data";
 NSString  *NSFileHandleReadCompletionNotification = @"NSFileHandleReadCompletionNotification";
+
+// why should I put this into the info dict again ?
+NSString  *NSFileHandleNotificationFileHandleItem = @"fileHandle";
+NSString  *NSFileHandleNotificationDataItem       = @"data";
+
+//
+// we don't dot these yet, or maybe never because file reading with callbacks
+// is just not very nice
+//
+NSString *NSFileHandleConnectionAcceptedNotification        = @"NSFileHandleConnectionAcceptedNotification";
+NSString *NSFileHandleDataAvailableNotification             = @"NSFileHandleDataAvailableNotification";
+NSString *NSFileHandleReadToEndOfFileCompletionNotification = @"NSFileHandleReadToEndOfFileCompletionNotification";
 
 
 @interface NSFileHandle( _NSFileDescriptor)  < _NSFileDescriptor>

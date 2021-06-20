@@ -185,6 +185,20 @@ shouldProceedAfterError:(NSError *)error
 - (BOOL) removeItemAtPath:(NSString *) path
                     error:(NSError **) error;
 
+- (BOOL) movePath:(NSString *) src
+           toPath:(NSString *) dest
+          handler:(id) handler;
+- (BOOL) copyPath:(NSString *) src
+           toPath:(NSString *) dest
+          handler:(id) handler;
+
+- (BOOL) moveItemAtPath:(NSString *) srcPath
+                 toPath:(NSString *) dstPath
+                  error:(NSError **) error;
+-(BOOL)copyItemAtPath:(NSString *) fromPath
+               toPath:(NSString *) toPath
+                error:(NSError **) error;
+
 @end
 
 

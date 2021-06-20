@@ -437,11 +437,12 @@ struct context
    return( date);
 }
 
+// TODO: unused and probably not well tested
 //
 // we take the string split it into components
 // then substitute found strings with fixed strings
 // which makes things easier
-
+//
 enum date_kind
 {
    is_unknown = -1,
@@ -454,32 +455,34 @@ enum date_kind
                                                  locale:(id) locale
                                   referenceCalendarDate:(NSCalendarDate *) now
 {
-   NSArray                     *array;
-   NSArray                     *arrays;
-   NSArray                     *words;
-   NSCalendarDate              *date;
-   NSMutableArray              *components;
-   NSString                    **p;
-   NSString                    *word;
-   NSUInteger                  len;
-   NSInteger                   value;
    char                        *s_ordering;
    char                        buf[ 8];
    enum date_kind              kind;
    int                         i;
    int                         multiplier;
+   NSArray                     *array;
+   NSArray                     *arrays;
+   NSArray                     *words;
+   NSCalendarDate              *date;
+   NSCharacterSet              *decimalDigitCharacterSet;
+   NSCharacterSet              *nonAlphanumeric;
+   NSInteger                   value;
+   NSMutableArray              *components;
+   NSString                    **p;
+   NSString                    *word;
+   NSUInteger                  len;
    struct _mulle_date_offset   relative;
    struct mulle_mini_tm        tm;
-   NSCharacterSet              *decimalDigitCharacterSet;
 
    if( ! locale)
       locale = [NSLocale systemLocale];
 
+   nonAlphanumeric = [[NSCharacterSet alphanumericCharacterSet] invertedSet];
    //
    // get string into components, only care about a-z and 0-9
    //
    components = [NSMutableArray array];
-   array      = [s _componentsSeparatedByCharacterSet:[[NSCharacterSet alphanumericCharacterSet] invertedSet]];
+   array      = [s _componentsSeparatedByCharacterSet:nonAlphanumeric];
    if( array)
       [components addObject:s];
    else
@@ -724,7 +727,7 @@ enum date_kind
    return( date);
 }
 
-/*
+
 + (instancetype) dateWithNaturalLanguageString:(NSString *) s
                                         locale:(id) locale
 {
@@ -732,7 +735,7 @@ enum date_kind
                                          locale:locale
                                   referenceDate:nil]);
 }
-*/
+
 
 @end
 

@@ -8,8 +8,6 @@
 
 // Some symbols need to be shared
 
-#import "NSCondition.h"
-
 #import "NSLocale+Posix.h"
 #import "NSError+Posix.h"
 
