@@ -448,39 +448,3 @@ export MULLE_OBJC_PLIST_FOUNDATION_URL="https://github.com/MulleFoundation/Mulle
 export MULLE_OBJC_PLIST_FOUNDATION_BRANCH="prerelease"
 
 
-#
-# mintomic nodetype: ${MINTOMIC_NODETYPE:-tar}
-#
-export MINTOMIC_NODETYPE="git"
-
-
-#
-# mintomic url: ${MINTOMIC_URL:-https://github.com/mulle-concurrent/mintomic/archive/${MULLE_TAG}.tar.gz}
-#
-export MINTOMIC_URL="https://github.com/mulle-concurrent/mintomic.git"
-
-
-#
-# mintomic branch: ${MINTOMIC_BRANCH}
-#
-export MINTOMIC_BRANCH="prerelease"
-
-
-#
-# src/farmhash nodetype: ${FARMHASH_NODETYPE:-tar}
-#
-export FARMHASH_NODETYPE="git"
-
-
-#
-# src/farmhash url: ${FARMHASH_URL:-https://github.com/mulle-c/farmhash-c/archive/${MULLE_TAG}.tar.gz}
-#
-export FARMHASH_URL="https://github.com/mulle-c/farmhash-c.git"
-
-
-#
-# src/farmhash branch: ${FARMHASH_BRANCH}
-#
-export FARMHASH_BRANCH="prerelease"
-
-
