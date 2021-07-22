@@ -13,7 +13,6 @@ endif()
 #
 set( SOURCES
 NSCondition.m
-.mulle/var/.env/libexec/mulle-test/mulle-sde/objc-test-demo/demo/all/10-first/noleak.m
 )
 
 #
