@@ -16,7 +16,7 @@ endif()
 #
 # Generated from sourcetree: 301fbe35-3942-43d1-bc03-7ac995535237;MulleObjCOSBaseFoundation;no-build,no-delete,no-dependency,no-fs,no-link,no-update;
 # Disable with : `mulle-sourcetree mark MulleObjCOSBaseFoundation `
-# Disable for this platform: `mulle-sourcetree mark MulleObjCOSBaseFoundation no-cmake-platform-linux`
+# Disable for this platform: `mulle-sourcetree mark MulleObjCOSBaseFoundation no-cmake-platform-darwin`
 #
 if( NOT MULLE_OBJC_OS_BASE_FOUNDATION_HEADER)
    find_file( MULLE_OBJC_OS_BASE_FOUNDATION_HEADER NAMES MulleObjCOSBaseFoundation/MulleObjCOSBaseFoundation.h MulleObjCOSBaseFoundation/MulleObjCOSBaseFoundation.h)

@@ -15,7 +15,7 @@ endif()
 #
 # Generated from sourcetree: f50d2476-759a-47ca-9249-732018c7619d;src/OSBase;no-delete,no-share,no-update;MulleObjCOSBaseFoundation
 # Disable with : `mulle-sourcetree mark src/OSBase no-link`
-# Disable for this platform: `mulle-sourcetree mark src/OSBase no-cmake-platform-linux`
+# Disable for this platform: `mulle-sourcetree mark src/OSBase no-cmake-platform-darwin`
 #
 if( NOT MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY)
    find_library( MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCOSBaseFoundation NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH)
@@ -112,7 +112,7 @@ endif()
 #
 # Generated from sourcetree: 0ae8de2f-2d5b-40c3-af8c-d484279ec039;src/Posix;no-delete,no-share,no-update;MulleObjCPosixFoundation
 # Disable with : `mulle-sourcetree mark src/Posix no-link`
-# Disable for this platform: `mulle-sourcetree mark src/Posix no-cmake-platform-linux`
+# Disable for this platform: `mulle-sourcetree mark src/Posix no-cmake-platform-darwin`
 #
 if( NOT MULLE_OBJC_POSIX_FOUNDATION_LIBRARY)
    find_library( MULLE_OBJC_POSIX_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCPosixFoundation NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH)
@@ -209,7 +209,7 @@ endif()
 #
 # Generated from sourcetree: e85ae720-e529-4b85-899d-140b53c02548;src/BSD;no-delete,no-header,no-platform-android,no-platform-linux,no-share,no-update;MulleObjCBSDFoundation
 # Disable with : `mulle-sourcetree mark src/BSD no-link`
-# Disable for this platform: `mulle-sourcetree mark src/BSD no-cmake-platform-linux`
+# Disable for this platform: `mulle-sourcetree mark src/BSD no-cmake-platform-darwin`
 #
 if( NOT (${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES "Linux"))
    if( NOT MULLE_OBJC_BSD_FOUNDATION_LIBRARY)
@@ -308,7 +308,7 @@ endif()
 #
 # Generated from sourcetree: 97177524-e50f-4665-ab04-501d6a6602de;src/FreeBSD;no-delete,no-header,no-share,no-update,only-platform-freebsd;MulleObjCFreeBSDFoundation
 # Disable with : `mulle-sourcetree mark src/FreeBSD no-link`
-# Disable for this platform: `mulle-sourcetree mark src/FreeBSD no-cmake-platform-linux`
+# Disable for this platform: `mulle-sourcetree mark src/FreeBSD no-cmake-platform-darwin`
 #
 if( ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
    if( NOT MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY)
@@ -407,7 +407,7 @@ endif()
 #
 # Generated from sourcetree: 88849313-0cb2-4766-9cd4-ebdfe56cc4d7;src/Darwin;no-delete,no-header,no-share,no-update,only-platform-darwin;MulleObjCDarwinFoundation
 # Disable with : `mulle-sourcetree mark src/Darwin no-link`
-# Disable for this platform: `mulle-sourcetree mark src/Darwin no-cmake-platform-linux`
+# Disable for this platform: `mulle-sourcetree mark src/Darwin no-cmake-platform-darwin`
 #
 if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
    if( NOT MULLE_OBJC_DARWIN_FOUNDATION_LIBRARY)
@@ -506,7 +506,7 @@ endif()
 #
 # Generated from sourcetree: 1263a1d0-f50b-4524-bb46-d6bf501e1d43;src/Linux;no-delete,no-header,no-share,no-update,only-platform-android,only-platform-linux;MulleObjCLinuxFoundation
 # Disable with : `mulle-sourcetree mark src/Linux no-link`
-# Disable for this platform: `mulle-sourcetree mark src/Linux no-cmake-platform-linux`
+# Disable for this platform: `mulle-sourcetree mark src/Linux no-cmake-platform-darwin`
 #
 if( ${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES "Linux")
    if( NOT MULLE_OBJC_LINUX_FOUNDATION_LIBRARY)
@@ -605,7 +605,7 @@ endif()
 #
 # Generated from sourcetree: 20a86080-a7b4-46b8-8209-266b223632c9;src/Windows;no-delete,no-share,no-update,only-platform-mingw,only-platform-windows;
 # Disable with : `mulle-sourcetree mark src/Windows no-link`
-# Disable for this platform: `mulle-sourcetree mark src/Windows no-cmake-platform-linux`
+# Disable for this platform: `mulle-sourcetree mark src/Windows no-cmake-platform-darwin`
 #
 if( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
    if( NOT WINDOWS_LIBRARY)

@@ -16,7 +16,7 @@ endif()
 #
 # Generated from sourcetree: c9b589de-edca-4be3-81a7-401e29bb43aa;MulleObjCPosixFoundation;no-build,no-cmake-inherit,no-delete,no-dependency,no-fs,no-link,no-update;
 # Disable with : `mulle-sourcetree mark MulleObjCPosixFoundation `
-# Disable for this platform: `mulle-sourcetree mark MulleObjCPosixFoundation no-cmake-platform-linux`
+# Disable for this platform: `mulle-sourcetree mark MulleObjCPosixFoundation no-cmake-platform-darwin`
 #
 if( NOT MULLE_OBJC_POSIX_FOUNDATION_HEADER)
    find_file( MULLE_OBJC_POSIX_FOUNDATION_HEADER NAMES MulleObjCPosixFoundation/MulleObjCPosixFoundation.h MulleObjCPosixFoundation/MulleObjCPosixFoundation.h)
