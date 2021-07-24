@@ -1,6 +1,6 @@
 ## 0.19.0
 
-* Various small improvements
+* some refinements for NSFileHandle
 
 
 ## 0.18.0
