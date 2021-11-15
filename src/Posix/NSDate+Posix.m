@@ -10,6 +10,7 @@
 #import "import-private.h"
 
 // other libraries of MulleObjCPosixFoundation
+#include "mulle-posix-tm.h"
 
 // std-c and dependencies
 
@@ -17,10 +18,10 @@
 #include <sys/time.h>
 
 
-@implementation NSDate (Posix)
+@implementation NSDate( Posix)
 
 
-NSTimeInterval   MulleDateNow( void)
+NSTimeInterval   _NSTimeIntervalNow( void)
 {
    NSTimeInterval    seconds;
    struct timeval    tv;
@@ -31,18 +32,36 @@ NSTimeInterval   MulleDateNow( void)
 }
 
 
-+ (NSDate *) date
++ (NSTimeInterval) timeIntervalSinceReferenceDate
 {
-   NSTimeInterval    seconds;
-
-   seconds = MulleDateNow();
-   return( [[[self alloc] initWithTimeIntervalSinceReferenceDate:seconds] autorelease]);
+   return( _NSTimeIntervalNow());
 }
 
 
-+ (NSTimeInterval) timeIntervalSinceReferenceDate
+
+- (instancetype) init
 {
-   return( MulleDateNow());
+   return( [self initWithTimeIntervalSinceReferenceDate:_NSTimeIntervalNow()]);
+}
+
+
+
+/*
+ * Use _MulleObjCConcreteCalendarDate indirectly
+ */
+- (instancetype) _initWithTM:(struct tm *) tm
+                 nanoseconds:(unsigned long long) nanoseconds
+                    timeZone:(NSTimeZone *) tz
+{
+   NSTimeInterval    since1970;
+
+   NSParameterAssert( nanoseconds < 1000000000);
+
+   since1970  = mulle_posix_tm_get_time( tm);
+   since1970 += nanoseconds / 1000000000.0;
+   since1970 -= [tz mulleSecondsFromGMTForTimeIntervalSince1970:since1970];
+
+   return( [self initWithTimeIntervalSince1970:since1970]);
 }
 
 
@@ -54,8 +73,8 @@ NSTimeInterval   MulleDateNow( void)
    NSTimeInterval   interval;
    struct timeval   value;
 
-   now      = MulleDateNow();
-   interval = _interval - now;
+   now      = _NSTimeIntervalNow();
+   interval = [self timeIntervalSinceReferenceDate] - now;
    if( interval < 0)
    {
       value.tv_sec  = 0;

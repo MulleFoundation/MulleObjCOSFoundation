@@ -6,12 +6,12 @@
 //  Copyright © 2016 Mulle kybernetiK. All rights reserved.
 //
 
-#include "mulle_bsd_tm.h"
+#include "mulle-bsd-tm.h"
 
 // other files in this library
 
 // other libraries of MulleObjCPosixFoundation
-#include <MulleObjCPosixFoundation/private/mulle_posix_tm-private.h>
+#include <MulleObjCPosixFoundation/mulle-posix-tm.h>
 
 // std-c and dependencies
 #include <limits.h>
@@ -101,11 +101,11 @@ enum mulle_bsd_tm_status   mulle_bsd_tm_from_string_with_format( struct tm *tm,
 }
 
 
-void  mulle_bsd_tm_with_timeintervalsince1970( struct tm *tm,
-                                               double timeInterval,
-                                               unsigned int secondsFromGMT)
+void  mulle_bsd_tm_init_with_interval1970( struct tm *tm,
+                                           double timeInterval,
+                                           int secondsFromGMT)
 {
-   mulle_posix_tm_with_timeintervalsince1970( tm, timeInterval, secondsFromGMT);
+   mulle_posix_tm_init_with_interval1970( tm, timeInterval, secondsFromGMT);
    tm->tm_gmtoff = secondsFromGMT;
 }
 

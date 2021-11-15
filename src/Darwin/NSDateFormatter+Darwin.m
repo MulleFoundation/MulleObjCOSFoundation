@@ -11,7 +11,8 @@
 // other libraries of MulleObjCPosixFoundation
 #import <MulleObjCOSBaseFoundation/private/NSDate+OSBase-Private.h>
 #import <MulleObjCPosixFoundation/private/NSLocale+Posix-Private.h>
-#import <MulleObjCPosixFoundation/private/mulle_posix_tm-private.h>
+#include <MulleObjCStandardFoundation/mulle-mini-tm.h>
+#import <MulleObjCPosixFoundation/mulle-posix-tm.h>
 
 // std-c and dependencies
 #import <time.h>
@@ -40,7 +41,7 @@
 //
 // So we preparse the format and output the correct timezone into a copy
 // of the format string :(
-//
+// W
 //
 static char  *percent_z_find( char *s)
 {
@@ -172,7 +173,7 @@ static void   percent_z_replace( char *dst,
 - (size_t) _printTM:(struct tm *) tm
              buffer:(char *) buf
              length:(size_t) len
-      cStringFormat:(char *) c_format
+      formatUTF8String:(char *) c_format
              locale:(NSLocale *) locale
 {
    locale_t    xlocale;
@@ -181,6 +182,10 @@ static void   percent_z_replace( char *dst,
    struct tm   tmp;
    size_t      tzname_len;
    size_t      needed_len;
+
+   NSParameterAssert( tm);
+   NSParameterAssert( c_format);
+   NSParameterAssert( [locale isKindOfClass:[NSLocale class]]);
 
    xlocale = [locale xlocale];
 

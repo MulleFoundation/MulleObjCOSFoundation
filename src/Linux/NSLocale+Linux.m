@@ -32,21 +32,21 @@
    return( dependencies);
 }
 
-
 + (NSString *) systemLocalePath
 {
-   return( @"/usr/share/locale");
+   // how can we get this reliably ?
+   return( @"/usr/share/i18n/locales");
 }
 
 
-+ (instancetype) systemLocale
++ (instancetype) _systemLocale
 {
    // bullshit
    return( [[[NSLocale alloc] initWithLocaleIdentifier:@"C"] autorelease]);
 }
 
 
-+ (instancetype) currentLocale
++ (instancetype) _currentLocale
 {
    // bullshit
    return( [[[NSLocale alloc] initWithLocaleIdentifier:@"C"] autorelease]);

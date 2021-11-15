@@ -7,6 +7,7 @@
 //
 #define _XOPEN_SOURCE 700
 #define _DARWIN_C_SOURCE   // darwin: for timegm
+#define _DEFAULT_SOURCE
 
 #include "include-private.h"
 
@@ -14,9 +15,11 @@
 #include <limits.h>
 #include <time.h>
 #include <locale.h>
+#include <string.h>
 
 // private stuff
-#include "mulle_posix_tm-private.h"
+#include <MulleObjCStandardFoundation/mulle-mini-tm.h>
+#include "mulle-posix-tm.h"
 
 
 void  mulle_posix_tm_invalidate( struct tm *tm)
@@ -113,6 +116,8 @@ int   mulle_posix_tm_from_string_with_format( struct tm *tm,
    if( locale)
       old_xlocale = uselocale( locale);
 
+   // TODO: we don't parse %F correctly, but strptime doesn't know it.
+   //       and tm doesn't know it either.
    c_str     = *c_str_p;
    *c_str_p  = strptime( c_str, c_format, tm);
 
@@ -143,13 +148,39 @@ int   mulle_posix_tm_from_string_with_format( struct tm *tm,
 
 
 
-void  mulle_posix_tm_with_timeintervalsince1970( struct tm *tm,
-                                                 double timeInterval,
-                                                 int secondsFromGMT)
+void   mulle_posix_tm_init_with_time( struct tm *tm, time_t time)
+{
+   if( ! tm)
+      return;
+
+   gmtime_r( &time, tm);
+}
+
+
+time_t  mulle_posix_tm_get_time( struct tm *tm)
+{
+   struct tm   tmp;
+
+   if( ! tm)
+      return( 0);
+
+   tmp = *tm;              // not super sure this doesn't get corrupted
+   return( timegm( &tmp));
+}
+
+
+
+void   mulle_posix_tm_init_with_interval1970( struct tm *tm,
+                                              double timeInterval,
+                                              int offset)
 {
    time_t      timeval;
 
-   timeval = (time_t) (timeInterval + secondsFromGMT + 0.5);
+   // MEMO: rounding is bad here. Why ? When we format something
+   // with %F (ms) we format it outside of strftime. struct tm does not
+   // know about ms. So if we round, 0.75 will be printed as 1.72 if
+   // we round timeInterval, so we floor it intentionally
+   timeval = (time_t) timeInterval + offset;
    gmtime_r( &timeval, tm);
 }
 

@@ -13,38 +13,38 @@
 
 // You can tweak the following #import with these commands.
 // (Use f50d2476-759a-47ca-9249-732018c7619d instead of src/OSBase if there are duplicate entries)
-//    remove:             `mulle-sourcetree mark src/OSBase no-header`
+//    remove:             `mulle-sde dependency mark src/OSBase no-header`
 //    rename:             `mulle-sde dependency|library set src/OSBase include whatever.h`
-//    reorder:            `mulle-sourcetree move src/OSBase <up|down>`
-//    toggle #import:     `mulle-sourcetree mark src/OSBase [no-]import`
-//    toggle public:      `mulle-sourcetree mark src/OSBase [no-]public`
-//    toggle optional:    `mulle-sourcetree mark src/OSBase [no-]require`
-//    remove for platform:`mulle-sourcetree mark src/OSBase no-platform-<uname>`
-//        (use mulle-sourcetree-to-c --unames for known values)
+//    reorder:            `mulle-sde dependency move src/OSBase <up|down>`
+//    toggle #import:     `mulle-sde dependency mark src/OSBase [no-]import`
+//    toggle public:      `mulle-sde dependency mark src/OSBase [no-]public`
+//    toggle optional:    `mulle-sde dependency mark src/OSBase [no-]require`
+//    remove for platform:`mulle-sde dependency mark src/OSBase no-platform-<uname>`
+//        (use `mulle-sourcetree-to-c --unames` to list known values)
 #import <MulleObjCOSBaseFoundation/MulleObjCOSBaseFoundation.h>   // src/OSBase
 
 // You can tweak the following #import with these commands.
 // (Use 0ae8de2f-2d5b-40c3-af8c-d484279ec039 instead of src/Posix if there are duplicate entries)
-//    remove:             `mulle-sourcetree mark src/Posix no-header`
+//    remove:             `mulle-sde dependency mark src/Posix no-header`
 //    rename:             `mulle-sde dependency|library set src/Posix include whatever.h`
-//    reorder:            `mulle-sourcetree move src/Posix <up|down>`
-//    toggle #import:     `mulle-sourcetree mark src/Posix [no-]import`
-//    toggle public:      `mulle-sourcetree mark src/Posix [no-]public`
-//    toggle optional:    `mulle-sourcetree mark src/Posix [no-]require`
-//    remove for platform:`mulle-sourcetree mark src/Posix no-platform-<uname>`
-//        (use mulle-sourcetree-to-c --unames for known values)
+//    reorder:            `mulle-sde dependency move src/Posix <up|down>`
+//    toggle #import:     `mulle-sde dependency mark src/Posix [no-]import`
+//    toggle public:      `mulle-sde dependency mark src/Posix [no-]public`
+//    toggle optional:    `mulle-sde dependency mark src/Posix [no-]require`
+//    remove for platform:`mulle-sde dependency mark src/Posix no-platform-<uname>`
+//        (use `mulle-sourcetree-to-c --unames` to list known values)
 #import <MulleObjCPosixFoundation/MulleObjCPosixFoundation.h>   // src/Posix
 
 // You can tweak the following #import with these commands.
 // (Use 20a86080-a7b4-46b8-8209-266b223632c9 instead of src/Windows if there are duplicate entries)
-//    remove:             `mulle-sourcetree mark src/Windows no-header`
+//    remove:             `mulle-sde dependency mark src/Windows no-header`
 //    rename:             `mulle-sde dependency|library set src/Windows include whatever.h`
-//    reorder:            `mulle-sourcetree move src/Windows <up|down>`
-//    toggle #import:     `mulle-sourcetree mark src/Windows [no-]import`
-//    toggle public:      `mulle-sourcetree mark src/Windows [no-]public`
-//    toggle optional:    `mulle-sourcetree mark src/Windows [no-]require`
-//    remove for platform:`mulle-sourcetree mark src/Windows no-platform-<uname>`
-//        (use mulle-sourcetree-to-c --unames for known values)
+//    reorder:            `mulle-sde dependency move src/Windows <up|down>`
+//    toggle #import:     `mulle-sde dependency mark src/Windows [no-]import`
+//    toggle public:      `mulle-sde dependency mark src/Windows [no-]public`
+//    toggle optional:    `mulle-sde dependency mark src/Windows [no-]require`
+//    remove for platform:`mulle-sde dependency mark src/Windows no-platform-<uname>`
+//        (use `mulle-sourcetree-to-c --unames` to list known values)
 # if defined( _WIN32) || defined( __windows__)
 # import <Windows/Windows.h>   // src/Windows
 #endif

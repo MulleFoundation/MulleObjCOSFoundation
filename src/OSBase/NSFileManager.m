@@ -165,7 +165,7 @@ NSString   *NSFileTypeUnknown          = @"NSFileTypeUnknown";
                     isDirectory:&isDirectory])
       return( NO);
 
-   if( [_delegate respondsToSelector:@selector(fileManager:shouldRemoveItemAtPath:)])
+   if( [_delegate respondsToSelector:@selector( fileManager:shouldRemoveItemAtPath:)])
       if( ! [_delegate fileManager:self
           shouldRemoveItemAtPath:path])
          return( NO);

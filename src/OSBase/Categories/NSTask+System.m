@@ -63,8 +63,9 @@
 
    file = [pipe fileHandleForReading];
    data = [file readDataToEndOfFile];
-   s    = [NSString stringWithCString:[data bytes]
-                               length:[data length]];
+   // assume input is UTF8, like its the law
+   s    = [NSString stringWithUTF8Characters:[data bytes]
+                                      length:[data length]];
 
    s = [s stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 

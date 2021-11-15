@@ -5,8 +5,11 @@
 //  Created by Nat! on 05.06.16.
 //  Copyright © 2016 Mulle kybernetiK. All rights reserved.
 //
-#ifndef mulle_posix_h__
-#define mulle_posix_h__
+#ifndef mulle_posix_tm_h__
+#define mulle_posix_tm_h__
+
+#include <time.h>
+
 
 // time the old enemy, what it is it ?
 //
@@ -45,6 +48,7 @@
 // NSDate contains a NSTimeInterval. It's not per se UTC!
 
 // TODO: I am tempted to make locale_t a  mulle_locale_t which is an void *
+
 int   mulle_posix_tm_from_string_with_format( struct tm *tm,
                                               char **c_str_p,
                                               char *c_format,
@@ -55,8 +59,52 @@ void           mulle_posix_tm_invalidate( struct tm *tm);
 int            mulle_posix_tm_is_invalid( struct tm *tm);
 unsigned int   mulle_posix_tm_augment( struct tm *tm, struct tm *now);
 
-void  mulle_posix_tm_with_timeintervalsince1970( struct tm *tm,
-                                                 double timeInterval,
-                                                 int secondsFromGMT);
+static inline
+struct mulle_mini_tm   mulle_posix_tm_get_mini_tm( struct tm *src)
+{
+   struct mulle_mini_tm   dst;
+
+   if( ! src)
+   {
+      memset( &dst, 0, sizeof( dst));
+      return( dst);
+   }
+
+   dst.year   = src->tm_year + 1900;
+   dst.month  = src->tm_mon;
+   dst.day    = src->tm_mday;
+   dst.hour   = src->tm_hour;
+   dst.minute = src->tm_min;
+   dst.second = src->tm_sec;
+
+   return( dst);
+}
+
+
+static inline void  mulle_posix_tm_init_with_mini_tm( struct tm *dst,
+                                                      struct mulle_mini_tm src)
+{
+   if( ! dst)
+      return;
+
+   memset( dst, 0, sizeof( *dst)); // most compatible, though wasteful
+
+   dst->tm_year   = src.year - 1900;
+   dst->tm_mon    = src.month;
+   dst->tm_mday   = src.day;
+   dst->tm_hour   = src.hour;
+   dst->tm_min    = src.minute;
+   dst->tm_sec    = src.second;
+}
+
+
+void    mulle_posix_tm_init_with_time( struct tm *tm, time_t time);
+time_t  mulle_posix_tm_get_time( struct tm *tm);
+
+
+// the offset is for compatibility with BSD
+void  mulle_posix_tm_init_with_interval1970( struct tm *tm,
+                                             double timeInterval,
+                                             int offset);
 
 #endif

@@ -415,12 +415,9 @@ static unsigned int    permissons_for_current_uid_gid( struct stat *c_info)
 
    dir = opendir( [path fileSystemRepresentation]);
    if( ! dir)
-   {
       return( nil);
-   }
 
    array = [NSMutableArray array];
-   errno = 0;
    while( entry = readdir( dir))
    {
       s = entry->d_name;
@@ -435,8 +432,6 @@ static unsigned int    permissons_for_current_uid_gid( struct stat *c_info)
       filename = [NSString stringWithCString:s];
       [array addObject:filename];
    }
-   if( errno)
-
    closedir( dir);
 
    return( array);
@@ -571,10 +566,10 @@ static BOOL  is_symlink( char *c_path)
 
 static NSString   *link_contents( NSString *path)
 {
-   NSString       *file;
-   char           expanded[ PATH_MAX];
-   size_t         len;
-   char           *c_path;
+   NSString   *file;
+   char       expanded[ PATH_MAX];
+   size_t     len;
+   char       *c_path;
 
    c_path = [path fileSystemRepresentation];
    if( is_symlink( c_path))
@@ -597,9 +592,9 @@ static NSString   *link_contents( NSString *path)
 - (NSString *) _pathContentOfSymbolicLinkAtPath:(NSString *) path
                                     recursively:(BOOL) recursively
 {
-   NSString       *file;
-   NSString       *best;
-   unsigned int   i;
+   NSString     *file;
+   NSString     *best;
+   NSUInteger   i;
 
    best = nil;
    for( i = 0; i < 64; i++)
@@ -746,7 +741,6 @@ static inline void   NSRaiseException( NSString *name,
                  toPath:(NSString *) dstPath
                   error:(NSError **) error
 {
-
     /*
      It's not this easy...
      return rename([src fileSystemRepresentation],[dest fileSystemRepresentation])?NO:YES;
@@ -794,9 +788,9 @@ static inline void   NSRaiseException( NSString *name,
 }
 
 
--(BOOL)copyItemAtPath:(NSString *)fromPath
-               toPath:(NSString *)toPath
-                error:(NSError **)error
+-(BOOL) copyItemAtPath:(NSString *)fromPath
+                toPath:(NSString *)toPath
+                 error:(NSError **)error
 {
     BOOL isDirectory;
 
@@ -807,10 +801,11 @@ static inline void   NSRaiseException( NSString *name,
         return NO;
     }
 
-    if (!isDirectory){
-        int r, w;
-        char buf[4096];
-        size_t count;
+    if (!isDirectory)
+    {
+        int      r, w;
+        char     buf[4096];
+        size_t   count;
 
         if ((w = open([toPath fileSystemRepresentation], O_WRONLY|O_CREAT, FOUNDATION_FILE_MODE)) == -1) {
             if (error != NULL) {
@@ -849,9 +844,10 @@ static inline void   NSRaiseException( NSString *name,
         else
             return YES;
     }
-    else {
-        NSArray *files;
-        NSInteger      i,count;
+    else
+    {
+        NSArray     *files;
+        NSInteger   i,count;
 
         if (mkdir([toPath fileSystemRepresentation], FOUNDATION_DIR_MODE) != 0) {
             if (error != NULL) {
