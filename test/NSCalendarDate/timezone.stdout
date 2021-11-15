@@ -1,0 +1,4 @@
+_MulleObjCConcreteCalendarDate 43200.000 -> "01-01-01T10:00:00Z-0200"
+_MulleObjCConcreteDate 43200.000 -> "01-01-01T12:00:00ZZ"
+NSCalendarDate equals NSDate
+NSDate equals NSCalendarDate

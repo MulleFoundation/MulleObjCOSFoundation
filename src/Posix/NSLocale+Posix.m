@@ -25,6 +25,7 @@
 // std-c and dependencies
 #include <locale.h>
 #include <langinfo.h>
+#include <stdlib.h>
 
 
 #define match( key, identifier, type, code)               \
@@ -88,15 +89,15 @@ id    mulle_locale_lconv_value( struct lconv *conv, int code)
    case CONV_INT_FRACTIONAL_DIGITS     : nr = conv->int_frac_digits; break;
    case CONV_FRACTIONAL_DIGITS         : nr = conv->frac_digits; break;
 
-   case CONV_POSITIVE_VALUE_CURRENCY_SYMBOL_PRECEDES           : flag = conv->p_cs_precedes; break;
-   case CONV_POSITIVE_VALUE_CURRENCY_SYMBOL_SEPARATED_BY_SPACE : flag = conv->p_sep_by_space; break;
-   case CONV_NEGATIVE_VALUE_CURRENCY_SYMBOL_PRECEDES           : flag = conv->n_cs_precedes; break;
-   case CONV_NEGATIVE_VALUE_CURRENCY_SYMBOL_SEPARATED_BY_SPACE : flag = conv->n_sep_by_space; break;
+   case CONV_POSITIVE_VALUE_CURRENCY_SYMBOL_PRECEDES               : flag = conv->p_cs_precedes; break;
+   case CONV_POSITIVE_VALUE_CURRENCY_SYMBOL_SEPARATED_BY_SPACE     : flag = conv->p_sep_by_space; break;
+   case CONV_NEGATIVE_VALUE_CURRENCY_SYMBOL_PRECEDES               : flag = conv->n_cs_precedes; break;
+   case CONV_NEGATIVE_VALUE_CURRENCY_SYMBOL_SEPARATED_BY_SPACE     : flag = conv->n_sep_by_space; break;
 
-   case CONV_POSITIVE_SIGN_POSITION                      : nr   = conv->p_sign_posn; break;
-   case CONV_NEGATIVE_SIGN_POSITION                      : nr   = conv->n_sign_posn; break;
-   case CONV_INT_POSITIVE_VALUE_CURRENCY_SYMBOL_PRECEDES : flag = conv->int_p_cs_precedes; break;
-   case CONV_INT_NEGATIVE_VALUE_CURRENCY_SYMBOL_PRECEDES : flag = conv->int_n_cs_precedes; break;
+   case CONV_POSITIVE_SIGN_POSITION                                : nr   = conv->p_sign_posn; break;
+   case CONV_NEGATIVE_SIGN_POSITION                                : nr   = conv->n_sign_posn; break;
+   case CONV_INT_POSITIVE_VALUE_CURRENCY_SYMBOL_PRECEDES           : flag = conv->int_p_cs_precedes; break;
+   case CONV_INT_NEGATIVE_VALUE_CURRENCY_SYMBOL_PRECEDES           : flag = conv->int_n_cs_precedes; break;
 
    case CONV_INT_POSITIVE_VALUE_CURRENCY_SYMBOL_SEPARATED_BY_SPACE : flag = conv->int_p_sep_by_space; break;
    case CONV_INT_NEGATIVE_VALUE_CURRENCY_SYMBOL_SEPARATED_BY_SPACE : flag = conv->int_n_sep_by_space; break;
@@ -116,9 +117,55 @@ id    mulle_locale_lconv_value( struct lconv *conv, int code)
 
 @implementation NSLocale( Posix)
 
+static NSArray   *identifiers;
+
++ (void) unload
+{
+   [identifiers release];
+   identifiers = nil;
+}
+
+// So on linux the locale available from <locale.h> is basically the contents
+// of a compiled file /usr/lib/locale/locale-archive. There is no API to list
+// it's contents though it seems.
+// This file is generated from /usr/share/i18n and there there is an
+// index file SUPPORTED which lists all. It's not clear, even dubious,
+// that all SUPPORTED locales have been compiled.
+//
+// The content is /usr/share/locale are just localized LC_MESSAGES for unix
+// tools it seems. Nothing we need. As long as we aren't running in a
+// containerized thingy, where we can execute "locale -a". This is the easiest
+// thing.
+//
+// https://www.man7.org/linux/man-pages/man1/localedef.1.html
+//
 + (NSArray *) availableLocaleIdentifiers
 {
-   return( [[NSFileManager defaultManager] directoryContentsAtPath:[self systemLocalePath]]);
+   NSString   *command;
+   NSString   *tmpFile;
+   NSString   *name;
+   NSString   *s;
+
+   if( identifiers)
+      return( identifiers);
+
+   tmpFile     = NSTemporaryDirectory();
+   name        = [[NSProcessInfo processInfo] globallyUniqueString];
+   tmpFile     = [tmpFile stringByAppendingPathComponent:name];
+   tmpFile     = [tmpFile stringByAppendingPathExtension:@"txt"];
+   command     = [NSString stringWithFormat:@"/usr/bin/locale -e > \"%@\"", tmpFile];
+   if( ! system( [command cString]))
+   {
+      s           = [NSString stringWithContentsOfFile:tmpFile];
+      identifiers = [s componentsSeparatedByString:@"\n"];
+   }
+   [[NSFileManager defaultManager] _removeFileItemAtPath:tmpFile];
+
+   if( ! [identifiers count])
+      identifiers  = @[ @"C", @"POSIX", @"en_US.utf8" ];
+
+   identifiers = [identifiers copy];
+   return( identifiers);
 }
 
 

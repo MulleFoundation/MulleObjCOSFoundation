@@ -17,9 +17,9 @@ static void  test( char *s, char *expect)
    NSString   *ext;
    NSString   *path;
 
-   path = [NSString stringWithCString:s];
+   path = [NSString stringWithUTF8String:s];
    ext  = [path pathExtension];
-   printf( "%s\n", strcmp( [ext cString], expect) ? "failed" : "passed");
+   printf( "%s\n", strcmp( [ext UTF8String], expect) ? "failed" : "passed");
 }
 
 

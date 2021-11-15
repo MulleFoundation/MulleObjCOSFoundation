@@ -28,12 +28,18 @@
 @end
 
 
+// not really future anymore hmmm... move to private
+// or make public ?
 @interface NSDateFormatter( PosixFuture)
 
 - (size_t) _printTM:(struct tm *) tm
              buffer:(char *) buf
              length:(size_t) len
-      cStringFormat:(char *) c_format
+      formatUTF8String:(char *) c_format
              locale:(NSLocale *) locale;
+
+- (NSDate *) _parseDateWithUTF8String:(char **) string
+                        formatUTF8String:(char *) c_format
+                               locale:(NSLocale *) locale;
 
 @end
