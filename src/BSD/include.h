@@ -21,6 +21,12 @@
 
 #include "_MulleObjCBSDFoundation-include.h"
 
+// need own extern globals, as subprojects are own DLLs
+// For BSD we don't really need these adornments
+// #ifndef MULLE_OBJC_BSD_FOUNDATION_EXTERN_GLOBAL
+// # define MULLE_OBJC_BSD_FOUNDATION_EXTERN_GLOBAL MULLE_C_EXTERN_GLOBAL
+// #endif
+
 /* You can add some more include statements here */
 
 

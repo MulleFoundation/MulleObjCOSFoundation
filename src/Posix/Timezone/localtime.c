@@ -2228,7 +2228,7 @@ void   *mulle_tz_context_with_name( char *name, size_t *size)
 char  *mulle_get_abbreviation_for_time_interval( void *self, time_t seconds)
 {
    struct tz_context  *p;
-   struct tz_tm          result;
+   struct tz_tm       result;
 
    p = self;
    if( ! p)

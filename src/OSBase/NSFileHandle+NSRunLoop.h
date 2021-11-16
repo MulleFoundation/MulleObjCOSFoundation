@@ -19,12 +19,21 @@
 @end
 
 // unused but defined to get thinks to link
-extern NSString  *NSFileHandleConnectionAcceptedNotification;
-extern NSString  *NSFileHandleDataAvailableNotification;
-extern NSString  *NSFileHandleReadToEndOfFileCompletionNotification;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
+NSString  *NSFileHandleConnectionAcceptedNotification;
+
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
+NSString  *NSFileHandleDataAvailableNotification;
+
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
+NSString  *NSFileHandleReadToEndOfFileCompletionNotification;
 
 
-extern NSString  *NSFileHandleReadCompletionNotification;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
+NSString  *NSFileHandleReadCompletionNotification;
 
-extern NSString  *NSFileHandleNotificationDataItem;
-extern NSString  *NSFileHandleNotificationFileHandleItem;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
+NSString  *NSFileHandleNotificationDataItem;
+
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
+NSString  *NSFileHandleNotificationFileHandleItem;

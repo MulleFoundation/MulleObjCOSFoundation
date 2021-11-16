@@ -47,7 +47,7 @@
    NSTimeInterval   interval;
 
    interval = date ? [date timeIntervalSince1970]
-                   : ([NSDate timeIntervalSinceReferenceDate] + NSTimeIntervalSince1970);
+                   : _NSTimeIntervalSinceReferenceDateAsSince1970( [NSDate timeIntervalSinceReferenceDate]);
    return( [self mulleWaitUntilTimeIntervalSince1970:interval]);
 }
 

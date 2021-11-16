@@ -18,6 +18,17 @@
 #include <errno.h>
 
 
+// MEMO: statically linked classes can't figure out their bundle for resources.
+//       Where do statically linked resources end up anyway ?
+//
+//       If foo.a is installed in /opt/whatever/lib/libfoo.a and the resources in
+//       /opt/whatever/share/foo, there is no good ways to figure out that
+//       /opt/whatever is the bundle root. Also there is no reference to
+//       foo.
+//       Conceivably we could place a bundle identifier into the class at
+//       compile time ? And search some standard searchpath like /usr/ and
+//       /usr/local for a matching bundle.
+//
 @implementation NSBundle( Posix)
 
 + (BOOL) isBundleFilesystemExtension:(NSString *) extension
@@ -86,7 +97,7 @@
       return( nil);
 
    classAddress = MulleObjCClassGetLoadAddress( aClass);
-   // if there is no load address, its genrated dynamicall at runtime
+   // if there is no load address, it was generated dynamically at runtime
    // e.g. NSZombie
    if( ! classAddress)
       return( [NSBundle mainBundle]);
@@ -98,7 +109,7 @@
       bundleInfo = [self mulleRegisteredBundleInfo];
       for( bundlePath in bundleInfo)
       {
-         bundle = [bundleInfo objectForKey:bundlePath];
+         bundle  = [bundleInfo objectForKey:bundlePath];
          exePath = [bundle executablePath];
          if( [exePath isEqualToString:path])
          {

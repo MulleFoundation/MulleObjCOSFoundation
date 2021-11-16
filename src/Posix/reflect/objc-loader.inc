@@ -13,7 +13,9 @@
       { @selector( NSLocale), @selector( Posix) },      // 22b7d78c;NSLocale;ae1faa81;Posix
       { @selector( NSPipe), @selector( Posix) },      // 09f46823;NSPipe;ae1faa81;Posix
       { @selector( NSProcessInfo), @selector( Posix) },      // 208b1df5;NSProcessInfo;ae1faa81;Posix
+      { @selector( NSProcessInfo), @selector( SyslogUnloader) },      // 208b1df5;NSProcessInfo;6636c4cd;SyslogUnloader
       { @selector( NSRunLoop), @selector( Posix) },      // e3bb595b;NSRunLoop;ae1faa81;Posix
       { @selector( NSTask), @selector( Posix) },      // 90ec29ba;NSTask;ae1faa81;Posix
       { @selector( NSTimeZone), @selector( Posix) },      // 190d1ade;NSTimeZone;ae1faa81;Posix
+      { @selector( _MulleObjCConcreteCalendarDate), @selector( Posix) },      // a2be208e;_MulleObjCConcreteCalendarDate;ae1faa81;Posix
       { @selector( _NSPosixDateFormatter), MULLE_OBJC_NO_CATEGORYID },      // 316287e6;_NSPosixDateFormatter;;

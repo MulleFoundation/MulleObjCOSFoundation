@@ -62,7 +62,7 @@
 
 + (NSArray *) availableLocaleIdentifiers
 {
-   return( [[NSFileManager defaultManager] directoryContentsAtPath:@"/usr/share/locale"]);
+   return( [[NSFileManager defaultManager] directoryContentsAtPath:@"/usr/share/i18n/locale"]);
 }
 
 
@@ -169,8 +169,8 @@
 
    for( i = 0; lut[ i].abr; i++)
    {
-      key   = [NSString stringWithCString:lut[ i].abr];
-      value = [NSString stringWithCString:lut[ i].name];
+      key   = [NSString stringWithUTF8String:lut[ i].abr];
+      value = [NSString stringWithUTF8String:lut[ i].name];
       [dict setObject:value
                forKey:key];
    }
@@ -183,6 +183,9 @@
    extern long   mulle_get_gmt_offset_for_time_interval( void *, time_t);
    long          offset;
 
+   if( _secondsFromGMT != NSIntegerMax)
+      return( _secondsFromGMT);
+
    if( ! _data)
       return( 0);
 
@@ -194,11 +197,14 @@
 - (NSInteger) secondsFromGMTForDate:(NSDate *) aDate
 {
    extern long      mulle_get_gmt_offset_for_time_interval( void *, time_t);
-   NSTimeInterval   seconds;
+   NSTimeInterval   since1970;
    long             offset;
 
-   seconds = [aDate timeIntervalSince1970]; // standard unix
-   offset  = mulle_get_gmt_offset_for_time_interval( [_data bytes], (time_t) seconds);
+   if( _secondsFromGMT != NSIntegerMax)
+      return( _secondsFromGMT);
+
+   since1970 = [aDate timeIntervalSince1970]; // standard unix
+   offset    = mulle_get_gmt_offset_for_time_interval( [_data bytes], (time_t) since1970);
    return( offset);
 }
 
@@ -209,8 +215,14 @@
    NSTimeInterval   seconds;
    char             *abr;
 
+   abr     = NULL;
+#ifdef TM_ZONE
    seconds = [aDate timeIntervalSince1970]; // standard unix
    abr     = mulle_get_abbreviation_for_time_interval( [_data bytes], (time_t) seconds);
+#endif
+   if( ! abr || ! strlen( abr))
+      return( [self name]);
+
    return( [NSString stringWithCString:abr]);
 }
 
@@ -225,16 +237,6 @@
    seconds = [aDate timeIntervalSince1970]; // standard unix
    flag    = mulle_get_daylight_saving_flag_for_time_interval( [_data bytes], (time_t) seconds);
    return( flag ? YES : NO);
-}
-
-
-+ (instancetype) timeZoneForSecondsFromGMT:(NSInteger) seconds;
-{
-   if( ! seconds)
-      return( [self mulleGMTTimeZone]);
-
-   abort();
-   return( nil);
 }
 
 @end

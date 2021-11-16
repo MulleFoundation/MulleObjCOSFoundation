@@ -54,13 +54,25 @@ typedef NSUInteger NSSearchPathDirectory;
 
 
 
-extern NSString  *NSFullUserName( void);
-extern NSString  *NSHomeDirectory( void);
-extern NSString  *NSHomeDirectoryForUser( NSString *userName);
-extern NSString  *NSOpenStepRootDirectory( void);
-extern NSArray   *NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory directory,
-                                                       NSSearchPathDomainMask domainMask,
-                                                       BOOL expandTilde);
-extern NSString  *NSTemporaryDirectory( void);
-extern NSString  *NSUserName( void);
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
+NSString  *NSFullUserName( void);
+
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
+NSString  *NSHomeDirectory( void);
+
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
+NSString  *NSHomeDirectoryForUser( NSString *userName);
+
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
+NSString  *NSOpenStepRootDirectory( void);
+
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
+NSArray   *NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory directory,
+                                                NSSearchPathDomainMask domainMask,
+                                                BOOL expandTilde);
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
+NSString  *NSTemporaryDirectory( void);
+
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
+NSString  *NSUserName( void);
 

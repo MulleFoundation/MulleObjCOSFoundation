@@ -36,12 +36,11 @@
 #import "NSLock+NSDate.h"
 
 // other files in this library
-#import "NSDate.h"
 
 // other libraries of MulleObjCValueFoundation
 
 // std-c and dependencies
-
+#import "import-private.h"
 
 
 @implementation NSLock (NSDate)

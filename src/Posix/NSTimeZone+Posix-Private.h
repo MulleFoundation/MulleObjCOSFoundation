@@ -15,5 +15,6 @@
 
 #include "private.h"
 
-extern long   mulle_get_timeinterval_for_tm( void *, struct tz_tm *);
+MULLE_OBJC_POSIX_FOUNDATION_EXTERN_GLOBAL
+long   mulle_get_timeinterval_for_tm( void *, struct tz_tm *);
 

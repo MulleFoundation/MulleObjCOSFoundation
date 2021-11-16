@@ -10,9 +10,10 @@
 #import "import-private.h"
 
 // other files in this library
-#import <MulleObjCPosixFoundation/private/NSCalendarDate+Posix-Private.h>
+#import <MulleObjCPosixFoundation/private/NSDate+Posix-Private.h>
 
 // other libraries of MulleObjCPosixFoundation
+#import <MulleObjCStandardFoundation/_MulleObjCConcreteCalendarDate.h>
 
 // std-c and dependencies
 #include <time.h>
@@ -25,7 +26,7 @@
 @end
 
 
-@implementation NSCalendarDate (Linux)
+@implementation NSCalendarDate( Linux)
 
 + (struct _mulle_objc_dependency *) dependencies
 {
@@ -39,29 +40,8 @@
 }
 
 
-- (instancetype) _initWithTM:(struct tm *) tm
-                    timeZone:(NSTimeZone *) tz
-{
-   NSTimeInterval   interval;
-   time_t           timeval;
+// EMPTY
 
-   timeval  = timegm( tm);
-   interval = timeval - [tz secondsFromGMT];
-
-   return( [self initWithTimeIntervalSince1970:interval
-                                      timeZone:tz]);
-}
-
-
-- (NSTimeInterval) timeIntervalSince1970
-{
-   struct tm   tmp;
-   time_t      value;
-
-   mulle_tm_with_mini_tm( &tmp, self->_tm.values);
-   value  = timegm( &tmp);
-   value -= [_timeZone mulleSecondsFromGMTForTimeIntervalSince1970:value];
-   return( (NSTimeInterval) value);
-}
 
 @end
+

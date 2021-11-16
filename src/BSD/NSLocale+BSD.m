@@ -62,7 +62,7 @@ static id   newLocaleByQuery( Class self, locale_t base)
       return( nil);
    }
 
-   return( [[[self alloc] initWithLocaleIdentifier:name] autorelease]);
+   return( [[self alloc] initWithLocaleIdentifier:name]);
 }
 
 
@@ -72,15 +72,15 @@ static id   newLocaleByQuery( Class self, locale_t base)
 }
 
 
-+ (instancetype) systemLocale
++ (instancetype) _systemLocale
 {
-   return( newLocaleByQuery( self, LC_GLOBAL_LOCALE));
+   return( [newLocaleByQuery( self, LC_GLOBAL_LOCALE) autorelease]);
 }
 
 
-+ (instancetype) currentLocale
++ (instancetype) _currentLocale
 {
-   return( newLocaleByQuery( self, NULL));
+   return( [newLocaleByQuery( self, NULL) autorelease]);
 }
 
 

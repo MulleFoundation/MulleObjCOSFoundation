@@ -12,114 +12,208 @@
 #define _DARWIN_C_SOURCE   // darwin: for timegm
 #define _USE_MISC          // linux: for timegm
 #define _GNUSOURCE         // linux: for timegm
-
+#define _DEFAULT_SOURCE    // linux: for timegm  ARGH!!  why does this alway change ?
 #import "import-private.h"
 
 // std-c and dependencies
 #include <time.h>
 
+
 // private stuff
-#include "NSCalendarDate+Posix-Private.h"
-#include "NSTimeZone+Posix-Private.h"
-#include "mulle_posix_tm-private.h"
+#import <MulleObjCStandardFoundation/_MulleObjCConcreteCalendarDate.h>
+
+#import "NSDate+Posix-Private.h"
+#import "NSTimeZone+Posix-Private.h"
+#include <MulleObjCStandardFoundation/mulle-mini-tm.h>
+#include "mulle-posix-tm.h"
 
 
-struct mulle_mini_tm  mulle_mini_tm_with_tm( struct tm *src)
-{
-   struct mulle_mini_tm   dst;
-
-   dst.year   = src->tm_year + 1900;
-   dst.month  = src->tm_mon;
-   dst.day    = src->tm_mday;
-   dst.hour   = src->tm_hour;
-   dst.minute = src->tm_min;
-   dst.second = src->tm_sec;
-   dst.ns     = 0;
-
-   return( dst);
-}
-
-
-void  mulle_tm_with_mini_tm( struct tm  *dst, struct mulle_mini_tm src)
-{
-   memset( dst, 0, sizeof( *dst)); // most compatible, though wasteful
-
-   dst->tm_year   = src.year - 1900;
-   dst->tm_mon    = src.month;
-   dst->tm_mday   = src.day;
-   dst->tm_hour   = src.hour;
-   dst->tm_min    = src.minute;
-   dst->tm_sec    = src.second;
-}
-
-
-@implementation NSCalendarDate (Posix)
-
-static void  set_mini_tm( NSCalendarDate *self, NSTimeInterval interval, int tzOffset)
+static void   mulle_mini_tm_init_with_time( struct mulle_mini_tm *mini, time_t time)
 {
    struct tm   tmp;
 
-   mulle_posix_tm_with_timeintervalsince1970( &tmp,
-                                              interval,
-                                              (int) tzOffset);
-   self->_tm.values = mulle_mini_tm_with_tm( &tmp);
+   if( ! mini)
+      return;
+
+   mulle_posix_tm_init_with_time( &tmp, time);
+   *mini = mulle_posix_tm_get_mini_tm( &tmp);
+}
+
+
+static time_t    mulle_mini_tm_get_time( struct mulle_mini_tm mini)
+{
+   struct tm   tmp;
+
+   mulle_posix_tm_init_with_mini_tm( &tmp, mini);
+   return( timegm( &tmp));  // not super sure this doesn't get corrupted
+}
+
+
+
+@implementation _MulleObjCConcreteCalendarDate( Posix)
+
+static void  _MulleObjCConcreteCalendarDateInitPosix( _MulleObjCConcreteCalendarDate *self,
+                                                      NSTimeInterval interval,
+                                                      NSTimeZone *timeZone)
+{
+   struct tm   tmp;
+   NSInteger   seconds;
+
+   seconds = [timeZone mulleSecondsFromGMTForTimeIntervalSince1970:interval];
+   mulle_posix_tm_init_with_interval1970( &tmp, interval, seconds);
+   self->_tm.values = mulle_posix_tm_get_mini_tm( &tmp);
+   self->_timeZone  = [timeZone retain];
 }
 
 
 // use specified tz or "GMT" as default
-- (instancetype) initWithTimeIntervalSince1970:(NSTimeInterval) timeInterval
-                                      timeZone:(NSTimeZone *) timeZone
++ (instancetype) newWithTimeIntervalSince1970:(NSTimeInterval) timeInterval
+                                     timeZone:(NSTimeZone *) timeZone
 {
+   _MulleObjCConcreteCalendarDate  *obj;
+
+   // nil timeZone = GMT
    if( ! timeZone)
       timeZone = [NSTimeZone mulleGMTTimeZone];  // GMT sic!
 
-   _timeZone = [timeZone retain];
-   assert( _timeZone);
-
-   set_mini_tm( self, timeInterval, (int) [_timeZone secondsFromGMT]);
-
-   return( self);
+   obj = NSAllocateObject( self, 0, NULL);
+   _MulleObjCConcreteCalendarDateInitPosix( obj, timeInterval, timeZone);
+   return( obj);
 }
 
- // unspecified tz ? use here
-- (instancetype) initWithTimeIntervalSince1970:(NSTimeInterval) timeInterval
+
++ (instancetype) newWithTimeIntervalSince1970:(NSTimeInterval) timeInterval
 {
-   _timeZone = [[NSTimeZone defaultTimeZone] retain];
-   assert( _timeZone);
+   _MulleObjCConcreteCalendarDate   *obj;
+   NSTimeZone                       *timeZone;
 
-   set_mini_tm( self, timeInterval, (int) [_timeZone secondsFromGMT]);
-
-   return( self);
+   // use defaultTimeZone, that's what one would expect
+   timeZone = [NSTimeZone defaultTimeZone];
+   obj      = NSAllocateObject( self, 0, NULL);
+   _MulleObjCConcreteCalendarDateInitPosix( obj, timeInterval, timeZone);
+   return( obj);
 }
 
 
+- (NSTimeInterval) timeIntervalSince1970
+{
+   struct tm        tmp;
+   time_t           value;
+   NSTimeInterval   interval;
+
+   value     = mulle_mini_tm_get_time( self->_tm.values);
+   interval  = (NSTimeInterval) value;
+   interval -= [_timeZone mulleSecondsFromGMTForTimeIntervalSince1970:interval];
+   return( interval);
+}
+
+
+//
+// Q: do we produce a value relative to GMT or to the current timeZone
+//    to GMT ? NSDate is GMT always.
+//
+- (NSTimeInterval) timeIntervalSinceReferenceDate
+{
+   struct tm        tmp;
+   time_t           value;
+   NSTimeInterval   interval;
+
+   value     = mulle_mini_tm_get_time( self->_tm.values);
+   interval  = (NSTimeInterval) value;
+   interval -= [_timeZone mulleSecondsFromGMTForTimeIntervalSince1970:interval];
+   return( _NSTimeIntervalSince1970AsReferenceDate( interval));
+}
+
+@end
+
+
+@implementation NSCalendarDate( Posix)
+
+/*
+ * Use _MulleObjCConcreteCalendarDate indirectly
+ */
+- (instancetype) _initWithTM:(struct tm *) tm
+                 nanoseconds:(unsigned long long) nanoseconds  // ignored
+                    timeZone:(NSTimeZone *) tz
+{
+   struct mulle_mini_tm   mini;
+
+   mini = mulle_posix_tm_get_mini_tm( tm);
+   return( [self mulleInitWithMiniTM:mini
+                            timeZone:tz]);
+}
+
+
+/*
+ * Use _MulleObjCConcreteCalendarDate directly
+ */
 - (instancetype) init
 {
    NSTimeInterval   seconds;
 
-   seconds = time( NULL) + NSTimeIntervalSince1970;
-   return( [self initWithTimeIntervalSinceReferenceDate:seconds]);
+   seconds = (NSTimeInterval) time( NULL);
+   return( [_MulleObjCConcreteCalendarDate newWithTimeIntervalSince1970:seconds]);
+}
+
+
+- (instancetype) initWithTimeIntervalSince1970:(NSTimeInterval) timeInterval
+{
+   return( [_MulleObjCConcreteCalendarDate newWithTimeIntervalSince1970:timeInterval]);
+}
+
+
+- (instancetype) mulleInitWithTimeIntervalSince1970:(NSTimeInterval) timeInterval
+                                           timeZone:(NSTimeZone *) tz
+{
+   return( [_MulleObjCConcreteCalendarDate newWithTimeIntervalSince1970:timeInterval
+                                                               timeZone:tz]);
 }
 
 
 - (instancetype) initWithTimeIntervalSinceReferenceDate:(NSTimeInterval) timeInterval
 {
-   return( [self initWithTimeIntervalSince1970:timeInterval + NSTimeIntervalSince1970]);
+   NSTimeInterval   since1970;
+
+   since1970 = _NSTimeIntervalSinceReferenceDateAsSince1970( timeInterval);
+   return( [_MulleObjCConcreteCalendarDate newWithTimeIntervalSince1970:since1970]);
+}
+
+
+- (instancetype) mulleInitWithTimeIntervalSinceReferenceDate:(NSTimeInterval) timeInterval
+                                                    timeZone:(NSTimeZone *) tz
+{
+   NSTimeInterval   since1970;
+
+   since1970 = _NSTimeIntervalSinceReferenceDateAsSince1970( timeInterval);
+   return( [_MulleObjCConcreteCalendarDate newWithTimeIntervalSince1970:since1970
+                                                               timeZone:tz]);
+}
+
+
+- (instancetype) mulleInitWithDate:(NSDate *) date
+                          timeZone:(NSTimeZone *) tz
+{
+   NSTimeInterval   since1970;
+
+   since1970 = [date timeIntervalSince1970];
+   return( [_MulleObjCConcreteCalendarDate newWithTimeIntervalSince1970:since1970
+                                                               timeZone:tz]);
 }
 
 
 - (instancetype) initWithDate:(NSDate *) date
-                     timeZone:(NSTimeZone *) tz
 {
-   return( [self initWithTimeIntervalSince1970:[date timeIntervalSince1970]
-                                      timeZone:tz]);
+   NSTimeInterval   since1970;
+
+   since1970 = [date timeIntervalSince1970];
+   return( [_MulleObjCConcreteCalendarDate newWithTimeIntervalSince1970:since1970]);
 }
 
 
-- (instancetype) _initWithDate:(NSDate *) date
+- (NSDate *) date
 {
-   return( [self initWithTimeIntervalSince1970:[date timeIntervalSince1970]
-                                      timeZone:nil]);
+   // convert to GMT
+   return( [NSDate dateWithTimeIntervalSince1970:[self timeIntervalSince1970]]);
 }
 
 
@@ -132,31 +226,19 @@ static void  set_mini_tm( NSCalendarDate *self, NSTimeInterval interval, int tzO
 {
    struct tm   tmp;
 
-   mulle_tm_with_mini_tm( &tmp, self->_tm.values);
+   mulle_posix_tm_init_with_mini_tm( &tmp, [self mulleMiniTM]);
 
-   tmp.tm_year  += years;
-   tmp.tm_mon   += months;
-   tmp.tm_mday  += days;
+   tmp.tm_year += years;
+   tmp.tm_mon  += months;
+   tmp.tm_mday += days;
 
-   tmp.tm_hour  += hours;
-   tmp.tm_min   += minutes;
-   tmp.tm_sec   += seconds;
+   tmp.tm_hour += hours;
+   tmp.tm_min  += minutes;
+   tmp.tm_sec  += seconds;
 
    return( [[[[self class] alloc] _initWithTM:&tmp
-                                     timeZone:_timeZone] autorelease]);
-}
-
-
-- (NSTimeInterval) timeIntervalSinceReferenceDate
-{
-   return( [self timeIntervalSince1970] - NSTimeIntervalSince1970);
-}
-
-
-- (NSDate *) date
-{
-   // convert to GMT
-   return( [NSDate dateWithTimeIntervalSince1970:[self timeIntervalSince1970]]);
+                                  nanoseconds:0
+                                     timeZone:[self timeZone]] autorelease]);
 }
 
 @end

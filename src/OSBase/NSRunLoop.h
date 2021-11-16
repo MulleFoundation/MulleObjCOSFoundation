@@ -47,7 +47,8 @@ struct MulleRunLoopMode
 };
 
 
-extern NSString   *NSDefaultRunLoopMode;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
+NSString   *NSDefaultRunLoopMode;
 
 //
 // basically a wrapper around select(2) in POSIX

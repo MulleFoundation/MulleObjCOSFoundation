@@ -21,6 +21,11 @@
 
 #include "_MulleObjCDarwinFoundation-include.h"
 
+// For Darwin we don't really need these adornments
+// #ifndef MULLE_OBJC_DARWIN_FOUNDATION_EXTERN_GLOBAL
+// # define MULLE_OBJC_DARWIN_FOUNDATION_EXTERN_GLOBAL MULLE_C_EXTERN_GLOBAL
+// #endif
+
 /* You can add some more include statements here */
 
 
