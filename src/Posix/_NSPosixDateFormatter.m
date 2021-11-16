@@ -64,8 +64,13 @@ MULLE_OBJC_DEPENDS_ON_LIBRARY( MulleObjCStandardFoundation);
 
    length   = [format mulleUTF8StringLength];
    _cformat = MulleObjCInstanceAllocateNonZeroedMemory( self, length + 1);
+<<<<<<< HEAD
    [format mulleGetUTF8String:_cformat
                    bufferSize:length + 1];
+=======
+   [format getUTF8String:_cformat
+               maxLength:length + 1];
+>>>>>>> 5f9ffec086b4ccb879ded5d7ca69e7a2d17d9c36
 
    // This an initial heuristic, later formatting will increase this
    // if needed
@@ -169,8 +174,13 @@ MULLE_OBJC_DEPENDS_ON_LIBRARY( MulleObjCStandardFoundation);
                     timeZone:timeZone];
       if( len)
       {
+<<<<<<< HEAD
           s = [NSString mulleStringWithUTF8Characters:buf
                                                length:len + 1];
+=======
+          s = [NSString stringWithUTF8String:buf
+                                      length:len + 1];
+>>>>>>> 5f9ffec086b4ccb879ded5d7ca69e7a2d17d9c36
           mulle_allocator_free( NULL, buf);
           return( s);
       }
