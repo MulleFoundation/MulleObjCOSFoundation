@@ -1,6 +1,10 @@
 # .mulle
 
+<<<<<<< HEAD
 This `.mulle` folder is used by [mulle-sde](//mulle-sde.github.io) to
+=======
+This `.mulle` folder is used by [mulle-sde](//mulle-sde.gihub.io) to
+>>>>>>> 5f9ffec086b4ccb879ded5d7ca69e7a2d17d9c36
 store project information.
 
 ## Structure
