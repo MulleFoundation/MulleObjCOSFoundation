@@ -13,14 +13,14 @@
 
 // You can tweak the following #import with these commands.
 // (Use CD92463B-34CB-4BF3-8AB9-75CC87531529 instead of MulleObjCPosixFoundation if there are duplicate entries)
-//    remove:             `mulle-sourcetree mark MulleObjCPosixFoundation no-header`
+//    remove:             `mulle-sde dependency mark MulleObjCPosixFoundation no-header`
 //    rename:             `mulle-sde dependency|library set MulleObjCPosixFoundation include whatever.h`
-//    reorder:            `mulle-sourcetree move MulleObjCPosixFoundation <up|down>`
-//    toggle #import:     `mulle-sourcetree mark MulleObjCPosixFoundation [no-]import`
-//    toggle public:      `mulle-sourcetree mark MulleObjCPosixFoundation [no-]public`
-//    toggle optional:    `mulle-sourcetree mark MulleObjCPosixFoundation [no-]require`
-//    remove for platform:`mulle-sourcetree mark MulleObjCPosixFoundation no-platform-<uname>`
-//        (use mulle-sourcetree-to-c --unames for known values)
+//    reorder:            `mulle-sde dependency move MulleObjCPosixFoundation <up|down>`
+//    toggle #import:     `mulle-sde dependency mark MulleObjCPosixFoundation [no-]import`
+//    toggle public:      `mulle-sde dependency mark MulleObjCPosixFoundation [no-]public`
+//    toggle optional:    `mulle-sde dependency mark MulleObjCPosixFoundation [no-]require`
+//    remove for platform:`mulle-sde dependency mark MulleObjCPosixFoundation no-platform-<uname>`
+//        (use `mulle-sourcetree-to-c --unames` to list known values)
 #import <MulleObjCPosixFoundation/MulleObjCPosixFoundation.h>   // MulleObjCPosixFoundation
 
 #ifdef __has_include

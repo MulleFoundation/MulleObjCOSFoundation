@@ -127,9 +127,10 @@
 @end
 
 
-extern NSString   *NSLoadedClasses;
-extern NSString   *NSBundleDidLoadNotification;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSLoadedClasses;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSBundleDidLoadNotification;
 
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
 NSString   *MulleObjCBundleLocalizedStringFromTable( NSBundle *bundle,
                                                      NSString *tableName,
                                                      NSString *key,

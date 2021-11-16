@@ -84,3 +84,16 @@ void   NSLogArguments( NSString *format, mulle_vararg_list args)
       fprintf( stderr, "%s\n", cString);
    }
 }
+
+
+//
+// a category is cheaper than a class and it can have its own unload
+//
+@implementation NSProcessInfo( SyslogUnloader)
+
++ (void) unload
+{
+   closelog();
+}
+
+@end

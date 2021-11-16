@@ -98,7 +98,7 @@
 
 @end
 
-extern NSString   *NSGlobalDomain;
-extern NSString   *NSArgumentDomain;
-extern NSString   *NSRegistrationDomain;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSGlobalDomain;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSArgumentDomain;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSRegistrationDomain;
 

@@ -19,7 +19,7 @@ static void   printDate( id date)
    NSDateFormatter   *formatter;
    NSString          *s;
 
-   formatter = [[[NSDateFormatter alloc] initWithDateFormat:@"%y-%m-%dT%H:%M:%SZ%z"
+   formatter = [[[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%dT%H:%M:%S%z"
                                        allowNaturalLanguage:NO] autorelease];
 
    printf( "%s %.3f -> ",
@@ -37,23 +37,56 @@ static void   printDate( id date)
 
 int   main( int argc, const char * argv[])
 {
-   NSCalendarDate    *date;
+   NSDate            *date;
    NSCalendarDate    *today;
    NSDateFormatter   *formatter;
    NSString          *s;
    char              **p;
+   NSTimeZone        *gmtTimeZone;
+   NSTimeInterval    interval;
+   NSTimeInterval    interval1970;
 
 #ifdef __MULLE_OBJC__
    if( mulle_objc_global_check_universe( __MULLE_OBJC_UNIVERSENAME__) != mulle_objc_universe_is_ok)
       return( 1);
 #endif
-   [NSTimeZone setDefaultTimeZone:[NSTimeZone mulleGMTTimeZone]];
+   gmtTimeZone = [NSTimeZone mulleGMTTimeZone];
+   [NSTimeZone setDefaultTimeZone:gmtTimeZone];
 
+   interval     = 12 * 60 * 60;
+   interval1970 = _NSTimeIntervalSinceReferenceDateAsSince1970( interval);
+
+   printf( "NSDate\n");
+   date = [[[NSDate alloc] initWithTimeIntervalSinceReferenceDate:interval] autorelease];
+   printDate( date);
+
+   date = [[[NSDate alloc] initWithTimeIntervalSince1970:interval1970] autorelease];
+   printDate( date);
+
+
+   printf( "NSCalendarDate (ReferenceDate)\n");
    // noon 2000
-   today = [[[NSCalendarDate alloc] initWithTimeIntervalSinceReferenceDate:12 * 60 * 60] autorelease];
+   today = [[[NSCalendarDate alloc] initWithTimeIntervalSinceReferenceDate:interval] autorelease];
    printDate( today);
 
-   today = [[[NSDate alloc] initWithTimeIntervalSinceReferenceDate:12 * 60 * 60] autorelease];
+   today = [[[NSCalendarDate alloc] mulleInitWithTimeIntervalSinceReferenceDate:interval
+                                                                       timeZone:gmtTimeZone] autorelease];
+   printDate( today);
+
+   printf( "NSCalendarDate (Since1970)\n");
+   today = [[[NSCalendarDate alloc] initWithTimeIntervalSince1970:interval1970] autorelease];
+   printDate( today);
+
+   today = [[[NSCalendarDate alloc] mulleInitWithTimeIntervalSince1970:interval1970
+                                                             timeZone:gmtTimeZone] autorelease];
+   printDate( today);
+
+   printf( "NSCalendarDate (Date)\n");
+   today = [[[NSCalendarDate alloc] initWithDate:date] autorelease];
+   printDate( today);
+
+   today = [[[NSCalendarDate alloc] mulleInitWithDate:date
+                                             timeZone:gmtTimeZone] autorelease];
    printDate( today);
 
    return( 0);

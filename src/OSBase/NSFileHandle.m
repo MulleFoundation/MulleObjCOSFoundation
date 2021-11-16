@@ -258,7 +258,7 @@ static NSData   *readAllData( NSFileHandle *self, BOOL untilFullOrEOF)
    size_t   len;
    size_t   written;
 
-   if( len == -1)
+   if( len == (NSUInteger) -1)
       len = strlen( bytes);
 
    do

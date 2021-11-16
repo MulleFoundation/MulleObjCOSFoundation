@@ -66,10 +66,8 @@ static void   do_the_dup( int fd, id handle)
       NSUInteger   i;
 
       _status = _NSTaskIsPresumablyRunning;
-
       path    = [_launchPath fileSystemRepresentation];
-
-      argc = [_arguments count];
+      argc    = [_arguments count];
 
       {
          void  *argv[ argc + 2];

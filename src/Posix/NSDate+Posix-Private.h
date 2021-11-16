@@ -9,8 +9,14 @@
 #include <sys/time.h>
 
 
+NSTimeInterval   _NSTimeIntervalNow( void);
+
+
 @interface NSDate (Posix)
 
+- (instancetype) _initWithTM:(struct tm *) tm
+                 nanoseconds:(unsigned long long) nanoseconds
+                    timeZone:(NSTimeZone *) tz;
 - (struct timeval) _timevalForSelect;
 
 @end

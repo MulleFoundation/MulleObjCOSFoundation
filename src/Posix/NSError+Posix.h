@@ -8,7 +8,8 @@
 #import "import.h"
 
 
-extern NSString   *NSPOSIXErrorDomain;
+MULLE_OBJC_POSIX_FOUNDATION_EXTERN_GLOBAL
+NSString   *NSPOSIXErrorDomain;
 
 
 void   MulleObjCSetPosixErrorDomain( void);

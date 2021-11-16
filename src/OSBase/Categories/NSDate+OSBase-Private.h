@@ -11,7 +11,7 @@
 - (size_t) _printDate:(NSDate *) date
                buffer:(char *) buf
                length:(size_t) len
-        cStringFormat:(char *) c_format
+        formatUTF8String:(char *) c_format
                locale:(NSLocale *) locale
              timeZone:(NSTimeZone *) timeZone;
 

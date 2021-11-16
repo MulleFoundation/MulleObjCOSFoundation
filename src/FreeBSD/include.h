@@ -1,5 +1,5 @@
-#ifndef mulle_objc_freeb_sdfoundation_include_h__
-#define mulle_objc_freeb_sdfoundation_include_h__
+#ifndef mulle_objc_freebsd_foundation_include_h__
+#define mulle_objc_freebsd_foundation_include_h__
 
 /* This is a central include file to keep dependencies out of the library
    C files. It is usally included by .h files only.
@@ -21,6 +21,10 @@
 
 #include "_MulleObjCFreeBSDFoundation-include.h"
 
+// For FreeBSD we don't really need these adornments
+//#ifndef MULLE_OBJC_FREEBSD_FOUNDATION_EXTERN_GLOBAL
+//# define MULLE_OBJC_FREEBSD_FOUNDATION_EXTERN_GLOBAL MULLE_C_EXTERN_GLOBAL
+//#endif
 /* You can add some more include statements here */
 
 

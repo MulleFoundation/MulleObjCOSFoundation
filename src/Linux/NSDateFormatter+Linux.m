@@ -37,11 +37,18 @@
 - (size_t) _printTM:(struct tm *) tm
              buffer:(char *) buf
              length:(size_t) len
-      cStringFormat:(char *) c_format
+      formatUTF8String:(char *) c_format
              locale:(NSLocale *) locale
 {
    locale_t   old_locale;
+   locale_t   new_locale;
 
+   NSParameterAssert( tm);
+   NSParameterAssert( c_format);
+   NSParameterAssert( ! locale || [locale isKindOfClass:[NSLocale class]]);
+
+   // locale_t is 0, the locale is left unchanged, which is nice if
+   // locale is nil
    old_locale = uselocale( [locale xlocale]);
    {
       len = strftime( buf, len, c_format, tm);

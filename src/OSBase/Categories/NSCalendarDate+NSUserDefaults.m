@@ -10,11 +10,6 @@
 
 
 
-@interface NSCalendarDate( Private)
-
-- (struct mulle_mini_tm) mulleMiniTM;
-
-@end
 
 @interface NSObject( FoundationPrivate)
 

@@ -1,0 +1,12 @@
+NSDate
+_MulleObjCConcreteDate 43200.000 -> "01-01-01T18:00:00+0600"
+_MulleObjCConcreteDate 43200.000 -> "01-01-01T18:00:00+0600"
+NSCalendarDate (ReferenceDate)
+_MulleObjCConcreteCalendarDate 43200.000 -> "01-01-01T18:00:00+0600"
+_MulleObjCConcreteCalendarDate 43200.000 -> "01-01-01T18:00:00+0600"
+NSCalendarDate (Since1970)
+_MulleObjCConcreteCalendarDate 43200.000 -> "01-01-01T18:00:00+0600"
+_MulleObjCConcreteCalendarDate 43200.000 -> "01-01-01T18:00:00+0600"
+NSCalendarDate (Date)
+_MulleObjCConcreteCalendarDate 43200.000 -> "01-01-01T18:00:00+0600"
+_MulleObjCConcreteCalendarDate 43200.000 -> "01-01-01T18:00:00+0600"

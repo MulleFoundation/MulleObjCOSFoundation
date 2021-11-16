@@ -75,6 +75,9 @@
 
 @end
 
-extern NSString  *NSFilePathComponentSeparator;
-extern NSString  *NSFilePathExtensionSeparator;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
+NSString  *NSFilePathComponentSeparator;
+
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
+NSString  *NSFilePathExtensionSeparator;
 

@@ -17,36 +17,6 @@
 @class NSDirectoryEnumerator;
 
 
-extern NSString   *NSFileType;
-extern NSString   *NSFileSize;
-extern NSString   *NSFileModificationDate;
-extern NSString   *NSFileReferenceCount;
-extern NSString   *NSFileDeviceIdentifier;
-extern NSString   *NSFileOwnerAccountName;
-extern NSString   *NSFileGroupOwnerAccountName;
-extern NSString   *NSFilePosixPermissions;
-extern NSString   *NSFileSystemNumber;
-extern NSString   *NSFileSystemFileNumber;
-extern NSString   *NSFileExtensionHidden;
-extern NSString   *NSFileHFSCreatorCode;
-extern NSString   *NSFileHFSTypeCode;
-extern NSString   *NSFileImmutable;
-extern NSString   *NSFileAppendOnly;
-extern NSString   *NSFileCreationDate;
-extern NSString   *NSFileOwnerAccountID;
-extern NSString   *NSFileGroupOwnerAccountID;
-extern NSString   *NSFileBusy;
-
-extern NSString   *NSFileTypeDirectory;
-extern NSString   *NSFileTypePipe;
-extern NSString   *NSFileTypeRegular;
-extern NSString   *NSFileTypeSymbolicLink;
-extern NSString   *NSFileTypeSocket;
-extern NSString   *NSFileTypeCharacterSpecial;
-extern NSString   *NSFileTypeBlockSpecial;
-extern NSString   *NSFileTypeUnknown;
-
-
 @class NSFileManager;
 
 @protocol NSFileManagerHandler
@@ -195,11 +165,40 @@ shouldProceedAfterError:(NSError *)error
 - (BOOL) moveItemAtPath:(NSString *) srcPath
                  toPath:(NSString *) dstPath
                   error:(NSError **) error;
--(BOOL)copyItemAtPath:(NSString *) fromPath
-               toPath:(NSString *) toPath
-                error:(NSError **) error;
+- (BOOL) copyItemAtPath:(NSString *) fromPath
+                 toPath:(NSString *) toPath
+                  error:(NSError **) error;
 
 @end
 
+
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileType;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileSize;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileModificationDate;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileReferenceCount;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileDeviceIdentifier;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileOwnerAccountName;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileGroupOwnerAccountName;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFilePosixPermissions;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileSystemNumber;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileSystemFileNumber;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileExtensionHidden;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileHFSCreatorCode;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileHFSTypeCode;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileImmutable;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileAppendOnly;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileCreationDate;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileOwnerAccountID;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileGroupOwnerAccountID;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileBusy;
+
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileTypeDirectory;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileTypePipe;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileTypeRegular;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileTypeSymbolicLink;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileTypeSocket;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileTypeCharacterSpecial;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileTypeBlockSpecial;
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL NSString   *NSFileTypeUnknown;
 
 

@@ -15,11 +15,17 @@
 
 
 // These are OS specific
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
 void   *NSAllocateMemoryPages( NSUInteger size);
+
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
 void   NSDeallocateMemoryPages( void *ptr, NSUInteger size);
 
 
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
 NSUInteger   NSPageSize( void);
+
+MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
 NSUInteger   NSLogPageSize( void);
 
 
