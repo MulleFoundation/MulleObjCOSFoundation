@@ -1,3 +1,8 @@
+## 0.20.0
+
+* some refinements for NSFileHandle
+
+
 ## 0.19.0
 
 * some refinements for NSFileHandle
