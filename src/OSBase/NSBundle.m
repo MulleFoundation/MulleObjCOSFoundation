@@ -651,14 +651,14 @@ void     (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path) 
 + (NSString *) _mainBundlePathForExecutablePath:(NSString *) executablePath
 {
    // default, overridden by Darwin
-   return( executablePath);
+   return( [executablePath stringByDeletingLastPathComponent]);
 }
 
 
 + (NSString *) _bundlePathForExecutablePath:(NSString *) executablePath
 {
    // default, overridden by Darwin
-   return( executablePath);
+   return( [executablePath stringByDeletingLastPathComponent]);
 }
 
 
