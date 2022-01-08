@@ -19,11 +19,10 @@
 
 int   main( int argc, const char * argv[])
 {
-   NSArray   *bundles;
-   NSBundle  *bundle;
+   NSDictionary   *bundleInfo;
 
    // not much we can check here
-   bundles = [NSBundle allFrameworks];
+   bundleInfo = [NSBundle mulleRegisteredBundleInfo];
 
 #if 0
    fprintf( stderr, "Informational output only (not checked):\n");

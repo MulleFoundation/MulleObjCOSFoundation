@@ -471,7 +471,7 @@ static int   tm_sprintf_character( struct tm *tm,
                break;
             tmp[ i] = input[ i];
          }
-         tmp[ i + 1] = 0;
+         tmp[ i] = 0;
 
          ns = strtol( tmp, NULL, 10);
          switch( i)

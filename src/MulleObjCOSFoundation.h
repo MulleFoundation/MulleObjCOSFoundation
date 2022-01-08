@@ -27,7 +27,9 @@
 # endif
 #endif
 
-#if MULLE_OBJC_STANDARD_FOUNDATION_VERSION < ((0 << 20) | (17 << 8) | 0)
-# error "MulleObjCStandardFoundation is too old"
-#endif
 
+#ifdef __has_include
+# if __has_include( "_MulleObjCOSFoundation-versioncheck.h")
+#  include "_MulleObjCOSFoundation-versioncheck.h"
+# endif
+#endif

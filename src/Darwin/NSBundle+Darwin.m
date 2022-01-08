@@ -249,9 +249,11 @@ static NSString   *resourcesPath( NSBundle *self)
       if( ! strlen( s) || s[ 0] != '/')
          continue;
 
-      header        = (struct mach_header *) _dyld_get_image_header( i);
-      libInfo.start = (NSUInteger) header;
-      libInfo.end   = libInfo.start;
+      header          = (struct mach_header *) _dyld_get_image_header( i);
+      libInfo.start   = (NSUInteger) header;
+      libInfo.end     = libInfo.start;
+      libInfo.handle  = NULL;
+
       if( header->magic == MH_MAGIC_64)
       {
          ncmd = ((struct mach_header_64 *) header)->ncmds;
@@ -316,13 +318,13 @@ static NSString   *resourcesPath( NSBundle *self)
 }
 
 
-static BOOL  isCurrentOS( NSString *s)
+static BOOL   isCurrentOS( NSString *s)
 {
    return( [s isEqualToString:[NSBundle _OSIdentifier]]);
 }
 
 
-static BOOL  hasFrameworkExtension( NSString *s)
+static BOOL   hasFrameworkExtension( NSString *s)
 {
    return( [[s pathExtension] isEqualToString:@"framework"]);
 }
