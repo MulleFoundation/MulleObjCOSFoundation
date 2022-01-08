@@ -13,7 +13,7 @@
 #include <stdio.h>
 
 
-int   main( int argc, const char * argv[])
+int   main( int argc, char * argv[])
 {
    NSString        *argv_exe;
    NSString        *bundle_exe;

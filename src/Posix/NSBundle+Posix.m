@@ -125,9 +125,10 @@
    // class will reside in different bundles over time
    // (Not caring right now)
    //
-   libInfo.path  = nil;
-   libInfo.start = (NSUInteger) classAddress;
-   libInfo.end   = (NSUInteger) classAddress;
+   libInfo.path   = nil;
+   libInfo.start  = classAddress;
+   libInfo.end    = classAddress;
+   libInfo.handle = NULL;  // don't try to evict on unload
 
    path          = [NSString stringWithFormat:@"/pseudoproc/memory/%llx", classAddress];
    bundle        = [[[self alloc] _mulleInitWithPath:path
@@ -189,13 +190,13 @@ static char   *dlerror_or_errno( int errnocode)
 {
    char  *s;
 
-   if( _handle)
-   {
-      if( dlclose( _handle))
-         MulleObjCThrowInternalInconsistencyException( @"dlclose: %s", dlerror_or_errno( 0));
-      _handle = NULL;
-   }
-   return( NO);
+   if( ! _handle)
+      return( NO);
+
+   if( dlclose( _handle))
+      MulleObjCThrowInternalInconsistencyException( @"dlclose: %s", dlerror_or_errno( 0));
+   _handle = NULL;
+   return( YES);
 }
 
 

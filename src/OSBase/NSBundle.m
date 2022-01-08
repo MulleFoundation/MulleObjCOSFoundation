@@ -38,6 +38,9 @@ NSString   *NSLoadedClasses             = @"NSLoadedClasses";
 NSString   *NSBundleDidLoadNotification = @"NSBundleDidLoadNotification";
 
 
+#define BUNDLE_REGISTRATION_DEBUG
+
+
 @interface NSObject( _NS)
 
 - (BOOL) __isNSNull;
@@ -79,10 +82,14 @@ static inline void   SelfUnlock( void)
 }
 
 
+// +finalize solely exists for the benefit of NSBundle...
 + (void) finalize
 {
    @autoreleasepool
    {
+#ifdef BUNDLE_REGISTRATION_DEBUG
+      fprintf( stderr, "Releasing all registered bundles\n");
+#endif
       [Self._registeredBundleInfo autorelease];
       Self._registeredBundleInfo = nil;
    }
@@ -114,10 +121,22 @@ static NSBundle  *get_or_register_bundle( NSBundle *bundle, NSString *path)
       {
          [Self._registeredBundleInfo setObject:bundle
                                         forKey:path];
+#ifdef BUNDLE_REGISTRATION_DEBUG
+         mulle_fprintf( stderr, "Added bundle %p for path %@\n", bundle, path);
+#endif
          if( NSDebugEnabled)
             NSLog( @"Added Bundle %p for path \"%@\"", bundle, path);
          other = bundle;
       }
+      else
+      {
+#ifdef BUNDLE_REGISTRATION_DEBUG
+         if( other)
+            mulle_fprintf( stderr, "Found bundle %p for path %@\n", other, path);
+#endif
+      }
+
+      other = [[other retain] autorelease];
    }
    SelfUnlock();
 
@@ -127,19 +146,24 @@ static NSBundle  *get_or_register_bundle( NSBundle *bundle, NSString *path)
 
 static void   deregister_bundle( NSBundle *bundle, NSString *path)
 {
+   assert( bundle);
+   assert( path);
+
    //
    // a different bundle, can not live under the same name
    //
    SelfLock();
    {
-#ifdef DEBUG
       NSBundle   *other;
 
       other = [Self._registeredBundleInfo objectForKey:path];
-      if( other && other != bundle)
-         abort();
+      if( other == bundle)
+      {
+         [Self._registeredBundleInfo removeObjectForKey:path];
+#ifdef BUNDLE_REGISTRATION_DEBUG
+         mulle_fprintf( stderr, "Removed bundle %p for path %@\n", bundle, path);
 #endif
-      [Self._registeredBundleInfo removeObjectForKey:path];
+      }
    }
    SelfUnlock();
 }
@@ -151,7 +175,7 @@ static void   deregister_bundle( NSBundle *bundle, NSString *path)
 // you can pass a nil for bundle, to just lookup
 //
 NSBundle  *(*NSBundleGetOrRegisterBundleWithPath)( NSBundle *bundle, NSString *path) = get_or_register_bundle;
-void     (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path) = deregister_bundle;
+void       (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path) = deregister_bundle;
 
 
 + (BOOL) isBundleFilesystemExtension:(NSString *) extension
@@ -168,24 +192,11 @@ void     (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path) 
    BOOL                isDir;
    BOOL                flag;
 
-   self = [self init];  // should be done by subcategory
-
-   @autoreleasepool
-   {
-      fullPath = [fullPath stringByStandardizingPath];
-      fullPath = [fullPath stringByResolvingSymlinksInPath];
-      _path    = [fullPath copy];
-
-      if( libInfo)
-      {
-         _executablePath = [libInfo->path copy];
-         _startAddress   = libInfo->start;
-         _endAddress     = libInfo->end;
-      }
-   }
+   fullPath = [fullPath stringByStandardizingPath];
+   fullPath = [fullPath stringByResolvingSymlinksInPath];
 
    manager = [NSFileManager defaultManager];
-   flag    = [manager fileExistsAtPath:_path
+   flag    = [manager fileExistsAtPath:fullPath
                            isDirectory:&isDir];
 
    //
@@ -204,6 +215,17 @@ void     (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path) 
       return( nil);
    }
 
+   self = [self init];  // should be done by subcategory
+
+   if( libInfo)
+   {
+      _executablePath = [libInfo->path copy];
+      _startAddress   = libInfo->start;
+      _endAddress     = libInfo->end;
+      _handle         = libInfo->handle;
+   }
+
+   _path = [fullPath copy];
    _lock = [NSLock new];
 
    return( self);
@@ -220,19 +242,27 @@ void     (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path) 
 
    // speculatively assume fullPath is already correct
    bundle = (*NSBundleGetOrRegisterBundleWithPath)( NULL, fullPath);
-   if( bundle)
+   if( ! bundle)
    {
-      [bundle retain];
-      [self release];
-      return( bundle);
+      self = [self __mulleInitWithPath:fullPath
+                     sharedLibraryInfo:libInfo];
+      if( ! self)
+         return( self);
+
+      // use properly canonicalized _path for second check
+      bundle = (*NSBundleGetOrRegisterBundleWithPath)( self, _path);
+      if( bundle == self)
+      {
+#ifdef BUNDLE_REGISTRATION_DEBUG
+         fprintf( stderr, "Bundle %p lives\n", self);
+#endif
+         return( self);
+      }
    }
 
-   self = [self __mulleInitWithPath:fullPath
-                 sharedLibraryInfo:libInfo];
-   if( ! self)
-      return( self);
-
-   return( (*NSBundleGetOrRegisterBundleWithPath)( self, _path));
+   [bundle retain];
+   [self release];
+   return( bundle);
 }
 
 
@@ -248,8 +278,11 @@ void     (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path) 
 
 - (void) finalize
 {
-   [self unloadBundle];
-   (*NSBundleDeregisterBundleWithPath)( self, [self bundlePath]);
+   NSString   *path;
+
+   [self unloadBundle]; // sets handle to NULL
+   if( _path)
+      (*NSBundleDeregisterBundleWithPath)( self, _path);
 
    [super finalize];
 }
@@ -257,6 +290,10 @@ void     (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path) 
 
 - (void) dealloc
 {
+#ifdef BUNDLE_REGISTRATION_DEBUG
+   fprintf( stderr, "Bundle %p dies\n", self);
+#endif
+
    [_path release];
    [_executablePath release];
    [_resourcePath release];
@@ -276,11 +313,12 @@ void     (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path) 
    NSString                         *path;
    struct _MulleObjCSharedLibrary   libInfo;
 
-   libInfo.path  = [[NSProcessInfo processInfo] _executablePath];
+   libInfo.path   = [[NSProcessInfo processInfo] _executablePath];
    NSParameterAssert( [libInfo.path length]);
-   libInfo.start = 0;
-   libInfo.end   = 0;
-   path          = [self _mainBundlePathForExecutablePath:libInfo.path];
+   libInfo.start  = 0;
+   libInfo.end    = 0;
+   libInfo.handle = NULL;
+   path           = [self _mainBundlePathForExecutablePath:libInfo.path];
 
    //
    // return possibly already registered bundle here
@@ -326,8 +364,7 @@ void     (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path) 
          sharedLibraryInfo = [self _allSharedLibraries];
          infoLibs          = [sharedLibraryInfo bytes];
          nInfoLibs         = [sharedLibraryInfo length] / sizeof( struct _MulleObjCSharedLibrary);
-
-         sentinel = &infoLibs[ nInfoLibs];
+         sentinel          = &infoLibs[ nInfoLibs];
          while( infoLibs < sentinel)
          {
             path = [self _bundlePathForExecutablePath:infoLibs->path];
@@ -418,9 +455,10 @@ void     (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path) 
 {
    struct _MulleObjCSharedLibrary  libInfo;
 
-   libInfo.path  = executablePath;
-   libInfo.start = 0;
-   libInfo.end   = 0;
+   libInfo.path   = executablePath;
+   libInfo.start  = 0;
+   libInfo.end    = 0;
+   libInfo.handle = 0;
 
    return( [[[self alloc] _mulleInitWithPath:path
                            sharedLibraryInfo:&libInfo] autorelease]);
@@ -478,7 +516,9 @@ void     (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path) 
 }
 
 
-- (BOOL) isLoaded;
+// for all intents and purposes static linked libraries are also "loaded"
+// but we never unload them
+- (BOOL) isLoaded
 {
    return( _handle != NULL);
 }
@@ -486,11 +526,13 @@ void     (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path) 
 
 - (void) willLoad
 {
+   assert( _handle == NULL);
 }
 
 
 - (void) didLoad
 {
+   assert( _handle != NULL);
    //
    // would have to run over the whole runtime to find classes and categories
    // that are inside _handle, that's too slow, and I don't care.
@@ -501,7 +543,8 @@ void     (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path) 
    //
    [[NSNotificationCenter defaultCenter] postNotificationName:NSBundleDidLoadNotification
                                                        object:self
-                                                    userInfo:@{  @"NSLoadedClasses is alway nil mulle-objc": @"note" }];
+                                                    userInfo:@{
+   @"note": @"NSLoadedClasses is alway nil mulle-objc" }];
 }
 
 
@@ -662,9 +705,10 @@ void     (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path) 
 }
 
 
-- (BOOL) mulleContainsAddress:(NSUInteger) address
+- (BOOL) mulleContainsAddress:(void *) address
 {
-   return( _startAddress >= address && _endAddress <= address);
+   return( (uintptr_t) _startAddress >= (uintptr_t)  address &&
+           (uintptr_t) _endAddress <= (uintptr_t)  address);
 }
 
 
@@ -700,7 +744,7 @@ void     (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path) 
    for( bundlePath in bundleInfo)
    {
       bundle = [bundleInfo objectForKey:bundlePath];
-      if( [bundle mulleContainsAddress:(NSUInteger) classAddress])
+      if( [bundle mulleContainsAddress:classAddress])
          return( bundle);
    }
 
@@ -766,8 +810,10 @@ static id  readDictionaryOrNull( NSBundle *self, NSString *name, NSString *type)
 
       dict = readDictionaryOrNull( self, @"Info", @"plist");
       [_lock lock];
-      if( ! _infoDictionary)
-         _infoDictionary = [dict retain];
+      {
+         if( ! _infoDictionary)
+            _infoDictionary = [dict retain];
+      }
       [_lock unlock];
    }
 }
@@ -801,30 +847,36 @@ static id  readDictionaryOrNull( NSBundle *self, NSString *name, NSString *type)
    languageCode = [locale languageCode];
 
    [_lock lock];
-   if( ! [_languageCode isEqualToString:languageCode])
    {
-      [_languageCode autorelease];
-      [_localizedStringTables autorelease];
+      if( ! [_languageCode isEqualToString:languageCode])
+      {
+         [_languageCode autorelease];
+         [_localizedStringTables autorelease];
 
-      _languageCode          = [languageCode copy];
-      _localizedStringTables = [NSMutableDictionary new];
-   }
+         _languageCode          = [languageCode copy];
+         _localizedStringTables = [NSMutableDictionary new];
+      }
 
-   table = [_localizedStringTables objectForKey:tableName];
-   if( ! table)
-   {
-      // don't lock when hitting the filesystem
-      [_lock unlock];
-      dict = readDictionaryOrNull( self, tableName, @"strings");
-      [_lock lock];
-
-      // so recheck assumption, that there is nothing here yet
       table = [_localizedStringTables objectForKey:tableName];
       if( ! table)
       {
-         [_localizedStringTables setObject:dict
-                                    forKey:tableName];
-         table = dict;
+         // don't lock when hitting the filesystem
+         {
+            [_lock unlock];
+         }
+         dict = readDictionaryOrNull( self, tableName, @"strings");
+         {
+            [_lock lock];
+         }
+
+         // so recheck assumption, that there is nothing here yet
+         table = [_localizedStringTables objectForKey:tableName];
+         if( ! table)
+         {
+            [_localizedStringTables setObject:dict
+                                       forKey:tableName];
+            table = dict;
+         }
       }
    }
    [_lock unlock];

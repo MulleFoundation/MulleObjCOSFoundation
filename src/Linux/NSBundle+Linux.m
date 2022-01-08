@@ -55,16 +55,18 @@ static int  collect_filesystem_libraries( struct dl_phdr_info *info,
    if( info->dlpi_name[ 0] != '/')
       return( 0);
 
-   libInfo.start = info->dlpi_addr;
-   libInfo.end   = libInfo.start;
-   n             = info->dlpi_phnum;
+   libInfo.start  = (void *) info->dlpi_addr;
+   libInfo.end    = libInfo.start;
+   libInfo.handle = NULL;
+
+   n = info->dlpi_phnum;
    for( i = 0; i < n; i++)
    {
       section_end = (uintptr_t) (libInfo.start +
                                  info->dlpi_phdr[i].p_vaddr +
                                  info->dlpi_phdr[i].p_memsz);
-      if( section_end > libInfo.end)
-         libInfo.end = section_end;
+      if( section_end > (uintptr_t) libInfo.end)
+         libInfo.end = (void *) section_end;
    }
 
    manager      = [NSFileManager defaultManager];

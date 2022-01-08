@@ -20,11 +20,12 @@
 //
 @interface NSBundle : NSObject
 {
-   NSString       *_path;
-   void           *_handle;
-   NSUInteger     _startAddress;
-   NSUInteger     _endAddress;
-   NSLock         *_lock;  //used for lazy resources
+   NSString                *_path;
+   NSLock                  *_lock;  // used for lazy resources
+
+   void                    *_handle;
+   void                    *_startAddress;
+   void                    *_endAddress;
 
    //
    // localization, we cach only for a single languageCode
@@ -32,7 +33,6 @@
    //
    NSString              *_languageCode;
    NSMutableDictionary   *_localizedStringTables;
-   BOOL                  _isLoaded;
 
 @private
    id             _infoDictionary;      // lazy can be NSNull
@@ -41,7 +41,6 @@
    NSString       *_executablePath;  // for "already loaded" bundles
    NSString       *_resourcePath;    // for "already loaded" bundles
 }
-
 
 + (BOOL) isBundleFilesystemExtension:(NSString *) extension;
 
@@ -115,7 +114,7 @@
 
 // rename from load because of the wrong type
 - (BOOL) loadBundle;
-- (BOOL) unloadBundle;
+- (BOOL) unloadBundle;  // returns NO if it wasn't loaded (like a linked shared lib)
 
 //
 // almost useless in statically linked configurations, because it will always

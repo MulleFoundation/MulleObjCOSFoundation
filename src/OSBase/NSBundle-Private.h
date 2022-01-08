@@ -8,9 +8,10 @@
 
 struct _MulleObjCSharedLibrary
 {
-   NSString     *path;
-   NSUInteger   start;
-   NSUInteger   end;
+   NSString   *path;
+   void       *start;
+   void       *end;
+   void       *handle;   // usually NULL, except if NSBundle should own and close
 };
 
 
@@ -36,7 +37,7 @@ struct _MulleObjCSharedLibrary
 - (NSString *) _executablePath;
 - (NSString *) _resourcePath;
 
-- (BOOL) mulleContainsAddress:(NSUInteger) address;
+- (BOOL) mulleContainsAddress:(void *) address;
 + (NSDictionary *) mulleRegisteredBundleInfo;
 
 //

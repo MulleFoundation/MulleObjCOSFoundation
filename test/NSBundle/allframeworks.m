@@ -25,6 +25,7 @@ int   main( int argc, const char * argv[])
    // not much we can check here
    bundles = [NSBundle allFrameworks];
 
+#if 0
    fprintf( stderr, "Informational output only (not checked):\n");
    for( bundle in bundles)
    {
@@ -33,6 +34,6 @@ int   main( int argc, const char * argv[])
       fprintf( stderr, "resourcePath   : %s\n", [[bundle resourcePath] UTF8String]);
       fprintf( stderr, "isLoaded       : %s\n", [bundle isLoaded] ? "YES" : "NO");
    }
-
+#endif
    return( 0);
 }
