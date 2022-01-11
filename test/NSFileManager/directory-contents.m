@@ -22,6 +22,7 @@ int   main( int argc, const char * argv[])
    id   contents;
 
    contents = [[NSFileManager defaultManager] directoryContentsAtPath:@"demo"];
+   contents = [contents sortedArrayUsingSelector:@selector( compare:)];
    printf( "%s\n", [[contents description] UTF8String]);
 
    return( 0);
