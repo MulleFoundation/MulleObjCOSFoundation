@@ -1,7 +1,8 @@
 ## 0.20.0
 
-* some refinements for NSFileHandle
-
+* leak fix for NSBundle
+* fixes in the POSIX NSDateFormatter
+* improved `+availableLocaleIdentifiers`
 
 ## 0.19.0
 
