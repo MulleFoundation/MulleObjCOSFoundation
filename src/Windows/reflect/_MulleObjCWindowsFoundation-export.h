@@ -10,5 +10,3 @@
  *      mulle-sde environment set MULLE_MATCH_TO_C_RUN DISABLE
  */
 #import "MulleObjCLoader+MulleObjCOSWindowsFoundation.h"
-#import "MulleObjCOSWindowsFoundation.h"
-#import "NSCondition.h"

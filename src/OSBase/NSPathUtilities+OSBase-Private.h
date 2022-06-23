@@ -20,7 +20,7 @@ typedef struct
 
 
 // TODO: move this to foundation
-MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
+MULLE_OBJC_OSBASE_FOUNDATION_GLOBAL
 _NSPathUtilityVectorTable   *_NSPathUtilityVectors;
 
 

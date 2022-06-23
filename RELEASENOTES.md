@@ -1,3 +1,9 @@
+## 0.21.0
+
+* change GLOBAL for Windows
+* move NSTimer and NSDate related code to MulleObjCTimeFoundation
+
+
 ## 0.20.0
 
 * leak fix for NSBundle

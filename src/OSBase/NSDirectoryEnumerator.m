@@ -24,8 +24,10 @@
 // other libraries of MulleObjCPosixFoundation
 
 // std-c and dependencies
-#include <dirent.h>
-#include <sys/stat.h>
+#ifndef _WIN32
+# include <dirent.h>
+# include <sys/stat.h>
+#endif
 
 
 #pragma clang diagnostic ignored  "-Wswitch"

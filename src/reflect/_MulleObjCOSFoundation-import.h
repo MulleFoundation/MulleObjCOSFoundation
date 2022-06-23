@@ -33,7 +33,9 @@
 //    toggle optional:    `mulle-sde dependency mark src/Posix [no-]require`
 //    remove for platform:`mulle-sde dependency mark src/Posix no-platform-<uname>`
 //        (use `mulle-sourcetree-to-c --unames` to list known values)
-#import <MulleObjCPosixFoundation/MulleObjCPosixFoundation.h>   // src/Posix
+# if ! defined( _WIN32)
+# import <MulleObjCPosixFoundation/MulleObjCPosixFoundation.h>   // src/Posix
+#endif
 
 // You can tweak the following #import with these commands.
 // (Use 20a86080-a7b4-46b8-8209-266b223632c9 instead of src/Windows if there are duplicate entries)
@@ -45,8 +47,8 @@
 //    toggle optional:    `mulle-sde dependency mark src/Windows [no-]require`
 //    remove for platform:`mulle-sde dependency mark src/Windows no-platform-<uname>`
 //        (use `mulle-sourcetree-to-c --unames` to list known values)
-# if defined( _WIN32) || defined( __windows__)
-# import <Windows/Windows.h>   // src/Windows
+# if defined( _WIN32) || defined( _WIN32)
+# import <MulleObjCWindowsFoundation/MulleObjCWindowsFoundation.h>   // src/Windows
 #endif
 
 #ifdef __has_include

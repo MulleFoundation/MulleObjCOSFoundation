@@ -68,3 +68,5 @@ src/FreeBSD/.gitattributes
 src/Linux/.gitattributes
 src/Posix/.gitattributes
 src/Windows/.gitattributes
+.mulle-make-build-dir
+version.old

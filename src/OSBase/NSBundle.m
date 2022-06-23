@@ -73,11 +73,6 @@ static inline void   SelfUnlock( void)
 
 + (void) initialize
 {
-   if( mulle_thread_mutex_init( &Self._lock))
-   {
-      fprintf( stderr, "%s could not get a mutex\n", __FUNCTION__);
-      abort();
-   }
    Self._registeredBundleInfo = [NSMutableDictionary new];
 }
 
@@ -92,6 +87,17 @@ static inline void   SelfUnlock( void)
 #endif
       [Self._registeredBundleInfo autorelease];
       Self._registeredBundleInfo = nil;
+   }
+}
+
+
+// shoud pair load with unload, otherwise +initialize may run too late
++ (void) load
+{
+   if( mulle_thread_mutex_init( &Self._lock))
+   {
+      fprintf( stderr, "%s could not get a mutex\n", __FUNCTION__);
+      abort();
    }
 }
 

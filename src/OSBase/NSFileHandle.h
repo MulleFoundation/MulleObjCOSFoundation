@@ -17,7 +17,7 @@
 @class NSData;
 
 
-MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
+MULLE_OBJC_OSBASE_FOUNDATION_GLOBAL
 NSString  *NSFileHandleOperationException;
 
 // this class contains the abstract code for a NSFileHandle

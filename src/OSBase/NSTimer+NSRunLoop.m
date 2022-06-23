@@ -60,6 +60,13 @@
 - (void) invalidate
 {
    [[NSRunLoop currentRunLoop] _removeTimer:self];
+
+   [self->_o.target autorelease];
+   self->_o.target = nil;
+   [self->_userInfo autorelease];
+   self->_userInfo = nil;
+   self->_selector = 0;
+   self->_callback = NULL;
 }
 
 @end

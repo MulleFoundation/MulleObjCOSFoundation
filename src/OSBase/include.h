@@ -22,8 +22,14 @@
 #include "_MulleObjCOSBaseFoundation-include.h"
 
 // need own extern globals, as subprojects are own DLLs
-#ifndef MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL
-# define MULLE_OBJC_OSBASE_FOUNDATION_EXTERN_GLOBAL MULLE_C_EXTERN_GLOBAL
+#ifdef MULLE_OBJC_OSBASE_FOUNDATION_BUILD
+# define MULLE_OBJC_OSBASE_FOUNDATION_GLOBAL    MULLE_C_GLOBAL
+#else
+# if defined( MULLE_OBJC_OSBASE_FOUNDATION_INCLUDE_DYNAMIC) || (defined( MULLE_INCLUDE_DYNAMIC) && ! defined( MULLE_OBJC_OSBASE_FOUNDATION_INCLUDE_STATIC))
+#  define MULLE_OBJC_OSBASE_FOUNDATION_GLOBAL   MULLE_C_EXTERN_GLOBAL
+# else
+#  define MULLE_OBJC_OSBASE_FOUNDATION_GLOBAL   extern
+# endif
 #endif
 
 /* You can add some more include statements here */

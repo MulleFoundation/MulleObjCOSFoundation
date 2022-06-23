@@ -14,12 +14,11 @@ set( SOURCES
 Categories/NSArray+OSBase-Private.m
 Categories/NSArray+OSBase.m
 Categories/NSCalendarDate+NSUserDefaults.m
-Categories/NSConditionLock+NSDate.m
-Categories/NSCondition+NSDate.m
+Categories/NSConditionLock+NSString.m
+Categories/NSCondition+NSString.m
 Categories/NSData+OSBase.m
 Categories/NSDictionary+OSBase-Private.m
 Categories/NSDictionary+OSBase.m
-Categories/NSLock+NSDate.m
 Categories/NSString+CString.m
 Categories/NSString+OSBase.m
 Categories/NSTask+System.m
@@ -37,7 +36,6 @@ NSProcessInfo.m
 NSRunLoop.m
 NSTask.m
 NSTimer+NSRunLoop.m
-NSTimer.m
 NSUserDefaults.m
 )
 

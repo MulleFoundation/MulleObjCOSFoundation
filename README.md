@@ -9,23 +9,26 @@ the native C String encoding of the platform.
 It builds differently on each platform.
 
 > Note: a few tests may fail because of missing implementations.
+>
+> Ideally - maybe - this library should move all the OS-specifica into C
+> libraries and then cease to exist.
 
 
 
 #### Classes
 
-Class                      | Description
----------------------------|----------------------------------------
-`NSBundle`                 | Plugins and dynamic loading
-`NSDirectoryEnumerator`    | List folder contents of the filesystem
-`NSFileHandle`             | Wrapper for file descriptors (open)
-`NSFilemanager`            | Filesystem management, like file deletion
-`NSPipe`                   | Support for inter-process pipes
-`NSProcessInfo`            | Access to the environment and arguments
-`NSRunLoop`                | A wrapper around `select()` usually
-`NSTask`                   | Does vfork() and execvs() on Unix
-`NSTimer`                  | NSRunLoop bases timers
-`NSUserDefaults`           | Access to the program settings (registry)
+Class                   | Description
+------------------------|----------------------------------------
+`NSBundle`              | Plugins and dynamic loading
+`NSDirectoryEnumerator` | List folder contents of the filesystem
+`NSFileHandle`          | Wrapper for file descriptors (open)
+`NSFilemanager`         | Filesystem management, like file deletion
+`NSPipe`                | Support for inter-process pipes
+`NSProcessInfo`         | Access to the environment and arguments
+`NSRunLoop`             | A wrapper around `select()` usually
+`NSTask`                | Does vfork() and execvs() on Unix
+`NSUserDefaults`        | Access to the program settings (registry)
+
 
 ### You are here
 

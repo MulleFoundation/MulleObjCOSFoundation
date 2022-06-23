@@ -28,7 +28,9 @@
 // other libraries of MulleObjCPosixFoundation
 
 // std-c and dependencies
-#include <unistd.h>
+#ifndef _WIN32
+# include <unistd.h>
+#endif
 
 
 @implementation NSTask

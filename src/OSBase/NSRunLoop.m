@@ -9,7 +9,6 @@
 #import "NSRunLoop.h"
 
 #import "NSFileHandle.h"
-#import "NSTimer.h"
 
 #include <errno.h>
 #include <string.h>
@@ -531,7 +530,7 @@ static void
    array = nil;
    for( timer in p->timers)
    {
-      if( [timer target] != target)
+      if( [timer mulleTarget] != target)
          continue;
       if( ! array)
          array = [NSMutableArray array];
@@ -556,11 +555,11 @@ static void
    array = nil;
    for( timer in p->timers)
    {
-      if( ! [timer mulleFiresWithUserInfoAsArgument])
+      if( arg && ! [timer mulleFiresWithUserInfoAsArgument])
          continue;
 
       // TODO: could use one method to check all three
-      if( [timer target] != target || [timer selector] != sel || [timer userInfo] != arg)
+      if( [timer mulleTarget] != target || [timer mulleSelector] != sel || [timer userInfo] != arg)
          continue;
 
       if( ! array)
@@ -832,6 +831,8 @@ static NSRunLoop   *runLoopForThread( NSThread *thread)
 
    if( ! timer || ! modeName)
       return;
+
+   assert( ! [timer mulleIsRelativeTimer]);
 
    mulle_thread_mutex_lock( &_lock);
    {
