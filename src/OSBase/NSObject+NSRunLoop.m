@@ -17,7 +17,6 @@
 
 #import "NSRunLoop.h"
 #import "NSRunLoop-Private.h"
-#import "NSTimer.h"
 
 
 @implementation NSObject( NSRunLoop)
@@ -34,12 +33,12 @@
    runLoop = [NSRunLoop currentRunLoop];
    for( modeName in modes)
    {
-      timer = [NSTimer timerWithTimeInterval:delay
-                                      target:self
-                                    selector:selector
-                                    userInfo:argument
-                                     repeats:NO];
-      [timer mulleSetFiresWithUserInfoAsArgument:YES];
+      timer = [[[NSTimer alloc] mulleInitWithRelativeTimeInterval:delay
+                                                   repeatInterval:0.0
+                                                           target:self
+                                                        selector:selector
+                                                        userInfo:argument
+                                      fireUsesUserInfoAsArgument:YES] autorelease];
       [runLoop addTimer:timer
                 forMode:modeName];
    }
@@ -53,12 +52,12 @@
    NSTimer    *timer;
    NSRunLoop  *runLoop;
 
-   timer = [NSTimer timerWithTimeInterval:delay
-                                   target:self
-                                 selector:selector
-                                 userInfo:argument
-                                  repeats:NO];
-   [timer mulleSetFiresWithUserInfoAsArgument:YES];
+   timer = [[[NSTimer alloc] mulleInitWithRelativeTimeInterval:delay
+                                                repeatInterval:0.0
+                                                        target:self
+                                                     selector:selector
+                                                     userInfo:argument
+                                   fireUsesUserInfoAsArgument:YES] autorelease];
    runLoop = [NSRunLoop currentRunLoop];
    [runLoop addTimer:timer
              forMode:NSDefaultRunLoopMode];

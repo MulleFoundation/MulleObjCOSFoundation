@@ -1,6 +1,6 @@
-cmake_minimum_required( VERSION 3.1)
+cmake_minimum_required( VERSION 3.15)
 
-project( MulleObjCOSWindowsFoundation C)
+project( MulleObjCWindowsFoundation C)
 
 
 ### mulle-sde environment

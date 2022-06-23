@@ -14,7 +14,6 @@
 #import "NSFileHandle+NSRunLoop.h"
 
 #import "NSRunLoop.h"
-#import "NSTimer.h"
 #import "NSRunLoop-Private.h"
 
 #import "NSPageAllocation.h"

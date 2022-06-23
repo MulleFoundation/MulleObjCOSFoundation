@@ -16,7 +16,6 @@
 #import "NSPipe.h"
 #import "NSProcessInfo.h"
 #import "NSRunLoop.h"
-#import "NSTimer.h"
 #import "NSTask.h"
 #import "NSUserDefaults.h"
 

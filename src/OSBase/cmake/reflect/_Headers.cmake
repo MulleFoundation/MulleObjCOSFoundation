@@ -72,11 +72,8 @@ include.h
 set( PUBLIC_HEADERS
 Categories/NSArray+OSBase.h
 Categories/NSCalendarDate+NSUserDefaults.h
-Categories/NSConditionLock+NSDate.h
-Categories/NSCondition+NSDate.h
 Categories/NSData+OSBase.h
 Categories/NSDictionary+OSBase.h
-Categories/NSLock+NSDate.h
 Categories/NSString+CString.h
 Categories/NSString+OSBase.h
 Categories/NSTask+System.h
@@ -96,7 +93,6 @@ NSProcessInfo.h
 NSRunLoop.h
 NSTask.h
 NSTimer+NSRunLoop.h
-NSTimer.h
 NSUserDefaults.h
 )
 

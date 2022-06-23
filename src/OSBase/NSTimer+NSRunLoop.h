@@ -11,7 +11,7 @@
  *  $Id$
  *
  */
-#import "NSTimer.h"
+#import "import.h"
 
 
 

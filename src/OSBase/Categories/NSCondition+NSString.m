@@ -1,9 +1,9 @@
 //
-//  NSLock+NSDate.h
-//  MulleObjCValueFoundation
+//  NSConditionLock+NSString.m
+//  MulleObjCOSFoundation
 //
-//  Copyright (c) 2011 Nat! - Mulle kybernetiK.
-//  Copyright (c) 2011 Codeon GmbH.
+//  Copyright (c) 2022 Nat! - Mulle kybernetiK.
+//  Copyright (c) 2022 Codeon GmbH.
 //  All rights reserved.
 //
 //
@@ -33,11 +33,16 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 //
-#import "import.h"
+#import "import-private.h"
 
 
-@interface NSLock( NSDate)
 
-- (BOOL) lockBeforeDate:(NSDate *) limit;
+@implementation NSCondition ( NSString)
+
+- (NSString *) description
+{
+   return( [NSString stringWithFormat:@"<%@ %p (%s)>",
+      NSStringFromClass( [self class]), self, [self mulleIsLocked] ? "LOCKED" : "UNLOCKED"]);
+}
 
 @end

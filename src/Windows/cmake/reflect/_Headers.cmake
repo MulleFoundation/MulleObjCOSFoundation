@@ -19,8 +19,6 @@ reflect
 # contents selected with patternfile ??-header--private-generated-headers
 #
 set( PRIVATE_GENERATED_HEADERS
-_MulleObjCOSWindowsFoundation-import-private.h
-_MulleObjCOSWindowsFoundation-include-private.h
 reflect/_MulleObjCWindowsFoundation-import-private.h
 reflect/_MulleObjCWindowsFoundation-include-private.h
 )
@@ -36,8 +34,6 @@ import-private.h
 # contents selected with patternfile ??-header--public-generated-headers
 #
 set( PUBLIC_GENERATED_HEADERS
-_MulleObjCOSWindowsFoundation-import.h
-_MulleObjCOSWindowsFoundation-include.h
 reflect/_MulleObjCWindowsFoundation-export.h
 reflect/_MulleObjCWindowsFoundation-import.h
 reflect/_MulleObjCWindowsFoundation-include.h
@@ -56,7 +52,6 @@ import.h
 #
 set( PUBLIC_HEADERS
 MulleObjCLoader+MulleObjCOSWindowsFoundation.h
-MulleObjCOSWindowsFoundation.h
-NSCondition.h
+MulleObjCWindowsFoundation.h
 )
 

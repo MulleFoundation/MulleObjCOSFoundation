@@ -67,7 +67,8 @@ int   main( int argc, const char * argv[])
       return( 1);
    }
 
-
+// MEMO: NSTime is now immutable
+/*
    newDate  = [NSDate dateWithTimeIntervalSinceReferenceDate:interval+1.0];
    [timer setFireDate:newDate];
 
@@ -76,5 +77,6 @@ int   main( int argc, const char * argv[])
       fprintf( stderr, "failed fireDate 2\n");
       return( 1);
    }
+*/
    return( 0);
 }

@@ -11,7 +11,7 @@ endif()
 # contents selected with patternfile ??-source--sources
 #
 set( SOURCES
-NSCondition.m
+MulleObjCWindowsFoundation.m
 )
 
 #

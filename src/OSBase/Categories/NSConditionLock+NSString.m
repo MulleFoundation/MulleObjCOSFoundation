@@ -1,9 +1,9 @@
 //
-//  NSCondition+NSDate.m
-//  MulleObjCLockFoundation
+//  NSConditionLock+NSString.m
+//  MulleObjCOSFoundation
 //
-//  Copyright (c) 2021 Nat! - Mulle kybernetiK.
-//  Copyright (c) 2021 Codeon GmbH.
+//  Copyright (c) 2022 Nat! - Mulle kybernetiK.
+//  Copyright (c) 2022 Codeon GmbH.
 //  All rights reserved.
 //
 //
@@ -33,14 +33,15 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 //
-// prefer a local NSCondition over one in import.h
-
-// we want "import.h" always anyway
-#import "import.h"
+#import "import-private.h"
 
 
-@interface NSCondition( NSDate)
+@implementation NSConditionLock ( NSString)
 
-- (BOOL) waitUntilDate:(NSDate *) limit;
+- (NSString *) description
+{
+   return( [NSString stringWithFormat:@"<%@ %p (%td %s)>",
+      NSStringFromClass( [self class]), self, [self condition], [self mulleIsLocked] ? "LOCKED" : "UNLOCKED"]);
+}
 
 @end

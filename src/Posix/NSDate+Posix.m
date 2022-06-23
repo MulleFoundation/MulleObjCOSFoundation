@@ -21,31 +21,6 @@
 @implementation NSDate( Posix)
 
 
-NSTimeInterval   _NSTimeIntervalNow( void)
-{
-   NSTimeInterval    seconds;
-   struct timeval    tv;
-
-   gettimeofday( &tv, NULL);  // is known to be 1970 UTC
-   seconds = (double) tv.tv_sec  +  (double) tv.tv_usec / 1000000.0;
-   return( seconds - NSTimeIntervalSince1970);
-}
-
-
-+ (NSTimeInterval) timeIntervalSinceReferenceDate
-{
-   return( _NSTimeIntervalNow());
-}
-
-
-
-- (instancetype) init
-{
-   return( [self initWithTimeIntervalSinceReferenceDate:_NSTimeIntervalNow()]);
-}
-
-
-
 /*
  * Use _MulleObjCConcreteCalendarDate indirectly
  */

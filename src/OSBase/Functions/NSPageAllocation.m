@@ -20,8 +20,9 @@
 #include "NSPageAllocation-Private.h"
 
 // std-c and dependencies
-#include <unistd.h>
-
+#ifndef _WIN32
+# include <unistd.h>
+#endif
 
 # pragma mark - Allocations
 
