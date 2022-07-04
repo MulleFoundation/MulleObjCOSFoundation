@@ -250,7 +250,7 @@ static NSString   *resourcesPath( NSBundle *self)
          continue;
 
       header          = (struct mach_header *) _dyld_get_image_header( i);
-      libInfo.start   = (NSUInteger) header;
+      libInfo.start   = header;
       libInfo.end     = libInfo.start;
       libInfo.handle  = NULL;
 
@@ -283,8 +283,8 @@ static NSString   *resourcesPath( NSBundle *self)
             break;
          }
 
-         if( segment_end > libInfo.end)
-            libInfo.end = segment_end;
+         if( segment_end > (uintptr_t) libInfo.end)
+            libInfo.end = (void *) segment_end;
 
          cmd = (struct load_command *)  &((uint8_t *) cmd)[ cmd->cmdsize];
       }
