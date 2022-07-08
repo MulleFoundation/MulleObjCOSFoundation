@@ -37,7 +37,7 @@ Class                   | Description
 
 ## Install
 
-See [foundation-developer](//github.com//foundation-developer) for
+See [foundation-developer](//github.com/MulleFoundation/foundation-developer) for
 installation instructions.
 
 
@@ -71,7 +71,7 @@ THE SOFTWARE.
 [Nat!](//www.mulle-kybernetik.com/weblog) for
 [Mulle kybernetiK](//www.mulle-kybernetik.com) and
 [Codeon GmbH](//www.codeon.de)
-[Christoper LLoyd](https://github.com/cjwl)
+[Christoper LLoyd](//www.objc.net/cjwl)
 
 
 #### MEMO: WARUM KOMMEN DIE ÄNDERUNGEN NICHT AN
