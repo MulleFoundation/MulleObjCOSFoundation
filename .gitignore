@@ -70,3 +70,6 @@ src/Posix/.gitattributes
 src/Windows/.gitattributes
 .mulle-make-build-dir
 version.old
+cmake-build-*/
+test/Formatter/NSDateFormatter/parse-print-parse-10.4.m.notyet
+.ackrc
