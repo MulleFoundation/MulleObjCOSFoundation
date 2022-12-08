@@ -13,37 +13,37 @@
 
 // You can tweak the following #import with these commands.
 // (Use 265D86D3-C176-4858-B70C-50A3A59EEA2D instead of MulleObjCStandardFoundation if there are duplicate entries)
-//    remove:             `mulle-sde dependency mark MulleObjCStandardFoundation no-header`
-//    rename:             `mulle-sde dependency|library set MulleObjCStandardFoundation include whatever.h`
-//    reorder:            `mulle-sde dependency move MulleObjCStandardFoundation <up|down>`
+//    remove #import: : `mulle-sde dependency mark MulleObjCStandardFoundation no-header`
+//    rename:              `mulle-sde dependency|library set MulleObjCStandardFoundation include whatever.h`
+//    reorder:             `mulle-sde dependency move MulleObjCStandardFoundation <up|down>`
 //    toggle #import:     `mulle-sde dependency mark MulleObjCStandardFoundation [no-]import`
-//    toggle public:      `mulle-sde dependency mark MulleObjCStandardFoundation [no-]public`
-//    toggle optional:    `mulle-sde dependency mark MulleObjCStandardFoundation [no-]require`
-//    remove for platform:`mulle-sde dependency mark MulleObjCStandardFoundation no-platform-<uname>`
+//    toggle public:       `mulle-sde dependency mark MulleObjCStandardFoundation [no-]public`
+//    toggle optional:     `mulle-sde dependency mark MulleObjCStandardFoundation [no-]require`
+//    remove for platform: `mulle-sde dependency mark MulleObjCStandardFoundation no-platform-<uname>`
 //        (use `mulle-sourcetree-to-c --unames` to list known values)
 #import <MulleObjCStandardFoundation/MulleObjCStandardFoundation.h>   // MulleObjCStandardFoundation
 
 // You can tweak the following #import with these commands.
 // (Use 7E6F8DA5-407A-403F-B3ED-1FDBB49ADE27 instead of MulleObjCLockFoundation if there are duplicate entries)
-//    remove:             `mulle-sde dependency mark MulleObjCLockFoundation no-header`
-//    rename:             `mulle-sde dependency|library set MulleObjCLockFoundation include whatever.h`
-//    reorder:            `mulle-sde dependency move MulleObjCLockFoundation <up|down>`
+//    remove #import: : `mulle-sde dependency mark MulleObjCLockFoundation no-header`
+//    rename:              `mulle-sde dependency|library set MulleObjCLockFoundation include whatever.h`
+//    reorder:             `mulle-sde dependency move MulleObjCLockFoundation <up|down>`
 //    toggle #import:     `mulle-sde dependency mark MulleObjCLockFoundation [no-]import`
-//    toggle public:      `mulle-sde dependency mark MulleObjCLockFoundation [no-]public`
-//    toggle optional:    `mulle-sde dependency mark MulleObjCLockFoundation [no-]require`
-//    remove for platform:`mulle-sde dependency mark MulleObjCLockFoundation no-platform-<uname>`
+//    toggle public:       `mulle-sde dependency mark MulleObjCLockFoundation [no-]public`
+//    toggle optional:     `mulle-sde dependency mark MulleObjCLockFoundation [no-]require`
+//    remove for platform: `mulle-sde dependency mark MulleObjCLockFoundation no-platform-<uname>`
 //        (use `mulle-sourcetree-to-c --unames` to list known values)
 #import <MulleObjCLockFoundation/MulleObjCLockFoundation.h>   // MulleObjCLockFoundation
 
 // You can tweak the following #import with these commands.
 // (Use 95FD51F3-BC77-4B9E-9D0C-802955869FB6 instead of MulleObjCPlistFoundation if there are duplicate entries)
-//    remove:             `mulle-sde dependency mark MulleObjCPlistFoundation no-header`
-//    rename:             `mulle-sde dependency|library set MulleObjCPlistFoundation include whatever.h`
-//    reorder:            `mulle-sde dependency move MulleObjCPlistFoundation <up|down>`
+//    remove #import: : `mulle-sde dependency mark MulleObjCPlistFoundation no-header`
+//    rename:              `mulle-sde dependency|library set MulleObjCPlistFoundation include whatever.h`
+//    reorder:             `mulle-sde dependency move MulleObjCPlistFoundation <up|down>`
 //    toggle #import:     `mulle-sde dependency mark MulleObjCPlistFoundation [no-]import`
-//    toggle public:      `mulle-sde dependency mark MulleObjCPlistFoundation [no-]public`
-//    toggle optional:    `mulle-sde dependency mark MulleObjCPlistFoundation [no-]require`
-//    remove for platform:`mulle-sde dependency mark MulleObjCPlistFoundation no-platform-<uname>`
+//    toggle public:       `mulle-sde dependency mark MulleObjCPlistFoundation [no-]public`
+//    toggle optional:     `mulle-sde dependency mark MulleObjCPlistFoundation [no-]require`
+//    remove for platform: `mulle-sde dependency mark MulleObjCPlistFoundation no-platform-<uname>`
 //        (use `mulle-sourcetree-to-c --unames` to list known values)
 #import <MulleObjCPlistFoundation/MulleObjCPlistFoundation.h>   // MulleObjCPlistFoundation
 
