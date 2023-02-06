@@ -38,12 +38,14 @@
    char                     *buf;
    char                     *filename;
    ssize_t                  actual_len;
+   ssize_t                  initial_len;
    ssize_t                  len;
    int                      fd;
 
    MulleObjCSetPosixErrorDomain();
 
    filename = [path fileSystemRepresentation];
+
    fd = open( filename, O_RDONLY);
    if( fd == -1)
    {
@@ -51,52 +53,69 @@
       return( nil);
    }
 
-   buf = NULL;
+   //
+   // speculatively read 4KB, for small files that's plenty, and we
+   // can do the minimum syscalls. Also its likely a "sector" as well
+   // as a memory page (could use PAGSIZE here maybe)
+   //
+   allocator   = MulleObjCInstanceGetAllocator( self);
+   initial_len = 0x1000;
+   buf         = mulle_allocator_malloc( allocator, initial_len);
+   actual_len  = read( fd, buf, initial_len);
+   if( actual_len == -1)
+      goto fail;
 
-   //
-   // the length we get here is "our" length
-   // or more, for simplicity we don't read more
-   // than info.st_size
-   //
-   if( fstat( fd, &info) != -1)
+   len = initial_len;
+   if( actual_len == initial_len)
    {
-      if( ! (info.st_mode & S_IFDIR))
+      if( fstat( fd, &info) == -1)
+         goto fail;
+
+      if( info.st_mode & S_IFDIR)
       {
-         // warning this may have a 2 GB problem is off_t is 64 bit
-         // and ssize_t is 32 bit
+          errno = EISDIR;
+          goto fail;
+      }
 
-         len = (size_t) info.st_size;
-         if( (off_t) len == info.st_size)
-         {
-            allocator = MulleObjCInstanceGetAllocator( self);
-            buf       = mulle_allocator_malloc( allocator, len);
+      // warning this may have a 2 GB problem is off_t is 64 bit
+      // and ssize_t is 31 bit
+      len = (size_t) info.st_size;
+      if( (off_t) len != info.st_size)
+      {
+         errno = EFBIG;
+         goto fail;
+      }
 
-            // The system guarantees to read the number of bytes requested
-            // if the descriptor references a normal file that has that
-            // many bytes left before the end-of-file, but in no other case
+      if( len != actual_len)
+      {
+         buf = mulle_allocator_realloc( allocator, buf, len);
 
-            actual_len = read( fd, buf, len);
-            if( actual_len != -1)
-            {
-               if( actual_len != len)
-                  buf = mulle_allocator_realloc( allocator, buf, actual_len);
-            }
-         }
-         else
-            errno = EFBIG;
+         // The system guarantees to read the number of bytes requested
+         // if the descriptor references a normal file that has that
+         // many bytes left before the end-of-file, but in no other case
+         actual_len = read( fd, &buf[ actual_len], len - actual_len);
+         if( actual_len == -1)
+            goto fail;
+
+         actual_len += initial_len;
       }
    }
+
+   if( actual_len != len)
+      buf = _mulle_allocator_realloc_strict( allocator, buf, actual_len);
+
    close( fd);
 
-   if( ! buf)
-   {
-      [self release];
-      return( nil);
-   }
-
+   // we can read an empty, file still need a data to proceed
    return( [self mulleInitWithBytesNoCopy:buf
                                    length:actual_len
                                 allocator:allocator]);
+
+fail:
+   mulle_allocator_free( allocator, buf);
+   close( fd);
+   [self release];
+   return( nil);
 }
 
 
