@@ -1,0 +1,26 @@
+{
+   "name" : "MulleObjCOSFoundation",
+   "version" : "0.21.1",
+   "description" : "Platform-dependent classes and categories like NSTask, NSPipe",
+   "keywords" : [],
+   "license" : "BSD-3-Clause",
+   "repo" : "MulleFoundation/MulleObjCOSFoundation",
+   "src" : [
+      "src/MulleObjCLoader+MulleObjCOSFoundation.h",
+      "src/MulleObjCLoader+MulleObjCOSFoundation.m",
+      "src/MulleObjCOSFoundation.h",
+      "src/MulleObjCOSFoundation.m",
+      "src/generic/import-private.h",
+      "src/generic/import.h",
+      "src/generic/include-private.h",
+      "src/generic/include.h",
+      "src/reflect/_MulleObjCOSFoundation-export.h",
+      "src/reflect/_MulleObjCOSFoundation-import-private.h",
+      "src/reflect/_MulleObjCOSFoundation-import.h",
+      "src/reflect/_MulleObjCOSFoundation-include-private.h",
+      "src/reflect/_MulleObjCOSFoundation-include.h",
+      "src/reflect/_MulleObjCOSFoundation-provide.h"
+   ],
+   "dependencies" : {
+   }
+}

@@ -18,8 +18,8 @@ include( Files)
 
 if( HEADERS_PHASE)
    install( FILES ${INSTALL_PUBLIC_HEADERS}  DESTINATION "include/MulleObjCBSDFoundation")
-   install( FILES ${INSTALL_PRIVATE_HEADERS} DESTINATION "include/MulleObjCBSDFoundation/private")
-   install( FILES ${CMAKE_INCLUDES}          DESTINATION "include/MulleObjCBSDFoundation/cmake")
+   install( FILES ${INSTALL_PRIVATE_HEADERS} DESTINATION "include/MulleObjCBSDFoundation")
+   install( FILES ${INSTALL_CMAKE_INCLUDES}          DESTINATION "include/MulleObjCBSDFoundation/cmake")
 
    # short cut out
    if( NOT COMPILE_PHASE AND NOT LINK_PHASE)

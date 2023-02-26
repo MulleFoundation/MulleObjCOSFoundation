@@ -64,8 +64,8 @@ void   NSLogv( NSString *format, va_list args)
       s = [NSString mulleStringWithFormat:format
                                 arguments:args];
       cString = [s cString];
+      fprintf( stderr, "%s\n", cString);  // this first i'd say
       syslog( __NSLogPriority, "%s", cString);
-      fprintf( stderr, "%s\n", cString);
    }
 }
 

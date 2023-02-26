@@ -268,13 +268,6 @@ de_DE.plist
 }
 
 
-- (NSString *) localeIdentifier
-{
-   return( _identifier);
-}
-
-
-
 - (id) objectForKey:(id) key
 {
    id               value;

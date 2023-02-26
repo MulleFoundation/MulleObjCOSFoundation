@@ -9,7 +9,7 @@
 #import "import-private.h"
 
 // other files in this library
-#import <MulleObjCPosixFoundation/private/NSLocale+Posix-Private.h>
+#import <MulleObjCPosixFoundation/NSLocale+Posix-Private.h>
 
 // std-c and dependencies
 #include <langinfo.h>

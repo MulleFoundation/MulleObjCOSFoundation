@@ -1,0 +1,12 @@
+{
+   project =
+   {
+      description="💻 Platform-dependent classes and categories like NSTask, NSPipe";
+      domain="github";
+      name="MulleObjCOSFoundation";
+      user="MulleFoundation";
+      repo="MulleObjCOSFoundation";
+      homepage="https://github.com/MulleFoundation/MulleObjCOSFoundation";
+      license="BSD-3-Clause"
+   };
+}

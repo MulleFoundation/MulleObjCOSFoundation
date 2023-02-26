@@ -485,6 +485,11 @@ void       (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path
       if( [identifier isEqualToString:[bundle bundleIdentifier]])
          return( bundle);
    }
+
+   // for static configurations
+   if( [identifier isEqualToString:@"com.mulle-kybernetik.foundation"])
+      return( [self mainBundle]);
+
    return( nil);
 }
 

@@ -1,9 +1,4 @@
-      { @selector( MulleObjCLoader), @selector( MulleObjCContainerFoundation) },      // 47a9beb6;MulleObjCLoader;2132102f;MulleObjCContainerFoundation
-      { @selector( MulleObjCLoader), @selector( MulleObjCLockFoundation) },      // 47a9beb6;MulleObjCLoader;86a97828;MulleObjCLockFoundation
-      { @selector( MulleObjCLoader), @selector( MulleObjCPlistFoundation) },      // 47a9beb6;MulleObjCLoader;e8aa8d92;MulleObjCPlistFoundation
-      { @selector( MulleObjCLoader), @selector( MulleObjCStandardFoundation) },      // 47a9beb6;MulleObjCLoader;ed704a42;MulleObjCStandardFoundation
-      { @selector( MulleObjCLoader), @selector( MulleObjCTimeFoundation) },      // 47a9beb6;MulleObjCLoader;cc20d48b;MulleObjCTimeFoundation
-      { @selector( MulleObjCLoader), @selector( MulleObjCValueFoundation) },      // 47a9beb6;MulleObjCLoader;535d5103;MulleObjCValueFoundation
+      { @selector( MulleObjCLoader), @selector( MulleFoundationBase) },      // 47a9beb6;MulleObjCLoader;efab19ea;MulleFoundationBase
       { @selector( NSCalendarDate), @selector( BSD) },      // b8742fcb;NSCalendarDate;999e852d;BSD
       { @selector( NSDate), @selector( BSD) },      // cfcedd21;NSDate;999e852d;BSD
       { @selector( NSDateFormatter), @selector( BSD) },      // 6d2cd542;NSDateFormatter;999e852d;BSD

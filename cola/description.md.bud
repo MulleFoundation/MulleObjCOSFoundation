@@ -1,0 +1,11 @@
+These classes build on **MulleObjCStandardFoundation** and provide OS-specific
+functionality. This library also adds categories on NSString to deal with
+the native C String encoding of the platform.
+
+It builds differently on each platform.
+
+> Note: a few tests may fail because of missing implementations.
+>
+> Ideally - maybe - this library should move all the OS-specifica into C
+> libraries and then cease to exist.
+

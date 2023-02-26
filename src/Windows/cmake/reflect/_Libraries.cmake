@@ -28,7 +28,6 @@ if( NOT MULLE_OBJC_OS_BASE_FOUNDATION_HEADER)
    set( ALL_LOAD_HEADER_ONLY_LIBRARIES
       ${MULLE_OBJC_OS_BASE_FOUNDATION_HEADER}
       ${ALL_LOAD_HEADER_ONLY_LIBRARIES}
-      CACHE INTERNAL "need to cache this"
    )
    if( MULLE_OBJC_OS_BASE_FOUNDATION_HEADER)
       #
@@ -40,28 +39,25 @@ if( NOT MULLE_OBJC_OS_BASE_FOUNDATION_HEADER)
       get_filename_component( _TMP_MULLE_OBJC_OS_BASE_FOUNDATION_ROOT "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_ROOT}" DIRECTORY)
       get_filename_component( _TMP_MULLE_OBJC_OS_BASE_FOUNDATION_ROOT "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_ROOT}" DIRECTORY)
       #
-      # Search for "DependenciesAndLibraries.cmake" to include.
+      # Search for "Definitions.cmake" and "DependenciesAndLibraries.cmake" to include.
       # Disable with: `mulle-sourcetree mark MulleObjCOSBaseFoundation no-cmake-dependency`
       #
       foreach( _TMP_MULLE_OBJC_OS_BASE_FOUNDATION_NAME IN LISTS _TMP_MULLE_OBJC_OS_BASE_FOUNDATION_NAME)
          set( _TMP_MULLE_OBJC_OS_BASE_FOUNDATION_DIR "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_ROOT}/include/${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_NAME}/cmake")
          # use explicit path to avoid "surprises"
-         if( EXISTS "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_DIR}/DependenciesAndLibraries.cmake")
-            unset( MULLE_OBJC_OS_BASE_FOUNDATION_DEFINITIONS)
+         if( IS_DIRECTORY "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_DIR}")
             list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_DIR}")
             #
-            include( "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_DIR}/DependenciesAndLibraries.cmake")
-            #
+            include( "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_DIR}/DependenciesAndLibraries.cmake" OPTIONAL)
             #
             list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_DIR}")
-            set( INHERITED_DEFINITIONS
-               ${INHERITED_DEFINITIONS}
-               ${MULLE_OBJC_OS_BASE_FOUNDATION_DEFINITIONS}
-               CACHE INTERNAL "need to cache this"
-            )
+            #
+            unset( MULLE_OBJC_OS_BASE_FOUNDATION_DEFINITIONS)
+            include( "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_DIR}/Definitions.cmake" OPTIONAL)
+            list( APPEND INHERITED_DEFINITIONS ${MULLE_OBJC_OS_BASE_FOUNDATION_DEFINITIONS})
             break()
          else()
-            message( STATUS "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_DIR}/DependenciesAndLibraries.cmake not found")
+            message( STATUS "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_DIR} not found")
          endif()
       endforeach()
       #
@@ -72,11 +68,7 @@ if( NOT MULLE_OBJC_OS_BASE_FOUNDATION_HEADER)
          foreach( _TMP_MULLE_OBJC_OS_BASE_FOUNDATION_NAME IN LISTS _TMP_MULLE_OBJC_OS_BASE_FOUNDATION_NAME)
             set( _TMP_MULLE_OBJC_OS_BASE_FOUNDATION_FILE "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_ROOT}/include/${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_NAME}/MulleObjCLoader+${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_NAME}.h")
             if( EXISTS "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_FILE}")
-               set( INHERITED_OBJC_LOADERS
-                  ${INHERITED_OBJC_LOADERS}
-                  ${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_FILE}
-                  CACHE INTERNAL "need to cache this"
-               )
+               list( APPEND INHERITED_OBJC_LOADERS ${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_FILE})
                break()
             endif()
          endforeach()

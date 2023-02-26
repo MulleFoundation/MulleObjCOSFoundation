@@ -17,8 +17,8 @@
 // other files in this library
 
 // other libraries of MulleObjCPosixFoundation
-#import <MulleObjCOSBaseFoundation/private/NSArray+OSBase-Private.h>
-#import <MulleObjCOSBaseFoundation/private/NSDictionary+OSBase-Private.h>
+#import <MulleObjCOSBaseFoundation/NSArray+OSBase-Private.h>
+#import <MulleObjCOSBaseFoundation/NSDictionary+OSBase-Private.h>
 
 // std-c and dependencies
 #include <sys/types.h>

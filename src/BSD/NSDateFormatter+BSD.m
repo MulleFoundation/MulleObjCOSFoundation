@@ -12,8 +12,8 @@
 #include "mulle-bsd-tm.h"
 
 // other libraries of MulleObjCPosixFoundation
-#import <MulleObjCOSBaseFoundation/private/NSDate+OSBase-Private.h>
-#import <MulleObjCPosixFoundation/private/NSLocale+Posix-Private.h>
+#import <MulleObjCOSBaseFoundation/NSDate+OSBase-Private.h>
+#import <MulleObjCPosixFoundation/NSLocale+Posix-Private.h>
 #include <MulleObjCStandardFoundation/mulle-mini-tm.h>
 #include <MulleObjCPosixFoundation/mulle-posix-tm.h>
 

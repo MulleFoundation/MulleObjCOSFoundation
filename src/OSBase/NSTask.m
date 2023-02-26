@@ -49,6 +49,20 @@
 }
 
 
+- (void) dealloc
+{
+   [_standardError release];
+   [_standardOutput release];
+   [_standardInput release];
+   [_environment release];
+   [_arguments release];
+   [_directoryPath release];
+   [_launchPath release];
+
+   [super dealloc];
+}
+
+
 //
 // MEMO: missing methods need to be implemented OS specific
 //       see -> Darwin

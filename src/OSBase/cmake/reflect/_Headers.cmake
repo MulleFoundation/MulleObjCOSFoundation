@@ -76,7 +76,6 @@ Categories/NSData+OSBase.h
 Categories/NSDictionary+OSBase.h
 Categories/NSString+CString.h
 Categories/NSString+OSBase.h
-Categories/NSTask+System.h
 Functions/NSLog.h
 Functions/NSPageAllocation.h
 Functions/NSPathUtilities.h
@@ -91,6 +90,7 @@ NSObject+NSRunLoop.h
 NSPipe.h
 NSProcessInfo.h
 NSRunLoop.h
+NSTask+System.h
 NSTask.h
 NSTimer+NSRunLoop.h
 NSUserDefaults.h

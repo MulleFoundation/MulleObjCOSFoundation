@@ -11,7 +11,7 @@
 #import "import-private.h"
 
 // other files in this library
-#import <MulleObjCOSBaseFoundation/private/NSRunLoop-Private.h>
+#import <MulleObjCOSBaseFoundation/NSRunLoop-Private.h>
 #import "NSDate+Posix-Private.h"
 #import "NSError+Posix.h"
 

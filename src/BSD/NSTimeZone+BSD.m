@@ -11,7 +11,7 @@
 // other files in this library
 
 // other libraries of MulleObjCPosixFoundation
-#import <MulleObjCPosixFoundation/private/NSTimeZone+Posix-Private.h>
+#import <MulleObjCPosixFoundation/NSTimeZone+Posix-Private.h>
 
 
 @implementation NSTimeZone (BSD)

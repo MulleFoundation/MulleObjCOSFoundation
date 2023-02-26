@@ -1,0 +1,5 @@
+#### MEMO: WARUM KOMMEN DIE ÄNDERUNGEN NICHT AN
+
+mulle-test kann nur mulle-craft aufrufen und weiss nix von den subprojects.
+Die sind aber wie "dependencies" und werden dann dazugelinkt. Änderungen kriegt
+man mit mulle-test clean nicht rein, man muss mulle-sde craft machen.

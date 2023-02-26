@@ -7,7 +7,7 @@
 //
 
 #import <MulleObjCOSFoundation/MulleObjCOSFoundation.h>
-#import <MulleObjCOSBaseFoundation/private/NSBundle-Private.h>
+#import <MulleObjCOSBaseFoundation/NSBundle-Private.h>
 
 //#import "MulleStandaloneObjCFoundation.h"
 

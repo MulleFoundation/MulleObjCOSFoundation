@@ -16,7 +16,7 @@
 #import "import-private.h"
 
 // other files in this library
-#import <MulleObjCOSBaseFoundation/private/NSPathUtilities+OSBase-Private.h>
+#import <MulleObjCOSBaseFoundation/NSPathUtilities+OSBase-Private.h>
 
 // other libraries of MulleObjCPosixFoundation
 
@@ -29,10 +29,13 @@
 
 static NSString  *_NSUserRegistryValueForKey( NSString *user, NSString *key)
 {
-   NSString  *s;
-   NSString  *result;
-   NSRange   range;
-   char      *dscl;
+   NSString       *s;
+   NSString       *result;
+   NSString       *path;
+   NSRange        range;
+   char           *dscl;
+   NSArray        *arguments;
+   NSDictionary   *dict;
 
    // is this a security hole ?
    dscl = getenv( "DSCL_UTILITY_PATH");
@@ -41,9 +44,12 @@ static NSString  *_NSUserRegistryValueForKey( NSString *user, NSString *key)
 
    //    sysdscl -raw . -read /Users/nat RealName
 
-   s      = [NSString stringWithFormat:@"%s -raw . -read /Users/%@ %@", dscl, user, key];
-   result = [NSTask _systemWithString:s
-                     workingDirectory:nil];
+//   s      = [NSString stringWithFormat:@"%s -raw . -read /Users/%@ %@", dscl, user, key];
+   path      = [@"/Users/" stringByAppendingString:user];
+   arguments = [NSArray arrayWithObjects:[NSString stringWithUTF8String:dscl], @"-raw", @".", @"-read", path, key, nil];
+   dict      = [NSTask mulleStringSystemCallWithArguments:arguments
+                                      standardInputString:nil];
+   result    = [dict objectForKey:NSTaskStandardOutputStringKey];
    if( ! result)
       return( nil);
 

@@ -17,7 +17,7 @@ include( Files)
 
 if( HEADERS_PHASE)
    install( FILES ${INSTALL_PUBLIC_HEADERS}  DESTINATION "include/Locale")
-   install( FILES ${INSTALL_PRIVATE_HEADERS} DESTINATION "include/Locale/private")
+   install( FILES ${INSTALL_PRIVATE_HEADERS} DESTINATION "include/Locale")
    install( FILES ${CMAKE_INCLUDES}          DESTINATION "include/Locale/cmake")
 
    # short cut out

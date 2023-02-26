@@ -1,9 +1,3 @@
-      { @selector( MulleObjCLoader), @selector( MulleObjCContainerFoundation) },      // 47a9beb6;MulleObjCLoader;2132102f;MulleObjCContainerFoundation
-      { @selector( MulleObjCLoader), @selector( MulleObjCLockFoundation) },      // 47a9beb6;MulleObjCLoader;86a97828;MulleObjCLockFoundation
-      { @selector( MulleObjCLoader), @selector( MulleObjCPlistFoundation) },      // 47a9beb6;MulleObjCLoader;e8aa8d92;MulleObjCPlistFoundation
-      { @selector( MulleObjCLoader), @selector( MulleObjCStandardFoundation) },      // 47a9beb6;MulleObjCLoader;ed704a42;MulleObjCStandardFoundation
-      { @selector( MulleObjCLoader), @selector( MulleObjCTimeFoundation) },      // 47a9beb6;MulleObjCLoader;cc20d48b;MulleObjCTimeFoundation
-      { @selector( MulleObjCLoader), @selector( MulleObjCValueFoundation) },      // 47a9beb6;MulleObjCLoader;535d5103;MulleObjCValueFoundation
       { @selector( NSBundle), @selector( Posix) },      // c2f95c66;NSBundle;ae1faa81;Posix
       { @selector( NSCalendarDate), @selector( Posix) },      // b8742fcb;NSCalendarDate;ae1faa81;Posix
       { @selector( NSData), @selector( Posix) },      // 8fce7861;NSData;ae1faa81;Posix

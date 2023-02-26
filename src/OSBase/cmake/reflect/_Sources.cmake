@@ -21,7 +21,6 @@ Categories/NSDictionary+OSBase-Private.m
 Categories/NSDictionary+OSBase.m
 Categories/NSString+CString.m
 Categories/NSString+OSBase.m
-Categories/NSTask+System.m
 Functions/NSPageAllocation.m
 Functions/NSPathUtilities.m
 NSBundle.m
@@ -34,6 +33,7 @@ NSObject+NSRunLoop.m
 NSPipe.m
 NSProcessInfo.m
 NSRunLoop.m
+NSTask+System.m
 NSTask.m
 NSTimer+NSRunLoop.m
 NSUserDefaults.m

@@ -12,7 +12,7 @@
 // other files in this library
 
 // other libraries of MulleObjCPosixFoundation
-#import <MulleObjCPosixFoundation/private/NSLocale+Posix-Private.h>
+#import <MulleObjCPosixFoundation/NSLocale+Posix-Private.h>
 
 // std-c and dependencies
 #include <time.h>

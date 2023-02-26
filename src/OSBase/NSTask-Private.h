@@ -15,7 +15,7 @@
 enum
 {
    _NSTaskIsIdle              = 0,
-   _NSTaskHasFailed           = -1,
+   _NSTaskHasFailedLaunching  = -1,
    _NSTaskIsPresumablyRunning = 1,
    _NSTaskHasTerminated       = 2
 };
