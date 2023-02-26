@@ -12,7 +12,7 @@
 #import "import-private.h"
 
 // other files in this library
-#import <MulleObjCOSBaseFoundation/private/NSFileManager-Private.h>
+#import <MulleObjCOSBaseFoundation/NSFileManager-Private.h>
 
 // other libraries of MulleObjCPosixFoundation
 #import "NSError+Posix.h"

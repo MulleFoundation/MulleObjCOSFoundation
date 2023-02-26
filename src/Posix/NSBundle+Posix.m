@@ -11,7 +11,7 @@
 #import "import-private.h"
 
 // other libraries of MulleObjCPosixFoundation
-#import <MulleObjCOSBaseFoundation/private/NSBundle-Private.h>
+#import <MulleObjCOSBaseFoundation/NSBundle-Private.h>
 
 // std-c and dependencies
 #include <dlfcn.h>
@@ -30,6 +30,11 @@
 //       /usr/local for a matching bundle.
 //
 @implementation NSBundle( Posix)
+
+// TODO: alias +load/+unload to loadBundle/unloadBundle for compatibility and
+//       hide warning
+//
+
 
 + (BOOL) isBundleFilesystemExtension:(NSString *) extension
 {
@@ -153,6 +158,9 @@ static char   *executablePathFileSytemRepresentation( NSBundle *self)
 - (BOOL) loadBundle
 {
    char      *c_path;
+
+   if( _handle)
+      return( YES);
 
    c_path = executablePathFileSytemRepresentation( self);
    if( ! c_path)

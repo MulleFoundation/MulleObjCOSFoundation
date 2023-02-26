@@ -17,55 +17,61 @@ endif()
 # Disable for this platform: `mulle-sourcetree mark src/OSBase no-cmake-platform-${MULLE_UNAME}`
 # Disable for a sdk: `mulle-sourcetree mark src/OSBase no-cmake-sdk-<name>`
 #
-if( NOT MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY)
-   find_library( MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX} ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCOSBaseFoundation NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH)
-   message( STATUS "MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY is ${MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY}")
+if( NOT OS_BASE_LIBRARY)
+   if( DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+      find_library( OS_BASE_LIBRARY NAMES
+         ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+         ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
+         MulleObjCOSBaseFoundation
+         NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH
+      )
+   else()
+      find_library( OS_BASE_LIBRARY NAMES
+         ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+         ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
+         MulleObjCOSBaseFoundation
+      )
+   endif()
+   message( STATUS "OS_BASE_LIBRARY is ${OS_BASE_LIBRARY}")
    #
    # The order looks ascending, but due to the way this file is read
    # it ends up being descending, which is what we need.
    #
-   if( MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY)
+   if( OS_BASE_LIBRARY)
       #
-      # Add MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
+      # Add OS_BASE_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
       # Disable with: `mulle-sourcetree mark src/OSBase no-cmake-add`
       #
-      set( ALL_LOAD_DEPENDENCY_LIBRARIES
-         ${ALL_LOAD_DEPENDENCY_LIBRARIES}
-         ${MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY}
-         CACHE INTERNAL "need to cache this"
-      )
+      list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${OS_BASE_LIBRARY})
       #
       # Inherit information from dependency.
       # Encompasses: no-cmake-searchpath,no-cmake-dependency,no-cmake-loader
       # Disable with: `mulle-sourcetree mark src/OSBase no-cmake-inherit`
       #
       # temporarily expand CMAKE_MODULE_PATH
-      get_filename_component( _TMP_MULLE_OBJC_OS_BASE_FOUNDATION_ROOT "${MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY}" DIRECTORY)
-      get_filename_component( _TMP_MULLE_OBJC_OS_BASE_FOUNDATION_ROOT "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_ROOT}" DIRECTORY)
+      get_filename_component( _TMP_OS_BASE_ROOT "${OS_BASE_LIBRARY}" DIRECTORY)
+      get_filename_component( _TMP_OS_BASE_ROOT "${_TMP_OS_BASE_ROOT}" DIRECTORY)
       #
       #
-      # Search for "DependenciesAndLibraries.cmake" to include.
+      # Search for "Definitions.cmake" and "DependenciesAndLibraries.cmake" to include.
       # Disable with: `mulle-sourcetree mark src/OSBase no-cmake-dependency`
       #
-      foreach( _TMP_MULLE_OBJC_OS_BASE_FOUNDATION_NAME "MulleObjCOSBaseFoundation")
-         set( _TMP_MULLE_OBJC_OS_BASE_FOUNDATION_DIR "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_ROOT}/include/${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_NAME}/cmake")
+      foreach( _TMP_OS_BASE_NAME "MulleObjCOSBaseFoundation")
+         set( _TMP_OS_BASE_DIR "${_TMP_OS_BASE_ROOT}/include/${_TMP_OS_BASE_NAME}/cmake")
          # use explicit path to avoid "surprises"
-         if( EXISTS "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_DIR}/DependenciesAndLibraries.cmake")
-            unset( MULLE_OBJC_OS_BASE_FOUNDATION_DEFINITIONS)
-            list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_DIR}")
+         if( IS_DIRECTORY "${_TMP_OS_BASE_DIR}")
+            list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_OS_BASE_DIR}")
             #
-            include( "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_DIR}/DependenciesAndLibraries.cmake")
+            include( "${_TMP_OS_BASE_DIR}/DependenciesAndLibraries.cmake" OPTIONAL)
             #
+            list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_OS_BASE_DIR}")
             #
-            list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_DIR}")
-            set( INHERITED_DEFINITIONS
-               ${INHERITED_DEFINITIONS}
-               ${MULLE_OBJC_OS_BASE_FOUNDATION_DEFINITIONS}
-               CACHE INTERNAL "need to cache this"
-            )
+            unset( OS_BASE_DEFINITIONS)
+            include( "${_TMP_OS_BASE_DIR}/Definitions.cmake" OPTIONAL)
+            list( APPEND INHERITED_DEFINITIONS ${OS_BASE_DEFINITIONS})
             break()
          else()
-            message( STATUS "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_DIR}/DependenciesAndLibraries.cmake not found")
+            message( STATUS "${_TMP_OS_BASE_DIR} not found")
          endif()
       endforeach()
       #
@@ -73,21 +79,17 @@ if( NOT MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY)
       # Disable with: `mulle-sourcetree mark src/OSBase no-cmake-loader`
       #
       if( NOT NO_INHERIT_OBJC_LOADERS)
-         foreach( _TMP_MULLE_OBJC_OS_BASE_FOUNDATION_NAME "MulleObjCOSBaseFoundation")
-            set( _TMP_MULLE_OBJC_OS_BASE_FOUNDATION_FILE "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_ROOT}/include/${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_NAME}/MulleObjCLoader+${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_NAME}.h")
-            if( EXISTS "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_FILE}")
-               set( INHERITED_OBJC_LOADERS
-                  ${INHERITED_OBJC_LOADERS}
-                  ${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_FILE}
-                  CACHE INTERNAL "need to cache this"
-               )
+         foreach( _TMP_OS_BASE_NAME "MulleObjCOSBaseFoundation")
+            set( _TMP_OS_BASE_FILE "${_TMP_OS_BASE_ROOT}/include/${_TMP_OS_BASE_NAME}/MulleObjCLoader+${_TMP_OS_BASE_NAME}.h")
+            if( EXISTS "${_TMP_OS_BASE_FILE}")
+               list( APPEND INHERITED_OBJC_LOADERS ${_TMP_OS_BASE_FILE})
                break()
             endif()
          endforeach()
       endif()
    else()
       # Disable with: `mulle-sourcetree mark src/OSBase no-require-link`
-      message( FATAL_ERROR "MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY was not found")
+      message( FATAL_ERROR "OS_BASE_LIBRARY was not found")
    endif()
 endif()
 
@@ -99,55 +101,61 @@ endif()
 # Disable for a sdk: `mulle-sourcetree mark src/Posix no-cmake-sdk-<name>`
 #
 if( NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-   if( NOT MULLE_OBJC_POSIX_FOUNDATION_LIBRARY)
-      find_library( MULLE_OBJC_POSIX_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX} ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCPosixFoundation NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH)
-      message( STATUS "MULLE_OBJC_POSIX_FOUNDATION_LIBRARY is ${MULLE_OBJC_POSIX_FOUNDATION_LIBRARY}")
+   if( NOT POSIX_LIBRARY)
+      if( DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+         find_library( POSIX_LIBRARY NAMES
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
+            MulleObjCPosixFoundation
+            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH
+         )
+      else()
+         find_library( POSIX_LIBRARY NAMES
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
+            MulleObjCPosixFoundation
+         )
+      endif()
+      message( STATUS "POSIX_LIBRARY is ${POSIX_LIBRARY}")
       #
       # The order looks ascending, but due to the way this file is read
       # it ends up being descending, which is what we need.
       #
-      if( MULLE_OBJC_POSIX_FOUNDATION_LIBRARY)
+      if( POSIX_LIBRARY)
          #
-         # Add MULLE_OBJC_POSIX_FOUNDATION_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
+         # Add POSIX_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
          # Disable with: `mulle-sourcetree mark src/Posix no-cmake-add`
          #
-         set( ALL_LOAD_DEPENDENCY_LIBRARIES
-            ${ALL_LOAD_DEPENDENCY_LIBRARIES}
-            ${MULLE_OBJC_POSIX_FOUNDATION_LIBRARY}
-            CACHE INTERNAL "need to cache this"
-         )
+         list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${POSIX_LIBRARY})
          #
          # Inherit information from dependency.
          # Encompasses: no-cmake-searchpath,no-cmake-dependency,no-cmake-loader
          # Disable with: `mulle-sourcetree mark src/Posix no-cmake-inherit`
          #
          # temporarily expand CMAKE_MODULE_PATH
-         get_filename_component( _TMP_MULLE_OBJC_POSIX_FOUNDATION_ROOT "${MULLE_OBJC_POSIX_FOUNDATION_LIBRARY}" DIRECTORY)
-         get_filename_component( _TMP_MULLE_OBJC_POSIX_FOUNDATION_ROOT "${_TMP_MULLE_OBJC_POSIX_FOUNDATION_ROOT}" DIRECTORY)
+         get_filename_component( _TMP_POSIX_ROOT "${POSIX_LIBRARY}" DIRECTORY)
+         get_filename_component( _TMP_POSIX_ROOT "${_TMP_POSIX_ROOT}" DIRECTORY)
          #
          #
-         # Search for "DependenciesAndLibraries.cmake" to include.
+         # Search for "Definitions.cmake" and "DependenciesAndLibraries.cmake" to include.
          # Disable with: `mulle-sourcetree mark src/Posix no-cmake-dependency`
          #
-         foreach( _TMP_MULLE_OBJC_POSIX_FOUNDATION_NAME "MulleObjCPosixFoundation")
-            set( _TMP_MULLE_OBJC_POSIX_FOUNDATION_DIR "${_TMP_MULLE_OBJC_POSIX_FOUNDATION_ROOT}/include/${_TMP_MULLE_OBJC_POSIX_FOUNDATION_NAME}/cmake")
+         foreach( _TMP_POSIX_NAME "MulleObjCPosixFoundation")
+            set( _TMP_POSIX_DIR "${_TMP_POSIX_ROOT}/include/${_TMP_POSIX_NAME}/cmake")
             # use explicit path to avoid "surprises"
-            if( EXISTS "${_TMP_MULLE_OBJC_POSIX_FOUNDATION_DIR}/DependenciesAndLibraries.cmake")
-               unset( MULLE_OBJC_POSIX_FOUNDATION_DEFINITIONS)
-               list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_MULLE_OBJC_POSIX_FOUNDATION_DIR}")
+            if( IS_DIRECTORY "${_TMP_POSIX_DIR}")
+               list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_POSIX_DIR}")
                #
-               include( "${_TMP_MULLE_OBJC_POSIX_FOUNDATION_DIR}/DependenciesAndLibraries.cmake")
+               include( "${_TMP_POSIX_DIR}/DependenciesAndLibraries.cmake" OPTIONAL)
                #
+               list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_POSIX_DIR}")
                #
-               list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_MULLE_OBJC_POSIX_FOUNDATION_DIR}")
-               set( INHERITED_DEFINITIONS
-                  ${INHERITED_DEFINITIONS}
-                  ${MULLE_OBJC_POSIX_FOUNDATION_DEFINITIONS}
-                  CACHE INTERNAL "need to cache this"
-               )
+               unset( POSIX_DEFINITIONS)
+               include( "${_TMP_POSIX_DIR}/Definitions.cmake" OPTIONAL)
+               list( APPEND INHERITED_DEFINITIONS ${POSIX_DEFINITIONS})
                break()
             else()
-               message( STATUS "${_TMP_MULLE_OBJC_POSIX_FOUNDATION_DIR}/DependenciesAndLibraries.cmake not found")
+               message( STATUS "${_TMP_POSIX_DIR} not found")
             endif()
          endforeach()
          #
@@ -155,21 +163,17 @@ if( NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
          # Disable with: `mulle-sourcetree mark src/Posix no-cmake-loader`
          #
          if( NOT NO_INHERIT_OBJC_LOADERS)
-            foreach( _TMP_MULLE_OBJC_POSIX_FOUNDATION_NAME "MulleObjCPosixFoundation")
-               set( _TMP_MULLE_OBJC_POSIX_FOUNDATION_FILE "${_TMP_MULLE_OBJC_POSIX_FOUNDATION_ROOT}/include/${_TMP_MULLE_OBJC_POSIX_FOUNDATION_NAME}/MulleObjCLoader+${_TMP_MULLE_OBJC_POSIX_FOUNDATION_NAME}.h")
-               if( EXISTS "${_TMP_MULLE_OBJC_POSIX_FOUNDATION_FILE}")
-                  set( INHERITED_OBJC_LOADERS
-                     ${INHERITED_OBJC_LOADERS}
-                     ${_TMP_MULLE_OBJC_POSIX_FOUNDATION_FILE}
-                     CACHE INTERNAL "need to cache this"
-                  )
+            foreach( _TMP_POSIX_NAME "MulleObjCPosixFoundation")
+               set( _TMP_POSIX_FILE "${_TMP_POSIX_ROOT}/include/${_TMP_POSIX_NAME}/MulleObjCLoader+${_TMP_POSIX_NAME}.h")
+               if( EXISTS "${_TMP_POSIX_FILE}")
+                  list( APPEND INHERITED_OBJC_LOADERS ${_TMP_POSIX_FILE})
                   break()
                endif()
             endforeach()
          endif()
       else()
          # Disable with: `mulle-sourcetree mark src/Posix no-require-link`
-         message( FATAL_ERROR "MULLE_OBJC_POSIX_FOUNDATION_LIBRARY was not found")
+         message( FATAL_ERROR "POSIX_LIBRARY was not found")
       endif()
    endif()
    endif()
@@ -182,55 +186,61 @@ if( NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 # Disable for a sdk: `mulle-sourcetree mark src/BSD no-cmake-sdk-<name>`
 #
 if( NOT (${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES "Linux" OR ${CMAKE_SYSTEM_NAME} MATCHES "Windows"))
-   if( NOT MULLE_OBJC_BSD_FOUNDATION_LIBRARY)
-      find_library( MULLE_OBJC_BSD_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCBSDFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX} ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCBSDFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCBSDFoundation NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH)
-      message( STATUS "MULLE_OBJC_BSD_FOUNDATION_LIBRARY is ${MULLE_OBJC_BSD_FOUNDATION_LIBRARY}")
+   if( NOT BSD_LIBRARY)
+      if( DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+         find_library( BSD_LIBRARY NAMES
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCBSDFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCBSDFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
+            MulleObjCBSDFoundation
+            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH
+         )
+      else()
+         find_library( BSD_LIBRARY NAMES
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCBSDFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCBSDFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
+            MulleObjCBSDFoundation
+         )
+      endif()
+      message( STATUS "BSD_LIBRARY is ${BSD_LIBRARY}")
       #
       # The order looks ascending, but due to the way this file is read
       # it ends up being descending, which is what we need.
       #
-      if( MULLE_OBJC_BSD_FOUNDATION_LIBRARY)
+      if( BSD_LIBRARY)
          #
-         # Add MULLE_OBJC_BSD_FOUNDATION_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
+         # Add BSD_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
          # Disable with: `mulle-sourcetree mark src/BSD no-cmake-add`
          #
-         set( ALL_LOAD_DEPENDENCY_LIBRARIES
-            ${ALL_LOAD_DEPENDENCY_LIBRARIES}
-            ${MULLE_OBJC_BSD_FOUNDATION_LIBRARY}
-            CACHE INTERNAL "need to cache this"
-         )
+         list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${BSD_LIBRARY})
          #
          # Inherit information from dependency.
          # Encompasses: no-cmake-searchpath,no-cmake-dependency,no-cmake-loader
          # Disable with: `mulle-sourcetree mark src/BSD no-cmake-inherit`
          #
          # temporarily expand CMAKE_MODULE_PATH
-         get_filename_component( _TMP_MULLE_OBJC_BSD_FOUNDATION_ROOT "${MULLE_OBJC_BSD_FOUNDATION_LIBRARY}" DIRECTORY)
-         get_filename_component( _TMP_MULLE_OBJC_BSD_FOUNDATION_ROOT "${_TMP_MULLE_OBJC_BSD_FOUNDATION_ROOT}" DIRECTORY)
+         get_filename_component( _TMP_BSD_ROOT "${BSD_LIBRARY}" DIRECTORY)
+         get_filename_component( _TMP_BSD_ROOT "${_TMP_BSD_ROOT}" DIRECTORY)
          #
          #
-         # Search for "DependenciesAndLibraries.cmake" to include.
+         # Search for "Definitions.cmake" and "DependenciesAndLibraries.cmake" to include.
          # Disable with: `mulle-sourcetree mark src/BSD no-cmake-dependency`
          #
-         foreach( _TMP_MULLE_OBJC_BSD_FOUNDATION_NAME "MulleObjCBSDFoundation")
-            set( _TMP_MULLE_OBJC_BSD_FOUNDATION_DIR "${_TMP_MULLE_OBJC_BSD_FOUNDATION_ROOT}/include/${_TMP_MULLE_OBJC_BSD_FOUNDATION_NAME}/cmake")
+         foreach( _TMP_BSD_NAME "MulleObjCBSDFoundation")
+            set( _TMP_BSD_DIR "${_TMP_BSD_ROOT}/include/${_TMP_BSD_NAME}/cmake")
             # use explicit path to avoid "surprises"
-            if( EXISTS "${_TMP_MULLE_OBJC_BSD_FOUNDATION_DIR}/DependenciesAndLibraries.cmake")
-               unset( MULLE_OBJC_BSD_FOUNDATION_DEFINITIONS)
-               list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_MULLE_OBJC_BSD_FOUNDATION_DIR}")
+            if( IS_DIRECTORY "${_TMP_BSD_DIR}")
+               list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_BSD_DIR}")
                #
-               include( "${_TMP_MULLE_OBJC_BSD_FOUNDATION_DIR}/DependenciesAndLibraries.cmake")
+               include( "${_TMP_BSD_DIR}/DependenciesAndLibraries.cmake" OPTIONAL)
                #
+               list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_BSD_DIR}")
                #
-               list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_MULLE_OBJC_BSD_FOUNDATION_DIR}")
-               set( INHERITED_DEFINITIONS
-                  ${INHERITED_DEFINITIONS}
-                  ${MULLE_OBJC_BSD_FOUNDATION_DEFINITIONS}
-                  CACHE INTERNAL "need to cache this"
-               )
+               unset( BSD_DEFINITIONS)
+               include( "${_TMP_BSD_DIR}/Definitions.cmake" OPTIONAL)
+               list( APPEND INHERITED_DEFINITIONS ${BSD_DEFINITIONS})
                break()
             else()
-               message( STATUS "${_TMP_MULLE_OBJC_BSD_FOUNDATION_DIR}/DependenciesAndLibraries.cmake not found")
+               message( STATUS "${_TMP_BSD_DIR} not found")
             endif()
          endforeach()
          #
@@ -238,21 +248,17 @@ if( NOT (${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES 
          # Disable with: `mulle-sourcetree mark src/BSD no-cmake-loader`
          #
          if( NOT NO_INHERIT_OBJC_LOADERS)
-            foreach( _TMP_MULLE_OBJC_BSD_FOUNDATION_NAME "MulleObjCBSDFoundation")
-               set( _TMP_MULLE_OBJC_BSD_FOUNDATION_FILE "${_TMP_MULLE_OBJC_BSD_FOUNDATION_ROOT}/include/${_TMP_MULLE_OBJC_BSD_FOUNDATION_NAME}/MulleObjCLoader+${_TMP_MULLE_OBJC_BSD_FOUNDATION_NAME}.h")
-               if( EXISTS "${_TMP_MULLE_OBJC_BSD_FOUNDATION_FILE}")
-                  set( INHERITED_OBJC_LOADERS
-                     ${INHERITED_OBJC_LOADERS}
-                     ${_TMP_MULLE_OBJC_BSD_FOUNDATION_FILE}
-                     CACHE INTERNAL "need to cache this"
-                  )
+            foreach( _TMP_BSD_NAME "MulleObjCBSDFoundation")
+               set( _TMP_BSD_FILE "${_TMP_BSD_ROOT}/include/${_TMP_BSD_NAME}/MulleObjCLoader+${_TMP_BSD_NAME}.h")
+               if( EXISTS "${_TMP_BSD_FILE}")
+                  list( APPEND INHERITED_OBJC_LOADERS ${_TMP_BSD_FILE})
                   break()
                endif()
             endforeach()
          endif()
       else()
          # Disable with: `mulle-sourcetree mark src/BSD no-require-link`
-         message( FATAL_ERROR "MULLE_OBJC_BSD_FOUNDATION_LIBRARY was not found")
+         message( FATAL_ERROR "BSD_LIBRARY was not found")
       endif()
    endif()
    endif()
@@ -265,55 +271,61 @@ if( NOT (${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES 
 # Disable for a sdk: `mulle-sourcetree mark src/FreeBSD no-cmake-sdk-<name>`
 #
 if( ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
-   if( NOT MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY)
-      find_library( MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX} ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCFreeBSDFoundation NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH)
-      message( STATUS "MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY is ${MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY}")
+   if( NOT FREE_BSD_LIBRARY)
+      if( DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+         find_library( FREE_BSD_LIBRARY NAMES
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
+            MulleObjCFreeBSDFoundation
+            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH
+         )
+      else()
+         find_library( FREE_BSD_LIBRARY NAMES
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
+            MulleObjCFreeBSDFoundation
+         )
+      endif()
+      message( STATUS "FREE_BSD_LIBRARY is ${FREE_BSD_LIBRARY}")
       #
       # The order looks ascending, but due to the way this file is read
       # it ends up being descending, which is what we need.
       #
-      if( MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY)
+      if( FREE_BSD_LIBRARY)
          #
-         # Add MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
+         # Add FREE_BSD_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
          # Disable with: `mulle-sourcetree mark src/FreeBSD no-cmake-add`
          #
-         set( ALL_LOAD_DEPENDENCY_LIBRARIES
-            ${ALL_LOAD_DEPENDENCY_LIBRARIES}
-            ${MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY}
-            CACHE INTERNAL "need to cache this"
-         )
+         list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${FREE_BSD_LIBRARY})
          #
          # Inherit information from dependency.
          # Encompasses: no-cmake-searchpath,no-cmake-dependency,no-cmake-loader
          # Disable with: `mulle-sourcetree mark src/FreeBSD no-cmake-inherit`
          #
          # temporarily expand CMAKE_MODULE_PATH
-         get_filename_component( _TMP_MULLE_OBJC_FREE_BSD_FOUNDATION_ROOT "${MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY}" DIRECTORY)
-         get_filename_component( _TMP_MULLE_OBJC_FREE_BSD_FOUNDATION_ROOT "${_TMP_MULLE_OBJC_FREE_BSD_FOUNDATION_ROOT}" DIRECTORY)
+         get_filename_component( _TMP_FREE_BSD_ROOT "${FREE_BSD_LIBRARY}" DIRECTORY)
+         get_filename_component( _TMP_FREE_BSD_ROOT "${_TMP_FREE_BSD_ROOT}" DIRECTORY)
          #
          #
-         # Search for "DependenciesAndLibraries.cmake" to include.
+         # Search for "Definitions.cmake" and "DependenciesAndLibraries.cmake" to include.
          # Disable with: `mulle-sourcetree mark src/FreeBSD no-cmake-dependency`
          #
-         foreach( _TMP_MULLE_OBJC_FREE_BSD_FOUNDATION_NAME "MulleObjCFreeBSDFoundation")
-            set( _TMP_MULLE_OBJC_FREE_BSD_FOUNDATION_DIR "${_TMP_MULLE_OBJC_FREE_BSD_FOUNDATION_ROOT}/include/${_TMP_MULLE_OBJC_FREE_BSD_FOUNDATION_NAME}/cmake")
+         foreach( _TMP_FREE_BSD_NAME "MulleObjCFreeBSDFoundation")
+            set( _TMP_FREE_BSD_DIR "${_TMP_FREE_BSD_ROOT}/include/${_TMP_FREE_BSD_NAME}/cmake")
             # use explicit path to avoid "surprises"
-            if( EXISTS "${_TMP_MULLE_OBJC_FREE_BSD_FOUNDATION_DIR}/DependenciesAndLibraries.cmake")
-               unset( MULLE_OBJC_FREE_BSD_FOUNDATION_DEFINITIONS)
-               list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_MULLE_OBJC_FREE_BSD_FOUNDATION_DIR}")
+            if( IS_DIRECTORY "${_TMP_FREE_BSD_DIR}")
+               list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_FREE_BSD_DIR}")
                #
-               include( "${_TMP_MULLE_OBJC_FREE_BSD_FOUNDATION_DIR}/DependenciesAndLibraries.cmake")
+               include( "${_TMP_FREE_BSD_DIR}/DependenciesAndLibraries.cmake" OPTIONAL)
                #
+               list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_FREE_BSD_DIR}")
                #
-               list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_MULLE_OBJC_FREE_BSD_FOUNDATION_DIR}")
-               set( INHERITED_DEFINITIONS
-                  ${INHERITED_DEFINITIONS}
-                  ${MULLE_OBJC_FREE_BSD_FOUNDATION_DEFINITIONS}
-                  CACHE INTERNAL "need to cache this"
-               )
+               unset( FREE_BSD_DEFINITIONS)
+               include( "${_TMP_FREE_BSD_DIR}/Definitions.cmake" OPTIONAL)
+               list( APPEND INHERITED_DEFINITIONS ${FREE_BSD_DEFINITIONS})
                break()
             else()
-               message( STATUS "${_TMP_MULLE_OBJC_FREE_BSD_FOUNDATION_DIR}/DependenciesAndLibraries.cmake not found")
+               message( STATUS "${_TMP_FREE_BSD_DIR} not found")
             endif()
          endforeach()
          #
@@ -321,21 +333,17 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
          # Disable with: `mulle-sourcetree mark src/FreeBSD no-cmake-loader`
          #
          if( NOT NO_INHERIT_OBJC_LOADERS)
-            foreach( _TMP_MULLE_OBJC_FREE_BSD_FOUNDATION_NAME "MulleObjCFreeBSDFoundation")
-               set( _TMP_MULLE_OBJC_FREE_BSD_FOUNDATION_FILE "${_TMP_MULLE_OBJC_FREE_BSD_FOUNDATION_ROOT}/include/${_TMP_MULLE_OBJC_FREE_BSD_FOUNDATION_NAME}/MulleObjCLoader+${_TMP_MULLE_OBJC_FREE_BSD_FOUNDATION_NAME}.h")
-               if( EXISTS "${_TMP_MULLE_OBJC_FREE_BSD_FOUNDATION_FILE}")
-                  set( INHERITED_OBJC_LOADERS
-                     ${INHERITED_OBJC_LOADERS}
-                     ${_TMP_MULLE_OBJC_FREE_BSD_FOUNDATION_FILE}
-                     CACHE INTERNAL "need to cache this"
-                  )
+            foreach( _TMP_FREE_BSD_NAME "MulleObjCFreeBSDFoundation")
+               set( _TMP_FREE_BSD_FILE "${_TMP_FREE_BSD_ROOT}/include/${_TMP_FREE_BSD_NAME}/MulleObjCLoader+${_TMP_FREE_BSD_NAME}.h")
+               if( EXISTS "${_TMP_FREE_BSD_FILE}")
+                  list( APPEND INHERITED_OBJC_LOADERS ${_TMP_FREE_BSD_FILE})
                   break()
                endif()
             endforeach()
          endif()
       else()
          # Disable with: `mulle-sourcetree mark src/FreeBSD no-require-link`
-         message( FATAL_ERROR "MULLE_OBJC_FREE_BSD_FOUNDATION_LIBRARY was not found")
+         message( FATAL_ERROR "FREE_BSD_LIBRARY was not found")
       endif()
    endif()
    endif()
@@ -348,55 +356,61 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
 # Disable for a sdk: `mulle-sourcetree mark src/Darwin no-cmake-sdk-<name>`
 #
 if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-   if( NOT MULLE_OBJC_DARWIN_FOUNDATION_LIBRARY)
-      find_library( MULLE_OBJC_DARWIN_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCDarwinFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX} ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCDarwinFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCDarwinFoundation NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH)
-      message( STATUS "MULLE_OBJC_DARWIN_FOUNDATION_LIBRARY is ${MULLE_OBJC_DARWIN_FOUNDATION_LIBRARY}")
+   if( NOT DARWIN_LIBRARY)
+      if( DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+         find_library( DARWIN_LIBRARY NAMES
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCDarwinFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCDarwinFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
+            MulleObjCDarwinFoundation
+            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH
+         )
+      else()
+         find_library( DARWIN_LIBRARY NAMES
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCDarwinFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCDarwinFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
+            MulleObjCDarwinFoundation
+         )
+      endif()
+      message( STATUS "DARWIN_LIBRARY is ${DARWIN_LIBRARY}")
       #
       # The order looks ascending, but due to the way this file is read
       # it ends up being descending, which is what we need.
       #
-      if( MULLE_OBJC_DARWIN_FOUNDATION_LIBRARY)
+      if( DARWIN_LIBRARY)
          #
-         # Add MULLE_OBJC_DARWIN_FOUNDATION_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
+         # Add DARWIN_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
          # Disable with: `mulle-sourcetree mark src/Darwin no-cmake-add`
          #
-         set( ALL_LOAD_DEPENDENCY_LIBRARIES
-            ${ALL_LOAD_DEPENDENCY_LIBRARIES}
-            ${MULLE_OBJC_DARWIN_FOUNDATION_LIBRARY}
-            CACHE INTERNAL "need to cache this"
-         )
+         list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${DARWIN_LIBRARY})
          #
          # Inherit information from dependency.
          # Encompasses: no-cmake-searchpath,no-cmake-dependency,no-cmake-loader
          # Disable with: `mulle-sourcetree mark src/Darwin no-cmake-inherit`
          #
          # temporarily expand CMAKE_MODULE_PATH
-         get_filename_component( _TMP_MULLE_OBJC_DARWIN_FOUNDATION_ROOT "${MULLE_OBJC_DARWIN_FOUNDATION_LIBRARY}" DIRECTORY)
-         get_filename_component( _TMP_MULLE_OBJC_DARWIN_FOUNDATION_ROOT "${_TMP_MULLE_OBJC_DARWIN_FOUNDATION_ROOT}" DIRECTORY)
+         get_filename_component( _TMP_DARWIN_ROOT "${DARWIN_LIBRARY}" DIRECTORY)
+         get_filename_component( _TMP_DARWIN_ROOT "${_TMP_DARWIN_ROOT}" DIRECTORY)
          #
          #
-         # Search for "DependenciesAndLibraries.cmake" to include.
+         # Search for "Definitions.cmake" and "DependenciesAndLibraries.cmake" to include.
          # Disable with: `mulle-sourcetree mark src/Darwin no-cmake-dependency`
          #
-         foreach( _TMP_MULLE_OBJC_DARWIN_FOUNDATION_NAME "MulleObjCDarwinFoundation")
-            set( _TMP_MULLE_OBJC_DARWIN_FOUNDATION_DIR "${_TMP_MULLE_OBJC_DARWIN_FOUNDATION_ROOT}/include/${_TMP_MULLE_OBJC_DARWIN_FOUNDATION_NAME}/cmake")
+         foreach( _TMP_DARWIN_NAME "MulleObjCDarwinFoundation")
+            set( _TMP_DARWIN_DIR "${_TMP_DARWIN_ROOT}/include/${_TMP_DARWIN_NAME}/cmake")
             # use explicit path to avoid "surprises"
-            if( EXISTS "${_TMP_MULLE_OBJC_DARWIN_FOUNDATION_DIR}/DependenciesAndLibraries.cmake")
-               unset( MULLE_OBJC_DARWIN_FOUNDATION_DEFINITIONS)
-               list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_MULLE_OBJC_DARWIN_FOUNDATION_DIR}")
+            if( IS_DIRECTORY "${_TMP_DARWIN_DIR}")
+               list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_DARWIN_DIR}")
                #
-               include( "${_TMP_MULLE_OBJC_DARWIN_FOUNDATION_DIR}/DependenciesAndLibraries.cmake")
+               include( "${_TMP_DARWIN_DIR}/DependenciesAndLibraries.cmake" OPTIONAL)
                #
+               list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_DARWIN_DIR}")
                #
-               list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_MULLE_OBJC_DARWIN_FOUNDATION_DIR}")
-               set( INHERITED_DEFINITIONS
-                  ${INHERITED_DEFINITIONS}
-                  ${MULLE_OBJC_DARWIN_FOUNDATION_DEFINITIONS}
-                  CACHE INTERNAL "need to cache this"
-               )
+               unset( DARWIN_DEFINITIONS)
+               include( "${_TMP_DARWIN_DIR}/Definitions.cmake" OPTIONAL)
+               list( APPEND INHERITED_DEFINITIONS ${DARWIN_DEFINITIONS})
                break()
             else()
-               message( STATUS "${_TMP_MULLE_OBJC_DARWIN_FOUNDATION_DIR}/DependenciesAndLibraries.cmake not found")
+               message( STATUS "${_TMP_DARWIN_DIR} not found")
             endif()
          endforeach()
          #
@@ -404,21 +418,17 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
          # Disable with: `mulle-sourcetree mark src/Darwin no-cmake-loader`
          #
          if( NOT NO_INHERIT_OBJC_LOADERS)
-            foreach( _TMP_MULLE_OBJC_DARWIN_FOUNDATION_NAME "MulleObjCDarwinFoundation")
-               set( _TMP_MULLE_OBJC_DARWIN_FOUNDATION_FILE "${_TMP_MULLE_OBJC_DARWIN_FOUNDATION_ROOT}/include/${_TMP_MULLE_OBJC_DARWIN_FOUNDATION_NAME}/MulleObjCLoader+${_TMP_MULLE_OBJC_DARWIN_FOUNDATION_NAME}.h")
-               if( EXISTS "${_TMP_MULLE_OBJC_DARWIN_FOUNDATION_FILE}")
-                  set( INHERITED_OBJC_LOADERS
-                     ${INHERITED_OBJC_LOADERS}
-                     ${_TMP_MULLE_OBJC_DARWIN_FOUNDATION_FILE}
-                     CACHE INTERNAL "need to cache this"
-                  )
+            foreach( _TMP_DARWIN_NAME "MulleObjCDarwinFoundation")
+               set( _TMP_DARWIN_FILE "${_TMP_DARWIN_ROOT}/include/${_TMP_DARWIN_NAME}/MulleObjCLoader+${_TMP_DARWIN_NAME}.h")
+               if( EXISTS "${_TMP_DARWIN_FILE}")
+                  list( APPEND INHERITED_OBJC_LOADERS ${_TMP_DARWIN_FILE})
                   break()
                endif()
             endforeach()
          endif()
       else()
          # Disable with: `mulle-sourcetree mark src/Darwin no-require-link`
-         message( FATAL_ERROR "MULLE_OBJC_DARWIN_FOUNDATION_LIBRARY was not found")
+         message( FATAL_ERROR "DARWIN_LIBRARY was not found")
       endif()
    endif()
    endif()
@@ -431,55 +441,61 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 # Disable for a sdk: `mulle-sourcetree mark src/Linux no-cmake-sdk-<name>`
 #
 if( ${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-   if( NOT MULLE_OBJC_LINUX_FOUNDATION_LIBRARY)
-      find_library( MULLE_OBJC_LINUX_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCLinuxFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX} ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCLinuxFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCLinuxFoundation NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH)
-      message( STATUS "MULLE_OBJC_LINUX_FOUNDATION_LIBRARY is ${MULLE_OBJC_LINUX_FOUNDATION_LIBRARY}")
+   if( NOT LINUX_LIBRARY)
+      if( DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+         find_library( LINUX_LIBRARY NAMES
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCLinuxFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCLinuxFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
+            MulleObjCLinuxFoundation
+            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH
+         )
+      else()
+         find_library( LINUX_LIBRARY NAMES
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCLinuxFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCLinuxFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
+            MulleObjCLinuxFoundation
+         )
+      endif()
+      message( STATUS "LINUX_LIBRARY is ${LINUX_LIBRARY}")
       #
       # The order looks ascending, but due to the way this file is read
       # it ends up being descending, which is what we need.
       #
-      if( MULLE_OBJC_LINUX_FOUNDATION_LIBRARY)
+      if( LINUX_LIBRARY)
          #
-         # Add MULLE_OBJC_LINUX_FOUNDATION_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
+         # Add LINUX_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
          # Disable with: `mulle-sourcetree mark src/Linux no-cmake-add`
          #
-         set( ALL_LOAD_DEPENDENCY_LIBRARIES
-            ${ALL_LOAD_DEPENDENCY_LIBRARIES}
-            ${MULLE_OBJC_LINUX_FOUNDATION_LIBRARY}
-            CACHE INTERNAL "need to cache this"
-         )
+         list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${LINUX_LIBRARY})
          #
          # Inherit information from dependency.
          # Encompasses: no-cmake-searchpath,no-cmake-dependency,no-cmake-loader
          # Disable with: `mulle-sourcetree mark src/Linux no-cmake-inherit`
          #
          # temporarily expand CMAKE_MODULE_PATH
-         get_filename_component( _TMP_MULLE_OBJC_LINUX_FOUNDATION_ROOT "${MULLE_OBJC_LINUX_FOUNDATION_LIBRARY}" DIRECTORY)
-         get_filename_component( _TMP_MULLE_OBJC_LINUX_FOUNDATION_ROOT "${_TMP_MULLE_OBJC_LINUX_FOUNDATION_ROOT}" DIRECTORY)
+         get_filename_component( _TMP_LINUX_ROOT "${LINUX_LIBRARY}" DIRECTORY)
+         get_filename_component( _TMP_LINUX_ROOT "${_TMP_LINUX_ROOT}" DIRECTORY)
          #
          #
-         # Search for "DependenciesAndLibraries.cmake" to include.
+         # Search for "Definitions.cmake" and "DependenciesAndLibraries.cmake" to include.
          # Disable with: `mulle-sourcetree mark src/Linux no-cmake-dependency`
          #
-         foreach( _TMP_MULLE_OBJC_LINUX_FOUNDATION_NAME "MulleObjCLinuxFoundation")
-            set( _TMP_MULLE_OBJC_LINUX_FOUNDATION_DIR "${_TMP_MULLE_OBJC_LINUX_FOUNDATION_ROOT}/include/${_TMP_MULLE_OBJC_LINUX_FOUNDATION_NAME}/cmake")
+         foreach( _TMP_LINUX_NAME "MulleObjCLinuxFoundation")
+            set( _TMP_LINUX_DIR "${_TMP_LINUX_ROOT}/include/${_TMP_LINUX_NAME}/cmake")
             # use explicit path to avoid "surprises"
-            if( EXISTS "${_TMP_MULLE_OBJC_LINUX_FOUNDATION_DIR}/DependenciesAndLibraries.cmake")
-               unset( MULLE_OBJC_LINUX_FOUNDATION_DEFINITIONS)
-               list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_MULLE_OBJC_LINUX_FOUNDATION_DIR}")
+            if( IS_DIRECTORY "${_TMP_LINUX_DIR}")
+               list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_LINUX_DIR}")
                #
-               include( "${_TMP_MULLE_OBJC_LINUX_FOUNDATION_DIR}/DependenciesAndLibraries.cmake")
+               include( "${_TMP_LINUX_DIR}/DependenciesAndLibraries.cmake" OPTIONAL)
                #
+               list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_LINUX_DIR}")
                #
-               list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_MULLE_OBJC_LINUX_FOUNDATION_DIR}")
-               set( INHERITED_DEFINITIONS
-                  ${INHERITED_DEFINITIONS}
-                  ${MULLE_OBJC_LINUX_FOUNDATION_DEFINITIONS}
-                  CACHE INTERNAL "need to cache this"
-               )
+               unset( LINUX_DEFINITIONS)
+               include( "${_TMP_LINUX_DIR}/Definitions.cmake" OPTIONAL)
+               list( APPEND INHERITED_DEFINITIONS ${LINUX_DEFINITIONS})
                break()
             else()
-               message( STATUS "${_TMP_MULLE_OBJC_LINUX_FOUNDATION_DIR}/DependenciesAndLibraries.cmake not found")
+               message( STATUS "${_TMP_LINUX_DIR} not found")
             endif()
          endforeach()
          #
@@ -487,21 +503,17 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES "Linu
          # Disable with: `mulle-sourcetree mark src/Linux no-cmake-loader`
          #
          if( NOT NO_INHERIT_OBJC_LOADERS)
-            foreach( _TMP_MULLE_OBJC_LINUX_FOUNDATION_NAME "MulleObjCLinuxFoundation")
-               set( _TMP_MULLE_OBJC_LINUX_FOUNDATION_FILE "${_TMP_MULLE_OBJC_LINUX_FOUNDATION_ROOT}/include/${_TMP_MULLE_OBJC_LINUX_FOUNDATION_NAME}/MulleObjCLoader+${_TMP_MULLE_OBJC_LINUX_FOUNDATION_NAME}.h")
-               if( EXISTS "${_TMP_MULLE_OBJC_LINUX_FOUNDATION_FILE}")
-                  set( INHERITED_OBJC_LOADERS
-                     ${INHERITED_OBJC_LOADERS}
-                     ${_TMP_MULLE_OBJC_LINUX_FOUNDATION_FILE}
-                     CACHE INTERNAL "need to cache this"
-                  )
+            foreach( _TMP_LINUX_NAME "MulleObjCLinuxFoundation")
+               set( _TMP_LINUX_FILE "${_TMP_LINUX_ROOT}/include/${_TMP_LINUX_NAME}/MulleObjCLoader+${_TMP_LINUX_NAME}.h")
+               if( EXISTS "${_TMP_LINUX_FILE}")
+                  list( APPEND INHERITED_OBJC_LOADERS ${_TMP_LINUX_FILE})
                   break()
                endif()
             endforeach()
          endif()
       else()
          # Disable with: `mulle-sourcetree mark src/Linux no-require-link`
-         message( FATAL_ERROR "MULLE_OBJC_LINUX_FOUNDATION_LIBRARY was not found")
+         message( FATAL_ERROR "LINUX_LIBRARY was not found")
       endif()
    endif()
    endif()
@@ -514,55 +526,61 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES "Linu
 # Disable for a sdk: `mulle-sourcetree mark src/Windows no-cmake-sdk-<name>`
 #
 if( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-   if( NOT MULLE_OBJC_WINDOWS_FOUNDATION_LIBRARY)
-      find_library( MULLE_OBJC_WINDOWS_FOUNDATION_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCWindowsFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX} ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCWindowsFoundation${CMAKE_STATIC_LIBRARY_SUFFIX} MulleObjCWindowsFoundation NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH)
-      message( STATUS "MULLE_OBJC_WINDOWS_FOUNDATION_LIBRARY is ${MULLE_OBJC_WINDOWS_FOUNDATION_LIBRARY}")
+   if( NOT WINDOWS_LIBRARY)
+      if( DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+         find_library( WINDOWS_LIBRARY NAMES
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCWindowsFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCWindowsFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
+            MulleObjCWindowsFoundation
+            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH
+         )
+      else()
+         find_library( WINDOWS_LIBRARY NAMES
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCWindowsFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+            ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCWindowsFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
+            MulleObjCWindowsFoundation
+         )
+      endif()
+      message( STATUS "WINDOWS_LIBRARY is ${WINDOWS_LIBRARY}")
       #
       # The order looks ascending, but due to the way this file is read
       # it ends up being descending, which is what we need.
       #
-      if( MULLE_OBJC_WINDOWS_FOUNDATION_LIBRARY)
+      if( WINDOWS_LIBRARY)
          #
-         # Add MULLE_OBJC_WINDOWS_FOUNDATION_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
+         # Add WINDOWS_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
          # Disable with: `mulle-sourcetree mark src/Windows no-cmake-add`
          #
-         set( ALL_LOAD_DEPENDENCY_LIBRARIES
-            ${ALL_LOAD_DEPENDENCY_LIBRARIES}
-            ${MULLE_OBJC_WINDOWS_FOUNDATION_LIBRARY}
-            CACHE INTERNAL "need to cache this"
-         )
+         list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${WINDOWS_LIBRARY})
          #
          # Inherit information from dependency.
          # Encompasses: no-cmake-searchpath,no-cmake-dependency,no-cmake-loader
          # Disable with: `mulle-sourcetree mark src/Windows no-cmake-inherit`
          #
          # temporarily expand CMAKE_MODULE_PATH
-         get_filename_component( _TMP_MULLE_OBJC_WINDOWS_FOUNDATION_ROOT "${MULLE_OBJC_WINDOWS_FOUNDATION_LIBRARY}" DIRECTORY)
-         get_filename_component( _TMP_MULLE_OBJC_WINDOWS_FOUNDATION_ROOT "${_TMP_MULLE_OBJC_WINDOWS_FOUNDATION_ROOT}" DIRECTORY)
+         get_filename_component( _TMP_WINDOWS_ROOT "${WINDOWS_LIBRARY}" DIRECTORY)
+         get_filename_component( _TMP_WINDOWS_ROOT "${_TMP_WINDOWS_ROOT}" DIRECTORY)
          #
          #
-         # Search for "DependenciesAndLibraries.cmake" to include.
+         # Search for "Definitions.cmake" and "DependenciesAndLibraries.cmake" to include.
          # Disable with: `mulle-sourcetree mark src/Windows no-cmake-dependency`
          #
-         foreach( _TMP_MULLE_OBJC_WINDOWS_FOUNDATION_NAME "MulleObjCWindowsFoundation")
-            set( _TMP_MULLE_OBJC_WINDOWS_FOUNDATION_DIR "${_TMP_MULLE_OBJC_WINDOWS_FOUNDATION_ROOT}/include/${_TMP_MULLE_OBJC_WINDOWS_FOUNDATION_NAME}/cmake")
+         foreach( _TMP_WINDOWS_NAME "MulleObjCWindowsFoundation")
+            set( _TMP_WINDOWS_DIR "${_TMP_WINDOWS_ROOT}/include/${_TMP_WINDOWS_NAME}/cmake")
             # use explicit path to avoid "surprises"
-            if( EXISTS "${_TMP_MULLE_OBJC_WINDOWS_FOUNDATION_DIR}/DependenciesAndLibraries.cmake")
-               unset( MULLE_OBJC_WINDOWS_FOUNDATION_DEFINITIONS)
-               list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_MULLE_OBJC_WINDOWS_FOUNDATION_DIR}")
+            if( IS_DIRECTORY "${_TMP_WINDOWS_DIR}")
+               list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_WINDOWS_DIR}")
                #
-               include( "${_TMP_MULLE_OBJC_WINDOWS_FOUNDATION_DIR}/DependenciesAndLibraries.cmake")
+               include( "${_TMP_WINDOWS_DIR}/DependenciesAndLibraries.cmake" OPTIONAL)
                #
+               list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_WINDOWS_DIR}")
                #
-               list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_MULLE_OBJC_WINDOWS_FOUNDATION_DIR}")
-               set( INHERITED_DEFINITIONS
-                  ${INHERITED_DEFINITIONS}
-                  ${MULLE_OBJC_WINDOWS_FOUNDATION_DEFINITIONS}
-                  CACHE INTERNAL "need to cache this"
-               )
+               unset( WINDOWS_DEFINITIONS)
+               include( "${_TMP_WINDOWS_DIR}/Definitions.cmake" OPTIONAL)
+               list( APPEND INHERITED_DEFINITIONS ${WINDOWS_DEFINITIONS})
                break()
             else()
-               message( STATUS "${_TMP_MULLE_OBJC_WINDOWS_FOUNDATION_DIR}/DependenciesAndLibraries.cmake not found")
+               message( STATUS "${_TMP_WINDOWS_DIR} not found")
             endif()
          endforeach()
          #
@@ -570,21 +588,17 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
          # Disable with: `mulle-sourcetree mark src/Windows no-cmake-loader`
          #
          if( NOT NO_INHERIT_OBJC_LOADERS)
-            foreach( _TMP_MULLE_OBJC_WINDOWS_FOUNDATION_NAME "MulleObjCWindowsFoundation")
-               set( _TMP_MULLE_OBJC_WINDOWS_FOUNDATION_FILE "${_TMP_MULLE_OBJC_WINDOWS_FOUNDATION_ROOT}/include/${_TMP_MULLE_OBJC_WINDOWS_FOUNDATION_NAME}/MulleObjCLoader+${_TMP_MULLE_OBJC_WINDOWS_FOUNDATION_NAME}.h")
-               if( EXISTS "${_TMP_MULLE_OBJC_WINDOWS_FOUNDATION_FILE}")
-                  set( INHERITED_OBJC_LOADERS
-                     ${INHERITED_OBJC_LOADERS}
-                     ${_TMP_MULLE_OBJC_WINDOWS_FOUNDATION_FILE}
-                     CACHE INTERNAL "need to cache this"
-                  )
+            foreach( _TMP_WINDOWS_NAME "MulleObjCWindowsFoundation")
+               set( _TMP_WINDOWS_FILE "${_TMP_WINDOWS_ROOT}/include/${_TMP_WINDOWS_NAME}/MulleObjCLoader+${_TMP_WINDOWS_NAME}.h")
+               if( EXISTS "${_TMP_WINDOWS_FILE}")
+                  list( APPEND INHERITED_OBJC_LOADERS ${_TMP_WINDOWS_FILE})
                   break()
                endif()
             endforeach()
          endif()
       else()
          # Disable with: `mulle-sourcetree mark src/Windows no-require-link`
-         message( FATAL_ERROR "MULLE_OBJC_WINDOWS_FOUNDATION_LIBRARY was not found")
+         message( FATAL_ERROR "WINDOWS_LIBRARY was not found")
       endif()
    endif()
    endif()

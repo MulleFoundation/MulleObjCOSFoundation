@@ -18,8 +18,8 @@ include( Files)
 
 if( HEADERS_PHASE)
    install( FILES ${INSTALL_PUBLIC_HEADERS}  DESTINATION "include/MulleObjCOSBaseFoundation")
-   install( FILES ${INSTALL_PRIVATE_HEADERS} DESTINATION "include/MulleObjCOSBaseFoundation/private")
-   install( FILES ${CMAKE_INCLUDES}          DESTINATION "include/MulleObjCOSBaseFoundation/cmake")
+   install( FILES ${INSTALL_PRIVATE_HEADERS} DESTINATION "include/MulleObjCOSBaseFoundation")
+   install( FILES ${INSTALL_CMAKE_INCLUDES}          DESTINATION "include/MulleObjCOSBaseFoundation/cmake")
 
    # short cut out
    if( NOT COMPILE_PHASE AND NOT LINK_PHASE)

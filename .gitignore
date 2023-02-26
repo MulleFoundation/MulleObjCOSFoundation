@@ -73,3 +73,7 @@ version.old
 cmake-build-*/
 test/Formatter/NSDateFormatter/parse-print-parse-10.4.m.notyet
 .ackrc
+wilted/
+mulle-template-composer-*
+mulle-markdown-preview-*.html
+build-*

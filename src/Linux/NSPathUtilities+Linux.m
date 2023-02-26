@@ -12,7 +12,7 @@
 // other files in this library
 
 // other libraries of MulleObjCPosixFoundation
-#import <MulleObjCOSBaseFoundation/private/NSPathUtilities+OSBase-Private.h>
+#import <MulleObjCOSBaseFoundation/NSPathUtilities+OSBase-Private.h>
 
 
 // just like FreeBSD not much thought invested

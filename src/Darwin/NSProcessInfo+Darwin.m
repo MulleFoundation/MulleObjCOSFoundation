@@ -15,8 +15,8 @@
 
 #import "import-private.h"
 
-#import <MulleObjCOSBaseFoundation/private/NSArray+OSBase-Private.h>
-#import <MulleObjCOSBaseFoundation/private/NSDictionary+OSBase-Private.h>
+#import <MulleObjCOSBaseFoundation/NSArray+OSBase-Private.h>
+#import <MulleObjCOSBaseFoundation/NSDictionary+OSBase-Private.h>
 
 // other files in this library
 

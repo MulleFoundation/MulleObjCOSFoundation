@@ -89,7 +89,7 @@ NSString *NSFileHandleOperationException                    = @"NSFileHandleOper
 // keep fd in a void pointer, so that a subclass can
 // use arbitrary large handles
 //
-static id  NSInitFileHandle( NSFileHandle *self, void *fd)
+static id   NSInitFileHandle( NSFileHandle *self, void *fd)
 {
    self->_fd = fd;
    return( self);
@@ -130,11 +130,25 @@ static id  NSInitFileHandle( NSFileHandle *self, void *fd)
 
 - (void) finalize
 {
-   if( _closer)
-   {
-      (*_closer)( _fd);
-      _closer = NULL;
-   }
+   [self closeFile];
+   [super finalize];
+}
+
+
+
+#pragma mark - close
+
+- (void) closeFile
+{
+   int   rval;
+
+   if( ! _closer)
+      return;
+
+   rval = (*_closer)( _fd);
+   if( rval == 0)
+      _closer = 0;
+   // raise or what ?
 }
 
 
@@ -174,7 +188,7 @@ static NSData   *readDataOfLength( NSFileHandle *self,
    char            *buf;
    char            *start;
 
-   if( ! length)
+   if( ! length || self->_state.eof)
       return( nil);
 
    data  = [NSMutableData dataWithLength:length];
@@ -188,8 +202,6 @@ static NSData   *readDataOfLength( NSFileHandle *self,
                            length:len];
       if( ! read_len)
          break;
-      if( read_len == (size_t) -1)
-         MulleObjCThrowErrnoException( NSFileHandleOperationException, @"read failed");
 
       len -= read_len;
       buf  = &buf[ read_len];
@@ -226,10 +238,6 @@ static NSData   *readAllData( NSFileHandle *self, BOOL untilFullOrEOF)
 }
 
 
-//
-// it's obvious, that we need to do have a
-// NSMutableData set is aware of pages
-//
 - (NSData *) readDataToEndOfFile
 {
    return( readAllData( self, YES));
@@ -261,18 +269,16 @@ static NSData   *readAllData( NSFileHandle *self, BOOL untilFullOrEOF)
    if( len == (NSUInteger) -1)
       len = strlen( bytes);
 
-   do
+   while( len)
    {
       written = [self _writeBytes:buf
                            length:len];
+      if( ! written && _state.eof)
+         break;
+
       len -= written;
       buf  = &buf[ written];
-
-      // if written is 0, we should yield the thread
-      // but actually doing a system call is pretty good also
-      // i would assume (given ancient knowledge of OSes)
    }
-   while( len);
 }
 
 
@@ -303,22 +309,6 @@ static NSData   *readAllData( NSFileHandle *self, BOOL untilFullOrEOF)
 {
    [self _seek:offset
           mode:_MulleObjCSeekCur]; // TODO: check!
-}
-
-
-#pragma mark - close
-
-- (void) closeFile
-{
-   int   rval;
-
-   if( ! _closer)
-      return;
-
-   rval = (*_closer)( _fd);
-   if( rval == 0)
-      _closer = 0;
-   // raise or what ?
 }
 
 @end

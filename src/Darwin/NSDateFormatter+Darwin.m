@@ -9,8 +9,8 @@
 #import "import-private.h"
 
 // other libraries of MulleObjCPosixFoundation
-#import <MulleObjCOSBaseFoundation/private/NSDate+OSBase-Private.h>
-#import <MulleObjCPosixFoundation/private/NSLocale+Posix-Private.h>
+#import <MulleObjCOSBaseFoundation/NSDate+OSBase-Private.h>
+#import <MulleObjCPosixFoundation/NSLocale+Posix-Private.h>
 #include <MulleObjCStandardFoundation/mulle-mini-tm.h>
 #import <MulleObjCPosixFoundation/mulle-posix-tm.h>
 

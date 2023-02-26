@@ -14,7 +14,7 @@
 #include "private.h"
 
 // std-c and dependencies
-#import <MulleObjCStandardFoundation/private/_MulleGMTTimeZone-Private.h>
+#import <MulleObjCStandardFoundation/_MulleGMTTimeZone-Private.h>
 
 
 

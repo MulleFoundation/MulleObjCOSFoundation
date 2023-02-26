@@ -726,9 +726,13 @@ enum date_kind
 + (instancetype) dateWithNaturalLanguageString:(NSString *) s
                                         locale:(id) locale
 {
+   abort();
+#if 0
    return( [self _dateWithNaturalLanguageString:s
                                          locale:locale
                                   referenceDate:nil]);
+#endif
+   return( nil);
 }
 
 

@@ -13,7 +13,7 @@
 #import "_NSPosixDateFormatter.h"
 
 // other files in this library
-#import <MulleObjCOSBaseFoundation/private/NSDate+OSBase-Private.h>
+#import <MulleObjCOSBaseFoundation/NSDate+OSBase-Private.h>
 #import "NSError+Posix.h"
 #import "NSLocale+Posix.h"
 #import "NSDate+Posix-Private.h"

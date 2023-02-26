@@ -1,9 +1,3 @@
-      { @selector( MulleObjCLoader), @selector( MulleObjCContainerFoundation) },      // 47a9beb6;MulleObjCLoader;2132102f;MulleObjCContainerFoundation
-      { @selector( MulleObjCLoader), @selector( MulleObjCLockFoundation) },      // 47a9beb6;MulleObjCLoader;86a97828;MulleObjCLockFoundation
-      { @selector( MulleObjCLoader), @selector( MulleObjCPlistFoundation) },      // 47a9beb6;MulleObjCLoader;e8aa8d92;MulleObjCPlistFoundation
-      { @selector( MulleObjCLoader), @selector( MulleObjCStandardFoundation) },      // 47a9beb6;MulleObjCLoader;ed704a42;MulleObjCStandardFoundation
-      { @selector( MulleObjCLoader), @selector( MulleObjCTimeFoundation) },      // 47a9beb6;MulleObjCLoader;cc20d48b;MulleObjCTimeFoundation
-      { @selector( MulleObjCLoader), @selector( MulleObjCValueFoundation) },      // 47a9beb6;MulleObjCLoader;535d5103;MulleObjCValueFoundation
       { @selector( NSArray), @selector( OSBase_Private) },      // 233490fe;NSArray;7cf4cba6;OSBase_Private
       { @selector( NSArray), @selector( Posix) },      // 233490fe;NSArray;ae1faa81;Posix
       { @selector( NSBundle), MULLE_OBJC_NO_CATEGORYID },      // c2f95c66;NSBundle;;
@@ -19,6 +13,7 @@
       { @selector( NSFileHandle), @selector( NSRunLoop) },      // 01a8a865;NSFileHandle;e3bb595b;NSRunLoop
       { @selector( NSFileHandle), @selector( _NSFileDescriptor) },      // 01a8a865;NSFileHandle;ec5a3bee;_NSFileDescriptor
       { @selector( NSFileHandle), MULLE_OBJC_NO_CATEGORYID },      // 01a8a865;NSFileHandle;;
+      { @selector( NSFileManager), @selector( System) },      // 56d57ffc;NSFileManager;f3184bc8;System
       { @selector( NSFileManager), MULLE_OBJC_NO_CATEGORYID },      // 56d57ffc;NSFileManager;;
       { @selector( NSMutableData), @selector( MulleMemoryMapping) },      // 5d7fdc81;NSMutableData;5484031c;MulleMemoryMapping
       { @selector( NSNullDeviceFileHandle), MULLE_OBJC_NO_CATEGORYID },      // 1a0784d4;NSNullDeviceFileHandle;;

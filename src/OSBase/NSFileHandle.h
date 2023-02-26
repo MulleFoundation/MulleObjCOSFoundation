@@ -26,6 +26,13 @@ NSString  *NSFileHandleOperationException;
 {
    void  *_fd;
    int   (*_closer)( void *);
+   int   _mode;
+   struct
+   {
+      unsigned int   eof    : 1;
+      unsigned int   pipe   : 1;
+      unsigned int   again  : 1;
+   } _state;
 }
 
 + (instancetype) fileHandleForReadingAtPath:(NSString *) path;
@@ -49,6 +56,8 @@ NSString  *NSFileHandleOperationException;
 
 - (int) fileDescriptor;
 
+
+// hackish for pipes
 - (int) _fileDescriptorForReading;
 - (int) _fileDescriptorForWriting;
 

@@ -14,16 +14,6 @@
 #ifndef _mulle_objc_os_base_foundation_include_private_h__
 #define _mulle_objc_os_base_foundation_include_private_h__
 
-// You can tweak the following #include with these commands.
-// (Use CEC76AC7-2529-4DCC-A637-A393AD496D6D instead of mulle-mmap if there are duplicate entries)
-//    remove #include:: `mulle-sde dependency mark mulle-mmap no-header`
-//    rename:              `mulle-sde dependency|library set mulle-mmap include whatever.h`
-//    reorder:             `mulle-sde dependency move mulle-mmap <up|down>`
-//    toggle #include:    `mulle-sde dependency mark mulle-mmap [no-]import`
-//    toggle public:       `mulle-sde dependency mark mulle-mmap [no-]public`
-//    toggle optional:     `mulle-sde dependency mark mulle-mmap [no-]require`
-//    remove for platform: `mulle-sde dependency mark mulle-mmap no-platform-<uname>`
-//        (use `mulle-sourcetree-to-c --unames` to list known values)
-#include <mulle-mmap/mulle-mmap.h>   // mulle-mmap
+/* no headers */
 
 #endif

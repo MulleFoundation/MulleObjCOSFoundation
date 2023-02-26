@@ -10,7 +10,7 @@
 #import "import-private.h"
 
 // other files in this library
-#import <MulleObjCOSBaseFoundation/private/NSBundle-Private.h>
+#import <MulleObjCOSBaseFoundation/NSBundle-Private.h>
 
 // other libraries of MulleObjCPosixFoundation
 

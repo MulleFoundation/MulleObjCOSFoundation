@@ -11,7 +11,7 @@
 // other files in this library
 
 // other libraries of MulleObjCPosixFoundation
-#import <MulleObjCOSBaseFoundation/private/NSTask-Private.h>
+#import <MulleObjCOSBaseFoundation/NSTask-Private.h>
 
 // std-c and dependencies
 #include <signal.h>
@@ -34,24 +34,6 @@
 }
 
 
-- (void) waitUntilExit
-{
-   switch( _status)
-   {
-   default :
-      MulleObjCThrowInternalInconsistencyException( @"task not started");
-      break;
-
-   case _NSTaskIsPresumablyRunning :
-      NSParameterAssert( _pid);
-      waitpid( _pid, &_terminationStatus, WNOHANG);
-
-   case _NSTaskHasTerminated :
-      break;
-   }
-}
-
-
 - (void) _signal:(int) a_signal
 {
    switch( _status)
@@ -68,6 +50,7 @@
          break;
    }
 }
+
 
 
 - (void) terminate

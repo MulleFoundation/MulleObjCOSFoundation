@@ -13,7 +13,7 @@
  */
 #import "import-private.h"
 
-#import <MulleObjCOSBaseFoundation/private/NSPathUtilities+OSBase-Private.h>
+#import <MulleObjCOSBaseFoundation/NSPathUtilities+OSBase-Private.h>
 
 // other files in this library
 

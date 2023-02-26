@@ -10,7 +10,7 @@
 
 #import "import-private.h"
 
-#import <MulleObjCOSBaseFoundation/private/NSPageAllocation-Private.h>
+#import <MulleObjCOSBaseFoundation/NSPageAllocation-Private.h>
 
 #import "NSError+Posix.h"
 

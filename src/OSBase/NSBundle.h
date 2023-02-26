@@ -20,12 +20,12 @@
 //
 @interface NSBundle : NSObject
 {
-   NSString                *_path;
-   NSLock                  *_lock;  // used for lazy resources
+   NSString              *_path;
+   NSLock                *_lock;  // used for lazy resources
 
-   void                    *_handle;
-   void                    *_startAddress;
-   void                    *_endAddress;
+   void                  *_handle;
+   void                  *_startAddress;
+   void                  *_endAddress;
 
    //
    // localization, we cach only for a single languageCode
@@ -35,14 +35,13 @@
    NSMutableDictionary   *_localizedStringTables;
 
 @private
-   id             _infoDictionary;      // lazy can be NSNull
+   id                    _infoDictionary;      // lazy can be NSNull
 
 @private
-   NSString       *_executablePath;  // for "already loaded" bundles
-   NSString       *_resourcePath;    // for "already loaded" bundles
+   NSString              *_executablePath;  // for "already loaded" bundles
+   NSString              *_resourcePath;    // for "already loaded" bundles
 }
 
-+ (BOOL) isBundleFilesystemExtension:(NSString *) extension;
 
 + (NSBundle *) mainBundle;
 + (NSArray *) allFrameworks;
@@ -90,6 +89,9 @@
 
 // stuff we need to implement
 @interface NSBundle ( Future)
+
+// default returns NO
++ (BOOL) isBundleFilesystemExtension:(NSString *) extension;
 
 + (NSString *) pathForResource:(NSString *) name
                         ofType:(NSString *) extension

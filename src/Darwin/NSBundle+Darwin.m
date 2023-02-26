@@ -17,7 +17,7 @@
 
 #import "import-private.h"
 
-#import <MulleObjCOSBaseFoundation/private/NSBundle-Private.h>
+#import <MulleObjCOSBaseFoundation/NSBundle-Private.h>
 
 // other files in this library
 

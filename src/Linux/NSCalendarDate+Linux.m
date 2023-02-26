@@ -10,7 +10,7 @@
 #import "import-private.h"
 
 // other files in this library
-#import <MulleObjCPosixFoundation/private/NSDate+Posix-Private.h>
+#import <MulleObjCPosixFoundation/NSDate+Posix-Private.h>
 
 // other libraries of MulleObjCPosixFoundation
 #import <MulleObjCStandardFoundation/_MulleObjCConcreteCalendarDate.h>

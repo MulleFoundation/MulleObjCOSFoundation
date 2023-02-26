@@ -30,7 +30,7 @@ THE SOFTWARE.
 
 #import "import-private.h"
 
-#import <MulleObjCOSBaseFoundation/private/NSFileManager-Private.h>
+#import <MulleObjCOSBaseFoundation/NSFileManager-Private.h>
 
 #import "NSError+Posix.h"
 
