@@ -1,3 +1,4 @@
+      { @selector( MulleObjCLoader), @selector( MulleFoundationBase) },      // 47a9beb6;MulleObjCLoader;efab19ea;MulleFoundationBase
       { @selector( NSArray), @selector( OSBase_Private) },      // 233490fe;NSArray;7cf4cba6;OSBase_Private
       { @selector( NSArray), @selector( Posix) },      // 233490fe;NSArray;ae1faa81;Posix
       { @selector( NSBundle), MULLE_OBJC_NO_CATEGORYID },      // c2f95c66;NSBundle;;

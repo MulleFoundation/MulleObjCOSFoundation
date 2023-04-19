@@ -1,3 +1,10 @@
+### 0.21.2
+
+* greatly improve NSTask launch, so it works with vfork and fork
+* rewrote the "system" functionality completely
+* improved NSFileHandle
+* -[NSData initWithContentsOfFile:] with an empty file now returns an empty NSData and not nil
+
 ### 0.21.1
 
 * Various small improvements
