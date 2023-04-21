@@ -11,7 +11,8 @@
 #include <errno.h>
 
 
-#define EXECUTABLE   "/home/nat/bin/unix-cat"
+#define EXECUTABLE   "/bin/cat"
+//#define EXECUTABLE   "/home/nat/bin/unix-cat"
 //#define EXECUTABLE   "/bin/true"
 
 

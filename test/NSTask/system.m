@@ -29,7 +29,7 @@ int   main( int argc, const char * argv[])
    memset( [inputData mutableBytes], 'V', [inputData length]);
 
    options    = NSTaskSystemSendStandardInput|NSTaskSystemReceiveStandardOutput;
-   dictionary = [NSTask mulleDataSystemCallWithArguments:@[ @"unix-cat" ]
+   dictionary = [NSTask mulleDataSystemCallWithArguments:@[ @"cat" ]
                                         workingDirectory:nil
                                        standardInputData:inputData
                                                  options:options];
