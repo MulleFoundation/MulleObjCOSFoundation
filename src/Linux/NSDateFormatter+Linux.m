@@ -41,7 +41,6 @@
              locale:(NSLocale *) locale
 {
    locale_t   old_locale;
-   locale_t   new_locale;
 
    NSParameterAssert( tm);
    NSParameterAssert( c_format);

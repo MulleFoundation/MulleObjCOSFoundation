@@ -36,7 +36,6 @@ static int  collect_filesystem_libraries( struct dl_phdr_info *info,
                                           size_t size,
                                           void *userinfo)
 {
-   NSBundle                         *bundle;
    NSFileManager                    *manager;
    NSMutableData                    *data;
    size_t                           len;

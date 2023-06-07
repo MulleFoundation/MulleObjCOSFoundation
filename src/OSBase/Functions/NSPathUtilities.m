@@ -102,7 +102,6 @@ NSArray   *NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory directory,
                                                 NSSearchPathDomainMask domainMask,
                                                 BOOL expandTilde)
 {
-   NSString         *home;
    NSMutableArray   *array;
    NSArray          *result;
    NSString         *s;

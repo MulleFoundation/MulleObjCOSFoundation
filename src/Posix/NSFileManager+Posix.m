@@ -675,24 +675,24 @@ static NSString   *link_contents( NSString *path)
 #define FOUNDATION_DIR_MODE  (S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)
 
 
-static inline void   NSRaiseException( NSString *name,
-                                       id obj,
-                                       SEL sel,
-                                       NSString *format, ...)
-{
-   mulle_vararg_list   arguments;
-   NSString            *reason;
-
-   mulle_vararg_start( arguments, format);
-   reason = [NSString stringWithFormat:format
-                        mulleVarargList:arguments]
-
-   mulle_vararg_end( arguments);
-
-
-   [NSException raise:name
-               format:@"%@ %@: %@", obj, NSStringFromSelector( sel), reason];
-}
+// static inline void   NSRaiseException( NSString *name,
+//                                        id obj,
+//                                        SEL sel,
+//                                        NSString *format, ...)
+// {
+//    mulle_vararg_list   arguments;
+//    NSString            *reason;
+// 
+//    mulle_vararg_start( arguments, format);
+//    reason = [NSString stringWithFormat:format
+//                         mulleVarargList:arguments]
+// 
+//    mulle_vararg_end( arguments);
+// 
+// 
+//    [NSException raise:name
+//                format:@"%@ %@: %@", obj, NSStringFromSelector( sel), reason];
+// }
 
 
 /* Cocotron code */

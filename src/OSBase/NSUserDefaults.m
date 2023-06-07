@@ -220,10 +220,9 @@ static id   objectValueOfSelectorForKey( NSUserDefaults *self, SEL sel, NSString
 
 - (NSArray *) stringArrayForKey:(NSString *) key
 {
-   NSArray        *array;
-   NSEnumerator   *rover;
-   NSString       *s;
-   Class          cls;
+   NSArray    *array;
+   NSString   *s;
+   Class      cls;
 
    cls   = [NSString class];
    array = objectValueOfClassForKey( self, [NSArray class], key);

@@ -64,47 +64,47 @@ static inline void   posix_mode_done( struct posix_mode *ctxt)
 
 
 
-static inline int   posix_mode_is_full( struct posix_mode *ctxt)
-{
-   return( ctxt->_n_handles >= ctxt->_s_handles);
-}
-
-
-static inline void   posix_mode_grow( struct posix_mode *ctxt)
-{
-   void   *buf;
-
-   ctxt->_s_handles += ctxt->_s_handles;
-
-   buf = mulle_malloc( ctxt->_s_handles * sizeof( int));
-   memcpy( buf, ctxt->_handles, ctxt->_n_handles * sizeof( int));
-
-   ctxt->_handles = buf;
-}
-
-
-static int   compare_fds( const void *a_p, const void *b_p)
-{
-   int   a;
-   int   b;
-
-   a = *(int *) a_p;
-   b = *(int *) b_p;
-   return( a - b);
-}
-
-
-static inline void   posix_mode_add_handle( struct posix_mode *ctxt, int fd)
-{
-   assert( fd >= 0);
-
-   if( posix_mode_is_full( ctxt))
-      posix_mode_grow( ctxt);
-
-   ctxt->_handles[ ctxt->_n_handles++] = fd;
-   qsort( ctxt->_handles, ctxt->_n_handles, sizeof( int), compare_fds);
-   ctxt->_generation++;
-}
+// static inline int   posix_mode_is_full( struct posix_mode *ctxt)
+// {
+//    return( ctxt->_n_handles >= ctxt->_s_handles);
+// }
+// 
+// 
+// static inline void   posix_mode_grow( struct posix_mode *ctxt)
+// {
+//    void   *buf;
+// 
+//    ctxt->_s_handles += ctxt->_s_handles;
+// 
+//    buf = mulle_malloc( ctxt->_s_handles * sizeof( int));
+//    memcpy( buf, ctxt->_handles, ctxt->_n_handles * sizeof( int));
+// 
+//    ctxt->_handles = buf;
+// }
+// 
+// 
+// static int   compare_fds( const void *a_p, const void *b_p)
+// {
+//    int   a;
+//    int   b;
+// 
+//    a = *(int *) a_p;
+//    b = *(int *) b_p;
+//    return( a - b);
+// }
+// 
+// 
+// static inline void   posix_mode_add_handle( struct posix_mode *ctxt, int fd)
+// {
+//    assert( fd >= 0);
+// 
+//    if( posix_mode_is_full( ctxt))
+//       posix_mode_grow( ctxt);
+// 
+//    ctxt->_handles[ ctxt->_n_handles++] = fd;
+//    qsort( ctxt->_handles, ctxt->_n_handles, sizeof( int), compare_fds);
+//    ctxt->_generation++;
+// }
 
 
 static inline int   posix_mode_get_maxhandle( struct posix_mode *ctxt)
@@ -115,39 +115,39 @@ static inline int   posix_mode_get_maxhandle( struct posix_mode *ctxt)
 }
 
 
-static inline int   posix_mode_find_handle( struct posix_mode *ctxt, int fd)
-{
-   int    *fd_p;
-   int    *fd_sentinel;
+// static inline int   posix_mode_find_handle( struct posix_mode *ctxt, int fd)
+// {
+//    int    *fd_p;
+//    int    *fd_sentinel;
+// 
+//    assert( fd >= 0);
+// 
+//    fd_p        = ctxt->_handles;
+//    fd_sentinel = &fd_p[ ctxt->_n_handles];
+//    while( fd_p < fd_sentinel)
+//    {
+//       if( *fd_p == fd)
+//          return( (int) (fd_p - ctxt->_handles));
+//       ++fd_p;
+//    }
+//    return( -1);
+// }
 
-   assert( fd >= 0);
 
-   fd_p        = ctxt->_handles;
-   fd_sentinel = &fd_p[ ctxt->_n_handles];
-   while( fd_p < fd_sentinel)
-   {
-      if( *fd_p == fd)
-         return( (int) (fd_p - ctxt->_handles));
-      ++fd_p;
-   }
-   return( -1);
-}
-
-
-static inline void   posix_mode_remove_handle( struct posix_mode *ctxt, int fd)
-{
-   int  i;
-
-   i = posix_mode_find_handle( ctxt, fd);
-   if( i == -1)
-      return;
-
-   ctxt->_handles[ i] = INT_MAX;
-   --ctxt->_n_handles;
-
-   qsort( ctxt->_handles, ctxt->_n_handles, sizeof( int), compare_fds);
-   ctxt->_generation++;
-}
+// static inline void   posix_mode_remove_handle( struct posix_mode *ctxt, int fd)
+// {
+//    int  i;
+// 
+//    i = posix_mode_find_handle( ctxt, fd);
+//    if( i == -1)
+//       return;
+// 
+//    ctxt->_handles[ i] = INT_MAX;
+//    --ctxt->_n_handles;
+// 
+//    qsort( ctxt->_handles, ctxt->_n_handles, sizeof( int), compare_fds);
+//    ctxt->_generation++;
+// }
 
 
 static inline void   posix_mode_set_fdset_handles( struct posix_mode *ctxt,
@@ -266,7 +266,9 @@ loop:
 
 // we want to wait for timers, so exiting immediately here is not a
 // good idea (except if we have no timers)
+#ifndef __linux__
 posix_recalc:
+#endif
    firstTimer = nil;
    timeout    = poll_once;
    //fprintf( stderr, "posix_recalc at %.3f\n", [NSDate timeIntervalSinceReferenceDate]);

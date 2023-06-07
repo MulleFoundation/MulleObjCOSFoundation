@@ -5,7 +5,7 @@
 
 #ifndef lint
 #ifndef NOID
-static char	elsieid[] = "@(#)localtime.c	8.17";
+//static char	elsieid[] = "@(#)localtime.c	8.17";
 #endif /* !defined NOID */
 #endif /* !defined lint */
 
@@ -2308,13 +2308,13 @@ char  *_mulle_get_zoneinfo_path()
 }
 
 
-static void   _mulle__set_zoneinfo_path( char *path)
-{
-#pragma clang diagnostic ignored "-Wstring-compare"
-   if( _TZDIR != TZDIR)
-      free( _TZDIR);
-   _TZDIR = strdup( path);
-}
+// static void   _mulle__set_zoneinfo_path( char *path)
+// {
+// #pragma clang diagnostic ignored "-Wstring-compare"
+//    if( _TZDIR != TZDIR)
+//       free( _TZDIR);
+//    _TZDIR = strdup( path);
+// }
 
 
 char  *mulle_get_timezone_zone_tab_file()

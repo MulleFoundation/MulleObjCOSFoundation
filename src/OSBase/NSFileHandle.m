@@ -217,7 +217,6 @@ static NSData   *readAllData( NSFileHandle *self, BOOL untilFullOrEOF)
 {
    NSMutableData   *data;
    NSData          *page;
-   BOOL            eofReached;
    NSUInteger      length;
 
    length = NSPageSize();
@@ -263,7 +262,6 @@ static NSData   *readAllData( NSFileHandle *self, BOOL untilFullOrEOF)
                   length:(NSUInteger) len
 {
    char     *buf = bytes;
-   size_t   len;
    size_t   written;
 
    if( len == (NSUInteger) -1)

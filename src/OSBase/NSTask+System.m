@@ -113,7 +113,6 @@ static int   readFileHandleData( NSThread *thread, void *_info)
                                   standardInputData:(NSData *) inputData
                                             options:(NSTaskSystemOptions) options
 {
-   unsigned int         i;
    int                  rval;
    NSArray              *arguments;
    NSFileHandle         *file;
@@ -123,7 +122,6 @@ static int   readFileHandleData( NSThread *thread, void *_info)
    NSPipe               *stderrPipe;
    NSString             *absolute;
    NSString             *path;
-   NSString             *s;
    NSTask               *task;
    void                 (*previous_handler)(int);
    id                   exception;

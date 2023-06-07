@@ -40,38 +40,38 @@
 @implementation NSTask (Posix)
 
 
-static void   do_the_dup( int fd, id handle)
-{
-   int  other_fd;
-
-   if( ! handle)
-      return;
-
-   //
-   // Example: child stdin(0), pipe is [0/1] [read/write]
-   // so parent "writes" into pipe[ 1] for child( 0) via pipe[ 0]
-   // Ergo: child gets pipe[ 0] dupped
-   //
-   // Other example: child stdout(1), pipe is [0/1] [read/write]
-   // so we "read" from pipe[ 0], where child( 1) writes into via pipe[ 1]
-   // Ergo: child gets pipe[ 1] dupped
-   //
-
-   other_fd = (! fd)
-              ? [handle _fileDescriptorForReading]
-              : [handle _fileDescriptorForWriting];
-
-   assert( ! fd || other_fd);
-
-   if( other_fd != fd)
-   {
-#ifdef DEBUG_TASK
-      fprintf( stderr, "task %d dup %d -> %d\n", (int) getpid(), other_fd, fd);
-#endif
-      close( fd);
-      dup( other_fd);
-   }
-}
+// static void   do_the_dup( int fd, id handle)
+// {
+//    int  other_fd;
+// 
+//    if( ! handle)
+//       return;
+// 
+//    //
+//    // Example: child stdin(0), pipe is [0/1] [read/write]
+//    // so parent "writes" into pipe[ 1] for child( 0) via pipe[ 0]
+//    // Ergo: child gets pipe[ 0] dupped
+//    //
+//    // Other example: child stdout(1), pipe is [0/1] [read/write]
+//    // so we "read" from pipe[ 0], where child( 1) writes into via pipe[ 1]
+//    // Ergo: child gets pipe[ 1] dupped
+//    //
+// 
+//    other_fd = (! fd)
+//               ? [handle _fileDescriptorForReading]
+//               : [handle _fileDescriptorForWriting];
+// 
+//    assert( ! fd || other_fd);
+// 
+//    if( other_fd != fd)
+//    {
+// #ifdef DEBUG_TASK
+//       fprintf( stderr, "task %d dup %d -> %d\n", (int) getpid(), other_fd, fd);
+// #endif
+//       close( fd);
+//       dup( other_fd);
+//    }
+// }
 
 
 //
