@@ -82,7 +82,6 @@ static size_t   get_file_size( char *file)
 static char  *get_arguments( size_t *p_size)
 {
    char     *buf;
-   off_t    offset;
    int      fd;
    size_t   size;
 
@@ -119,7 +118,6 @@ static void  linux_argc_argv_set_arguments( struct argc_argv  *info,
    char   **q_sentinel;
    char   *sentinel;
    int    argc;
-   int    i;
 
    info->argc    = 0;
    info->argv    = NULL;
@@ -153,7 +151,6 @@ static void  linux_argc_argv_set_arguments( struct argc_argv  *info,
 static void   unlazyArguments( NSProcessInfo *self)
 {
    struct argc_argv   info;
-   int                rval;
    char               *arguments;
    size_t             size;
 

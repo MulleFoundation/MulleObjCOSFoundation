@@ -92,11 +92,10 @@
 //
 - (id) nextObject
 {
-   NSString         *filename;
-   NSString         *s;
-   id               obj;
+   NSString                          *filename;
+   id                                obj;
    enum _MulleObjCIsDirectoryState   state;
-   BOOL             is_dir2;
+   BOOL                              is_dir2;
 
    if( ! _dir)
       return( nil);
@@ -134,7 +133,7 @@ retry_file:
 
    if( _inheritedPath)
    {
-      s = [_inheritedPath stringByAppendingPathComponent:filename];
+      filename = [_inheritedPath stringByAppendingPathComponent:filename];
    }
 
    [_currentObjectRelativePath release];

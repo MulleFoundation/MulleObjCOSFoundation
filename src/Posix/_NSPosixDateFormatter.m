@@ -297,14 +297,12 @@ static int   tm_sprintf_character( struct tm *tm,
                locale:(NSLocale *) locale
              timeZone:(NSTimeZone *) timeZone
 {
-   auto char              tmp[ 256];
    char                   *q;
    char                   *s;
    char                   *space;
    char                   strfformat[ 4] = { '%', 0, 0, 0 };
    locale_t               xlocale;
    NSTimeInterval         interval;
-   size_t                 len;
    struct mulle_buffer    buffer;
    struct tm              tm;
    NSInteger              seconds;
@@ -392,9 +390,6 @@ static int   tm_sprintf_character( struct tm *tm,
    char                   *input;
    char                   *sentinel;
    char                   *q;
-   char                   *remain;
-   size_t                 len;
-   struct mulle_buffer    buffer;
    auto char              tmp[ 256];
    char                   strpformat[ 4] = { '%', 0, 0, 0 };
    struct tm              tm;
@@ -404,7 +399,6 @@ static int   tm_sprintf_character( struct tm *tm,
    NSInteger              seconds;
    NSTimeZone             *timeZone;
    NSString               *abbreviation;
-   long                   value;
    char                   sign;
    NSUInteger             i;
 

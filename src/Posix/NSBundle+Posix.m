@@ -196,8 +196,6 @@ static char   *dlerror_or_errno( int errnocode)
 
 - (BOOL) unloadBundle
 {
-   char  *s;
-
    if( ! _handle)
       return( NO);
 

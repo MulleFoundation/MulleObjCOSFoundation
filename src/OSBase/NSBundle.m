@@ -193,7 +193,6 @@ void       (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path
 - (id) __mulleInitWithPath:(NSString *) fullPath
          sharedLibraryInfo:(struct _MulleObjCSharedLibrary *) libInfo
 {
-   NSAutoreleasePool   *pool;
    NSFileManager       *manager;
    BOOL                isDir;
    BOOL                flag;
@@ -284,8 +283,6 @@ void       (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path
 
 - (void) finalize
 {
-   NSString   *path;
-
    [self unloadBundle]; // sets handle to NULL
    if( _path)
       (*NSBundleDeregisterBundleWithPath)( self, _path);
@@ -473,7 +470,6 @@ void       (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path
 
 + (NSBundle *) bundleWithIdentifier:(NSString *) identifier
 {
-   NSEnumerator   *rover;
    NSString       *path;
    NSBundle       *bundle;
    NSDictionary   *bundleInfo;
@@ -728,12 +724,10 @@ void       (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path
 //
 + (NSBundle *) bundleForClass:(Class) aClass
 {
-   NSDictionary                     *bundleInfo;
-   NSBundle                         *bundle;
-   void                             *classAddress;
-   struct _MulleObjCSharedLibrary   libInfo;
-   NSString                         *path;
-   NSString                         *bundlePath;
+   NSBundle       *bundle;
+   NSDictionary   *bundleInfo;
+   NSString       *bundlePath;
+   void           *classAddress;
 
    if( ! aClass)
       return( nil);
@@ -835,13 +829,10 @@ static id  readDictionaryOrNull( NSBundle *self, NSString *name, NSString *type)
                                table:(NSString *) tableName
 {
    NSString       *localizedValue;
-   NSString       *translated;
    NSLocale       *locale;
-   NSLock         *lock;
    NSString       *languageCode;
    NSDictionary   *table;
    NSDictionary   *dict;
-   NSLocale       *enLocale;
 
    NSParameterAssert( ! key || [key isKindOfClass:[NSString class]]);
    NSParameterAssert( ! tableName || [tableName isKindOfClass:[NSString class]]);

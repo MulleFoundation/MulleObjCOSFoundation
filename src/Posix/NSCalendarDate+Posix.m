@@ -28,16 +28,16 @@
 #include "mulle-posix-tm.h"
 
 
-static void   mulle_mini_tm_init_with_time( struct mulle_mini_tm *mini, time_t time)
-{
-   struct tm   tmp;
-
-   if( ! mini)
-      return;
-
-   mulle_posix_tm_init_with_time( &tmp, time);
-   *mini = mulle_posix_tm_get_mini_tm( &tmp);
-}
+// static void   mulle_mini_tm_init_with_time( struct mulle_mini_tm *mini, time_t time)
+// {
+//    struct tm   tmp;
+// 
+//    if( ! mini)
+//       return;
+// 
+//    mulle_posix_tm_init_with_time( &tmp, time);
+//    *mini = mulle_posix_tm_get_mini_tm( &tmp);
+// }
 
 
 static time_t    mulle_mini_tm_get_time( struct mulle_mini_tm mini)
@@ -97,7 +97,6 @@ static void  _MulleObjCConcreteCalendarDateInitPosix( _MulleObjCConcreteCalendar
 
 - (NSTimeInterval) timeIntervalSince1970
 {
-   struct tm        tmp;
    time_t           value;
    NSTimeInterval   interval;
 
@@ -114,7 +113,6 @@ static void  _MulleObjCConcreteCalendarDateInitPosix( _MulleObjCConcreteCalendar
 //
 - (NSTimeInterval) timeIntervalSinceReferenceDate
 {
-   struct tm        tmp;
    time_t           value;
    NSTimeInterval   interval;
 

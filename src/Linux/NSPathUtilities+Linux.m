@@ -60,14 +60,14 @@ static NSString   *LinuxUserName( void)
 
 
 static NSArray   *LinuxSearchPathForDirectoriesInDomains( NSSearchPathDirectory type,
-                                                           NSSearchPathDomainMask domains)
+                                                          NSSearchPathDomainMask domains)
 {
-   NSMutableArray          *array;
-   NSSearchPathDomainMask  currentDomain;
-   NSSearchPathDomainMask  leftoverDomains;
-   NSString                *path;
-   NSString                *prefix;
-   NSString                *systemRoot;
+   NSMutableArray           *array;
+   NSSearchPathDomainMask   currentDomain;
+   NSSearchPathDomainMask   leftoverDomains;
+   NSString                 *systemRoot;
+   NSString                 *prefix;
+   NSString                 *path;
 
    systemRoot      = NSOpenStepRootDirectory();
    array           = [NSMutableArray array];
@@ -115,6 +115,7 @@ static NSArray   *LinuxSearchPathForDirectoriesInDomains( NSSearchPathDirectory 
             break;
       }
    }
+   // TODO: code needed!!
    return( array);
 }
 

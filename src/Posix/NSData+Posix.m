@@ -129,7 +129,6 @@ fail:
    char                *c_path;
    char                *c_new;
    char                *c_old;
-   NSUInteger          length;
    struct mulle_data   data;
 
    // TODO: need to set POSIX errno domain here

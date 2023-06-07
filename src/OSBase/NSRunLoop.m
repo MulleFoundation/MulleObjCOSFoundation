@@ -301,7 +301,7 @@ static struct MulleRunLoopMode *
 }
 
 
-static struct mulle_allocator *
+static inline struct mulle_allocator *
    MulleRunLoopModeGetAllocator( struct MulleRunLoopMode *p)
 {
    assert( p);
@@ -337,15 +337,12 @@ static struct MulleRunLoopMode *
 static void
    MulleRunLoopModeDone( struct MulleRunLoopMode *p)
 {
-   struct mulle_allocator  *allocator;
-
    assert( p);
 
    [p->name autorelease];
    p->name = nil;
    [p->timers autorelease];
    p->timers = nil;
-   allocator = p->messages.allocator;
    MulleRunLoopMessageArrayDone( &p->messages);
 }
 
@@ -482,7 +479,6 @@ static NSArray *
 {
    NSTimer          *timer;
    NSTimeInterval   otherFireTimeInterval;
-   NSTimeInterval   fireTimeInterval;
    NSUInteger       n;
    NSRange          range;
    NSArray          *array;
@@ -737,10 +733,8 @@ static NSRunLoop   *runLoopForThread( NSThread *thread)
 - (BOOL) runMode:(NSRunLoopMode) modeName
       beforeDate:(NSDate *) limitDate
 {
-   NSTimeInterval               stop;
-   struct MulleRunLoopMode      *mode;
-   BOOL                         flag;
-   enum MulleRunLoopInputState  state;
+   enum MulleRunLoopInputState   state;
+   struct MulleRunLoopMode       *mode;
 
    if( _currentModeName)
       [NSException raise:NSInternalInconsistencyException
@@ -774,9 +768,8 @@ static NSRunLoop   *runLoopForThread( NSThread *thread)
  */
 - (void) runUntilDate:(NSDate *) date
 {
-   NSTimeInterval           until;
-   NSTimeInterval           now;
-   struct MulleRunLoopMode  *mode;
+   NSTimeInterval   until;
+   NSTimeInterval   now;
 
    NSParameterAssert( ! date || [date isKindOfClass:[NSDate class]]);
 

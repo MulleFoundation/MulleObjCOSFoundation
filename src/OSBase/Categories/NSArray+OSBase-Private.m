@@ -29,21 +29,19 @@
 {
    int        i;
    char      *s;
-   id        *tmp;
    NSArray   *arguments;
 
-   tmp = mulle_malloc( argc * sizeof( id));
-
-   for( i = 0; i < argc; i++)
+   mulle_flexarray_do_id( tmp, 16, argc)
    {
-      s       = argv[ i];
-      tmp[ i] = [[[NSString alloc] initWithCString:s] autorelease];
+      for( i = 0; i < argc; i++)
+      {
+         s       = argv[ i];
+         tmp[ i] = [[[NSString alloc] initWithCString:s] autorelease];
+      }
+
+      arguments = [[NSArray alloc] initWithObjects:(id *) tmp
+                                             count:argc];
    }
-
-   arguments = [[NSArray alloc] initWithObjects:(id *) tmp
-                                          count:argc];
-
-   mulle_free( tmp);
 
    return( arguments);
 }
