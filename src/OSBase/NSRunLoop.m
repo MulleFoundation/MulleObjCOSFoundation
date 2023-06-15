@@ -301,13 +301,13 @@ static struct MulleRunLoopMode *
 }
 
 
-static inline struct mulle_allocator *
-   MulleRunLoopModeGetAllocator( struct MulleRunLoopMode *p)
-{
-   assert( p);
-
-   return( p->messages.allocator);
-}
+// static inline struct mulle_allocator *
+//    MulleRunLoopModeGetAllocator( struct MulleRunLoopMode *p)
+// {
+//    assert( p);
+//
+//    return( p->messages.allocator);
+// }
 
 
 static void

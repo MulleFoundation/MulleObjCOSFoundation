@@ -372,7 +372,7 @@ static NSStringEncoding  encodingForBOMOfData( NSData *p)
       if( mulle_utf16_get_bomcharacter() == c16)
          return( NSUTF16LittleEndianStringEncoding);
 
-      if( mulle_utf8_has_leading_bomcharacter( bytes, data.length))
+      if( mulle_utf8_has_leading_bomcharacter( (char *) bytes, data.length))
          return( NSUTF8StringEncoding);
 
       if( data.length >= 4)
