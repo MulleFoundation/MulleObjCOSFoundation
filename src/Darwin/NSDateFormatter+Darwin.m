@@ -69,33 +69,33 @@ static char  *percent_z_find( char *s)
 }
 
 
-static unsigned int   percent_count( char *s)
-{
-   int           c;
-   unsigned int  n;
-
-   n = 0;
-   while( c = *s++)
-      if( c == '%')
-         ++n;
-
-   return( n);
-}
-
-
-static void   percent_escape( char *dst, char *src)
-{
-   int   c;
-
-   do
-   {
-      c = *src++;
-      if( c == '%')
-         *dst++ = c;
-      *dst++ = c;
-   }
-   while( c);
-}
+// static unsigned int   percent_count( char *s)
+// {
+//    int           c;
+//    unsigned int  n;
+//
+//    n = 0;
+//    while( c = *s++)
+//       if( c == '%')
+//          ++n;
+//
+//    return( n);
+// }
+//
+//
+// static void   percent_escape( char *dst, char *src)
+// {
+//    int   c;
+//
+//    do
+//    {
+//       c = *src++;
+//       if( c == '%')
+//          *dst++ = c;
+//       *dst++ = c;
+//    }
+//    while( c);
+// }
 
 
 static void   percent_z_replace( char *dst,
@@ -178,8 +178,6 @@ static void   percent_z_replace( char *dst,
 {
    locale_t    xlocale;
    char        *start;
-   size_t      len;
-   struct tm   tmp;
    size_t      tzname_len;
    size_t      needed_len;
 

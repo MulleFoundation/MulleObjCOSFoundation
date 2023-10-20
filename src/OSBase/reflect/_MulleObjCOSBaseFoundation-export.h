@@ -9,6 +9,10 @@
  *
  *      mulle-sde environment set MULLE_MATCH_TO_C_RUN DISABLE
  */
+#ifndef mulle_objc_os_base_foundation_export_h__
+#define mulle_objc_os_base_foundation_export_h__
+
+
 #import "NSArray+OSBase.h"
 #import "NSCalendarDate+NSUserDefaults.h"
 #import "NSData+OSBase.h"
@@ -32,3 +36,6 @@
 #import "NSTask.h"
 #import "NSTimer+NSRunLoop.h"
 #import "NSUserDefaults.h"
+
+
+#endif

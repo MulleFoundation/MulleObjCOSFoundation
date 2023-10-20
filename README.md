@@ -67,6 +67,8 @@ mulle-sde install --prefix /usr/local \
 ### Manual Installation
 
 
+Download the latest [tar](https://github.com/MulleFoundation/MulleObjCOSFoundation/archive/refs/tags/latest.tar.gz) or [zip](https://github.com/MulleFoundation/MulleObjCOSFoundation/archive/refs/tags/latest.zip) archive and unpack it.
+
 Install **MulleObjCOSFoundation** into `/usr/local` with [cmake](https://cmake.org):
 
 ``` sh

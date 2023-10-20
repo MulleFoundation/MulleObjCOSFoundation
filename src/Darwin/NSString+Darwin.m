@@ -38,7 +38,7 @@
 
 - (NSString *) _stringByRemovingPrivatePrefix
 {
-   if( [self hasPrefix:@"/"])
+   if( [self hasPrefix:@"/private"])
       if( [[NSFileManager defaultManager] fileExistsAtPath:self])
          return( [self substringFromIndex:8]);
    return( self);
