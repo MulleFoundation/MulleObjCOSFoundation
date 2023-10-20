@@ -29,7 +29,6 @@
 
 static NSString  *_NSUserRegistryValueForKey( NSString *user, NSString *key)
 {
-   NSString       *s;
    NSString       *result;
    NSString       *path;
    NSRange        range;
@@ -163,7 +162,6 @@ static NSArray   *DarwinSearchPathForDirectoriesInDomains( NSSearchPathDirectory
    NSMutableArray          *array;
    NSSearchPathDomainMask  currentDomain;
    NSSearchPathDomainMask  leftoverDomains;
-   NSString                *path;
    NSString                *prefix;
    NSString                *systemRoot;
 
@@ -200,7 +198,6 @@ static NSArray   *DarwinSearchPathForDirectoriesInDomains( NSSearchPathDirectory
 
       leftoverDomains &= ~currentDomain;
 
-      path = nil;
       switch( type)
       {
       case NSAllApplicationsDirectory : // fake but better than nothing

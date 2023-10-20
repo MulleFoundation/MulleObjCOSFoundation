@@ -90,7 +90,6 @@ static NSString   *contentsPath( NSBundle *self)
 // used by Bundles/Executables
 static NSString   *contentsResourcesPath( NSBundle *self)
 {
-   NSString   *resourcesPath;
    NSString   *path;
 
    // now _path will have changed
@@ -229,16 +228,13 @@ static NSString   *resourcesPath( NSBundle *self)
    int                              ncmd;
    NSFileManager                    *fileManager;
    NSMutableData                    *data;
-   NSString                         *path;
    struct _MulleObjCSharedLibrary   libInfo;
    struct load_command              *cmd;
    struct mach_header               *header;
    struct segment_command           *segment;
    struct segment_command_64        *segment64;
-   uint8_t                          *imageHeaderPtr;
    uintptr_t                        segment_end;
    unsigned long                    i;
-   unsigned long                    j;
 
    data = [NSMutableData data];
 
