@@ -413,7 +413,8 @@ static unsigned int    permissons_for_current_uid_gid( struct stat *c_info)
 
    MulleObjCSetPosixErrorDomain();
 
-   dir = opendir( [path fileSystemRepresentation]);
+   s   = [path fileSystemRepresentation];
+   dir = opendir( s);
    if( ! dir)
       return( nil);
 

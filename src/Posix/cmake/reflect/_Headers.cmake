@@ -44,6 +44,13 @@ Timezone/private.h
 )
 
 #
+# contents selected with patternfile ??-header--project-only-headers
+#
+set( PROJECT_ONLY_HEADERS
+dependencies.inc
+)
+
+#
 # contents selected with patternfile ??-header--public-generated-headers
 #
 set( PUBLIC_GENERATED_HEADERS
@@ -71,6 +78,5 @@ NSError+Posix.h
 NSLocale+Posix.h
 _NSPosixDateFormatter.h
 Timezone/tzfile.h
-dependencies.inc
 )
 

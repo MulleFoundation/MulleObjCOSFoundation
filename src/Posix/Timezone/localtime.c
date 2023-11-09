@@ -179,6 +179,14 @@ struct tz_context
 #endif /* defined ALTZONE */
 };
 
+/*
+** Prototypes for static functions.
+** So you do the bureaucratic dance, but they still can find a way to
+** annoy a few compiler versions later...
+*/
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-non-prototype"
+
 
 static void  init_tz_context( self)
 struct tz_context *self;
@@ -194,9 +202,6 @@ struct tz_context *self;
 }
 
 
-/*
-** Prototypes for static functions.
-*/
 
 static long		detzcode(const char * codep);
 static time_t		detzcode64(const char * codep);
@@ -2193,6 +2198,7 @@ static struct tz_context    *mulle_new_tz_context( size_t *size)
    return( p);
 }
 
+#pragma clang diagnostic pop
 
 void   *mulle_tz_context_for_gmt_seconds( long seconds, size_t *size)
 {

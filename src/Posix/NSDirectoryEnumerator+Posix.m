@@ -26,17 +26,28 @@
 @implementation NSDirectoryEnumerator (Posix)
 
 - (instancetype) initWithFileManager:(NSFileManager *) manager
-                  rootPath:(NSString *) root
-             inheritedPath:(NSString *) inherited
+                            rootPath:(NSString *) root
+                       inheritedPath:(NSString *) inherited
 {
    NSString   *path;
+   char       *s;
+
+   // According to the Apple Developer Documentation, if rootPath is nil,
+   // the method returns nil. This is because rootPath is the path to the
+   // root directory that you want to enumerate, and without it, the method
+   // doesn't know where to start.
+
+   if( ! root)
+      return( nil);
 
    [super init];
 
-   // asssume opendir can do symblinks, if not we need to resolve
-   path = [root stringByAppendingPathComponent:inherited];
-
-   _dir = opendir( [path fileSystemRepresentation]);
+   // inheritedPath is a path that will be appended to the rootPath, its
+   // basically the subdirectories part
+   // and if it's nil, there's nothing to prepend
+   path = inherited ? [root stringByAppendingPathComponent:inherited] : root;
+   s    = [path fileSystemRepresentation];
+   _dir = opendir( s);
    if( ! _dir)
    {
       MulleObjCSetPosixErrorDomain();
@@ -59,7 +70,7 @@
 
    MulleObjCSetPosixErrorDomain();
 
-   *is_dir = -1;
+   *is_dir = _MulleObjCIsMaybeADirectory;
 retry:
    entry = readdir( _dir);
    if( ! entry)
