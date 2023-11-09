@@ -36,7 +36,7 @@
 @implementation NSDirectoryEnumerator
 
 - (instancetype) initWithFileManager:(NSFileManager *) manager
-                 directory:(NSString *) path
+                           directory:(NSString *) path
 {
    return( [self initWithFileManager:manager
                             rootPath:path
@@ -93,6 +93,7 @@
 - (id) nextObject
 {
    NSString                          *filename;
+   NSString                          *absolutePath;
    id                                obj;
    enum _MulleObjCIsDirectoryState   state;
    BOOL                              is_dir2;
@@ -100,6 +101,7 @@
    if( ! _dir)
       return( nil);
 
+retry:
    if( _isDirectory && ! _child)
       _child = [[NSDirectoryEnumerator alloc] initWithFileManager:_manager
                                                          rootPath:_rootPath
@@ -141,16 +143,20 @@ retry_file:
 
    switch( state)
    {
-   case _MulleObjCIsMaybeADirectory :  // unknow
-      if( ! [_manager fileExistsAtPath:_currentObjectRelativePath
+   case _MulleObjCIsMaybeADirectory :
+      absolutePath = [_rootPath stringByAppendingPathComponent:filename];
+      if( ! [_manager fileExistsAtPath:absolutePath
                            isDirectory:&is_dir2])
+      {
+         mulle_fprintf( stderr, "Directory entry \"%@\" vanished during enumeration, hmm", _currentObjectRelativePath);
          goto retry_file; // gone now ?
+      }
       if( is_dir2)
-         goto retry_file;
-      break;
-
+      {
    case _MulleObjCIsADirectory :
-      goto retry_file;
+         _isDirectory = YES;
+         goto retry;
+      }
    }
 
    _currentEnumerationRelativePath_ = _currentObjectRelativePath;

@@ -31,7 +31,7 @@
    char      *s;
    NSArray   *arguments;
 
-   mulle_flexarray_do_id( tmp, 16, argc)
+   mulle_id_alloca_do( tmp, argc)
    {
       for( i = 0; i < argc; i++)
       {

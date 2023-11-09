@@ -13,6 +13,8 @@
 # pragma message( "Apple Foundation")
 #endif
 
+#include <unistd.h>  // for sleep
+
 
 static void   print_fail_if( int state)
 {

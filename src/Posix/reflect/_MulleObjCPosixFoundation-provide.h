@@ -9,13 +9,12 @@
  *
  *      mulle-sde environment set MULLE_MATCH_TO_C_RUN DISABLE
  */
-#ifndef mulle_objc_posix_foundation_provide_h__
-#define mulle_objc_posix_foundation_provide_h__
+#ifndef _mulle_objc_posix_foundation__provide_h__
+#define _mulle_objc_posix_foundation__provide_h__
 
 
 #include "mulle-posix-tm.h"
 #include "tzfile.h"
-#include "dependencies.inc"
 
 
 #endif

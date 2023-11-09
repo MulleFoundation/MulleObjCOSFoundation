@@ -14,9 +14,10 @@ It builds differently on each platform.
 > libraries and then cease to exist.
 
 
+
 | Release Version                                       | Release Notes
 |-------------------------------------------------------|--------------
-| ![Mulle kybernetiK tag](https://img.shields.io/github/tag//MulleObjCOSFoundation.svg?branch=release) [![Build Status](https://github.com//MulleObjCOSFoundation/workflows/CI/badge.svg?branch=release)](//github.com//MulleObjCOSFoundation/actions)| [RELEASENOTES](RELEASENOTES.md) |
+| ![Mulle kybernetiK tag](https://img.shields.io/github/tag/MulleFoundation/MulleObjCOSFoundation.svg?branch=release) [![Build Status](https://github.com/MulleFoundation/MulleObjCOSFoundation/workflows/CI/badge.svg?branch=release)](//github.com/MulleFoundation/MulleObjCOSFoundation/actions) | [RELEASENOTES](RELEASENOTES.md) |
 
 
 ## API
@@ -82,7 +83,7 @@ cmake --install build --config Release
 
 ## Author
 
-[Nat!](https://mulle-kybernetik.com/weblog) for Mulle kybernetiK
+[Nat!](https://mulle-kybernetik.com/weblog) for Mulle kybernetiK  
 
 
 #### MEMO: WARUM KOMMEN DIE ÄNDERUNGEN NICHT AN

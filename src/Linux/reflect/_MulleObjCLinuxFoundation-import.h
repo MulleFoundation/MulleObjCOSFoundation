@@ -11,15 +11,18 @@
  *
  */
 
-// You can tweak the following #import with these commands.
-// (Use c9b589de-edca-4be3-81a7-401e29bb43aa instead of MulleObjCPosixFoundation if there are duplicate entries)
-//    remove #import: : `mulle-sde dependency mark MulleObjCPosixFoundation no-header`
-//    rename:              `mulle-sde dependency|library set MulleObjCPosixFoundation include whatever.h`
-//    reorder:             `mulle-sde dependency move MulleObjCPosixFoundation <up|down>`
-//    toggle #import:     `mulle-sde dependency mark MulleObjCPosixFoundation [no-]import`
-//    toggle public:       `mulle-sde dependency mark MulleObjCPosixFoundation [no-]public`
-//    toggle optional:     `mulle-sde dependency mark MulleObjCPosixFoundation [no-]require`
-//    remove for platform: `mulle-sde dependency mark MulleObjCPosixFoundation no-platform-<uname>`
+// To remove the following dependency (headers and library) completely:
+//   `mulle-sde dependency remove MulleObjCPosixFoundation`
+// (Use c9b589de-edca-4be3-81a7-401e29bb43aa instead of MulleObjCPosixFoundation, if there are duplicate entries)
+//
+// You can tweak the following #import with these commands:
+//    remove #import      : `mulle-sde dependency mark MulleObjCPosixFoundation no-header`
+//    rename              : `mulle-sde dependency|library set MulleObjCPosixFoundation include whatever.h`
+//    reorder             : `mulle-sde dependency move MulleObjCPosixFoundation <up|down>`
+//    toggle #import      : `mulle-sde dependency mark MulleObjCPosixFoundation [no-]import`
+//    toggle public       : `mulle-sde dependency mark MulleObjCPosixFoundation [no-]public`
+//    toggle optional     : `mulle-sde dependency mark MulleObjCPosixFoundation [no-]require`
+//    remove for platform : `mulle-sde dependency mark MulleObjCPosixFoundation no-platform-<uname>`
 //        (use `mulle-sourcetree-to-c --unames` to list known values)
 #import <MulleObjCPosixFoundation/MulleObjCPosixFoundation.h>   // MulleObjCPosixFoundation
 
