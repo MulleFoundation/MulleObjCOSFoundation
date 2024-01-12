@@ -1,3 +1,7 @@
+### 0.21.3
+
+* fix NSDirectoryEnumerator, which was seemingly abandoned mid-write
+
 ### 0.21.2
 
 * greatly improve NSTask launch, so it works with vfork and fork
