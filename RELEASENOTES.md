@@ -1,3 +1,7 @@
+### 0.21.4
+
+* fix for cosmopolitan
+
 ### 0.21.3
 
 * fix NSDirectoryEnumerator, which was seemingly abandoned mid-write

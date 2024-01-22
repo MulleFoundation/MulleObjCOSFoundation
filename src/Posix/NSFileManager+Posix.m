@@ -196,15 +196,11 @@ THE SOFTWARE.
    if( ! mkdir( s, mode))
       return( 0);
 
-   switch( errno)
-   {
-   case EEXIST :
-   case ENOENT :
+   // can't switch because of cosmopolitan
+   if( errno == EEXIST || errno == ENOENT)
       return( errno);
 
-   default :
-      return( -1);
-   }
+   return( -1);
 }
 
 
@@ -217,14 +213,16 @@ THE SOFTWARE.
    NSMutableArray   *subComponents;
    NSString         *subpath;
    NSUInteger       i, n;
+   int              rc;
+
 
    MulleObjCSetPosixErrorDomain();
 
    // first try simple case
-   switch( [self _createDirectoryAtPath:path
-                             attributes:attributes])
+   rc = [self _createDirectoryAtPath:path
+                          attributes:attributes];
+   if( ! rc)
    {
-   case 0 :
       if( ! attributes)
          return( YES);
 
@@ -233,13 +231,13 @@ THE SOFTWARE.
       return( [self setAttributes:attributes
                      ofItemAtPath:path
                             error:error]);
-   case ENOENT:
-      if( createIntermediates)
-         break;
-
-   default :
-         return( NO);
    }
+
+   if( rc != ENOENT)
+      return( NO);
+
+   if( ! createIntermediates)
+      return( NO);
 
    // does not exist, create it
 
@@ -252,21 +250,19 @@ THE SOFTWARE.
       [subComponents addObject:[components objectAtIndex:i]];
       subpath = [NSString pathWithComponents:subComponents];
 
-      switch( [self _createDirectoryAtPath:subpath
-                                attributes:attributes])
+      rc = [self _createDirectoryAtPath:subpath
+                             attributes:attributes];
+      if( rc == EEXIST)
+         break;
+
+      if( rc)
+         return( NO);
+
+      if( ! [self setAttributes:attributes
+                   ofItemAtPath:path
+                          error:error])
       {
-         case EEXIST :
-            break;
-
-         case 0 :
-            if( ! [self setAttributes:attributes
-                         ofItemAtPath:path
-                                error:error])
-               return( NO);
-            break;
-
-         default :
-            return( NO);
+         return( NO);
       }
    }
 

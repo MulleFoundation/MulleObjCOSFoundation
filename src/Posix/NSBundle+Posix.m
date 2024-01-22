@@ -96,7 +96,9 @@
    NSString                         *path;
    NSString                         *bundlePath;
    NSString                         *exePath;
+#ifndef __MULLE_COSMOPOLITAN__
    Dl_info                          info;
+#endif
 
    if( ! aClass)
       return( nil);
@@ -107,6 +109,7 @@
    if( ! classAddress)
       return( [NSBundle mainBundle]);
 
+#ifndef __MULLE_COSMOPOLITAN__
    if( dladdr( classAddress, &info))
    {
       path = [[NSFileManager defaultManager] stringWithFileSystemRepresentation:(char *) info.dli_fname
@@ -139,6 +142,11 @@
    bundle        = [[[self alloc] _mulleInitWithPath:path
                                    sharedLibraryInfo:&libInfo] autorelease];
    return( bundle);
+#else
+   // not sure how to get here though
+   MulleObjCThrowInvalidArgumentExceptionUTF8String( "Cosmopolitan can't do shared libraries");
+#endif
+   return( nil);
 }
 
 
