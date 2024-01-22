@@ -117,23 +117,24 @@ retry:
    result = read( (int) (intptr_t) _fd, buf, len);
    if( result == -1)
    {
-      switch( errno)
-      {
-      case EINTR:
+      // can't switch this because of cosmopolitan
+      if( errno == EINTR)
          goto retry;
 
-      case EPIPE  :
+      if( errno == EPIPE)
+      {
          _state.eof  = 1;
          _state.pipe = 1;
          return( 0);
+      }
 
-      case EAGAIN :
+      if( errno == EAGAIN)
+      {
          _state.again = 1;
          return( 0);
-
-      default :
-         MulleObjCThrowErrnoException( @"read");
       }
+
+      MulleObjCThrowErrnoException( @"read");
    }
    _state.eof  = len && ! result;
    return( result);
@@ -156,23 +157,24 @@ retry:
    result = write( (int)(intptr_t) _fd, buf, len);
    if( result == -1)
    {
-      switch( errno)
-      {
-      case EINTR:
+      // can't switch this because of cosmopolitan
+      if( errno == EINTR)
          goto retry;
 
-      case EPIPE  :
+      if( errno == EPIPE)
+      {
          _state.eof  = 1;
          _state.pipe = 1;
          return( 0);
+      }
 
-      case EAGAIN :
+      if( errno == EAGAIN)
+      {
          _state.again = 1;
          return( 0);
-
-      default :
-         MulleObjCThrowErrnoException( @"write");
       }
+
+      MulleObjCThrowErrnoException( @"write");
    }
 
    _state.eof = len && ! result;
@@ -201,20 +203,20 @@ retry:
 
    result = lseek( (int)(intptr_t) _fd, offset, posixMode);
    if( result == -1)
-      switch( errno)
+   {
+      // can't switch this because of cosmopolitan
+      if( errno != ENXIO)
       {
-      case ENXIO :
-         break;
+         if( errno == EPIPE)
+         {
+            _state.eof  = 1;
+            _state.pipe = 1;
+            return( 0);
+         }
 
-      case EPIPE :
-         _state.eof  = 1;
-         _state.pipe = 1;
-         break;
-
-      default :
          MulleObjCThrowErrnoException( @"lseek");
       }
-
+   }
    return( (unsigned long long) result);
 }
 

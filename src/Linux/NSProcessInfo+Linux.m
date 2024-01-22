@@ -159,8 +159,15 @@ static void   unlazyArguments( NSProcessInfo *self)
       MulleObjCThrowInternalInconsistencyException( @"can't get argc/argv from /proc/self/cmdline (%d)", errno);
 
    linux_argc_argv_set_arguments( &info, arguments, size);
+
+   // in cosmopolitan we got ape in front, which we gotta lop off
+#ifdef __MULLE_COSMOPOLITAN__
+   self->_arguments = [NSArray _newWithArgc:info.argc -1
+                                       argv:info.argv + 1];
+#else
    self->_arguments = [NSArray _newWithArgc:info.argc
                                        argv:info.argv];
+#endif
    mulle_free( info.argv);
    mulle_free( arguments);
 }

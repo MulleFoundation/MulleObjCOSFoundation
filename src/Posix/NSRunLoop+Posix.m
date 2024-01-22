@@ -16,6 +16,9 @@
 #import "NSError+Posix.h"
 
 // std-c and dependencies
+#ifdef __MULLE_COSMOPOLITAN__
+# define bzero( p, len)  memset( p, 0, len)  // used by FD_ZERO
+#endif
 #include <unistd.h>
 #include <sys/select.h>
 
