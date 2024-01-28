@@ -5,7 +5,7 @@
 //  Created by Nat! on 05.04.16.
 //  Copyright © 2016 Mulle kybernetiK. All rights reserved.
 //
-#define MULLE_OBJC_OS_FOUNDATION_VERSION   ((0UL << 20) | (21 << 8) | 4)
+#define MULLE_OBJC_OS_FOUNDATION_VERSION   ((0UL << 20) | (22 << 8) | 0)
 
 
 #import "import.h"

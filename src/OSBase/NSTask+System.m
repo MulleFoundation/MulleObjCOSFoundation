@@ -39,24 +39,26 @@ NSString   *NSTaskStandardErrorStringKey  = @"standardErrorString";
 
 @implementation NSFileManager( System)
 
-- (NSString *) mulleFindExecutableInSystemPATH:(NSString *) executable
+- (NSString *) mulleFindExecutable:(NSString *) name
+                            inPATH:(NSString *) envPATH
 {
-   NSString   *env;
-   NSString   *path;
+   NSString   *executablePath;
    NSString   *absolute;
 
-   if( [executable isAbsolutePath])
-      return( [self isExecutableFileAtPath:executable] ? executable : nil);
+   assert( ! [name isAbsolutePath]);
 
-   env = [[[NSProcessInfo processInfo] environment] objectForKey:@"PATH"];
-   for( path in [env componentsSeparatedByString:@":"])
+   if( ! envPATH)
+      envPATH = [[[NSProcessInfo processInfo] environment] objectForKey:@"PATH"];
+
+   for( executablePath in [envPATH componentsSeparatedByString:@":"])
    {
-      absolute = [path stringByAppendingPathComponent:executable];
+      absolute = [executablePath stringByAppendingPathComponent:name];
       if( [self isExecutableFileAtPath:absolute])
          return( absolute);
    }
    return( nil);
 }
+
 
 @end
 
@@ -109,6 +111,7 @@ static int   readFileHandleData( NSThread *thread, void *_info)
 @implementation NSTask( System)
 
 + (NSDictionary *) mulleDataSystemCallWithArguments:(NSArray *) argv
+                                        environment:(NSDictionary *) environment
                                    workingDirectory:(NSString *) dir
                                   standardInputData:(NSData *) inputData
                                             options:(NSTaskSystemOptions) options
@@ -121,15 +124,20 @@ static int   readFileHandleData( NSThread *thread, void *_info)
    NSPipe               *stdinPipe;
    NSPipe               *stderrPipe;
    NSString             *absolute;
-   NSString             *path;
+   NSString             *executablePath;
+   NSString             *envPATH;
    NSTask               *task;
+   NSMutableDictionary  *merged;
+   NSFileManager        *fileManager;
    void                 (*previous_handler)(int);
    id                   exception;
    struct thread_info   info[ 3] = { 0 };
 
    argc = [argv count];
    if( ! argc)
-      return( nil);
+      return( @{ NSTaskExceptionKey: [NSException exceptionWithName:NSInvalidArgumentException
+                                                             reason:@"empty arguments"
+                                                          userInfo:nil] });
 
    exception = 0;
    rval      = -1;
@@ -145,11 +153,30 @@ static int   readFileHandleData( NSThread *thread, void *_info)
          stdoutPipe = (options & NSTaskSystemReceiveStandardOutput) ? [NSPipe pipe] : nil;
          stderrPipe = (options & NSTaskSystemReceiveStandardError)  ? [NSPipe pipe] : nil;
 
-         path       = [argv objectAtIndex:0];
-         absolute   = [[NSFileManager defaultManager] mulleFindExecutableInSystemPATH:path];
+         executablePath = [argv objectAtIndex:0];
+         envPATH        = nil;
+
+         if( environment)
+         {
+            merged = [NSMutableDictionary dictionaryWithDictionary:[[NSProcessInfo processInfo] environment]];
+            [merged addEntriesFromDictionary:environment];
+            [task setEnvironment:merged];
+            mulle_fprintf( stderr, "%merged: %@", merged);
+            envPATH = [merged :@"PATH"];
+         }
+
+         if( ! [executablePath isAbsolutePath])
+         {
+            fileManager = [NSFileManager defaultManager];
+            absolute    = [fileManager mulleFindExecutable:executablePath
+                                                    inPATH:envPATH];
+         }
+         else
+            absolute = executablePath;
+
          if( ! absolute)
             [NSException raise:NSInvalidArgumentException
-               format:@"executable \"%@\" must be absolute or in PATH", path];
+               format:@"executable \"%@\" must be absolute or in PATH", executablePath];
          [task setLaunchPath:absolute];
 
          if( [dir length])
@@ -157,7 +184,6 @@ static int   readFileHandleData( NSThread *thread, void *_info)
 
          arguments = [argv subarrayWithRange:NSMakeRange( 1, argc - 1)];
          [task setArguments:arguments];
-
          [task setStandardInput:stdinPipe];
          [task setStandardOutput:stdoutPipe];
          [task setStandardError:stderrPipe];
@@ -243,79 +269,133 @@ static int   readFileHandleData( NSThread *thread, void *_info)
 }
 
 
++ (NSDictionary *) mulleDataSystemCallWithArguments:(NSArray *) argv
+                                   workingDirectory:(NSString *) dir
+                                  standardInputData:(NSData *) inputData
+                                            options:(NSTaskSystemOptions) options
+{
+   return( [self mulleDataSystemCallWithArguments:argv
+                                      environment:nil
+                                 workingDirectory:dir
+                                standardInputData:inputData
+                                         options:options]);
+}
+
+
++ (NSDictionary *) mulleDataSystemCallWithArguments:(NSArray *) argv
+                                        environment:(NSDictionary *) environment
+                                  standardInputData:(NSData *) data
+{
+   return( [self mulleDataSystemCallWithArguments:argv
+                                      environment:environment
+                                 workingDirectory:nil
+                                standardInputData:data
+                                          options:NSTaskSystemOptionsDefault]);
+}
+
+
+
++ (NSDictionary *) mulleDataSystemCallWithArguments:(NSArray *) argv
+                                  standardInputData:(NSData *) data
+{
+   return( [self mulleDataSystemCallWithArguments:argv
+                                      environment:nil
+                                 workingDirectory:nil
+                                standardInputData:data
+                                          options:NSTaskSystemOptionsDefault]);
+}
+
+
+
 
 + (NSDictionary *) mulleStringSystemCallWithArguments:(NSArray *) argv
+                                          environment:(NSDictionary *) environment
                                      workingDirectory:(NSString *) dir
                                   standardInputString:(NSString *) stdinString
                                               options:(NSTaskSystemOptions) options
 {
-
-   NSDictionary   *dictionary;
-   NSData         *stdin;
    NSData         *data[ 2];
+   NSData         *stdin;
+   NSDictionary   *dictionary;
+   NSException    *exception;
+   NSNumber       *status;
    NSString       *string[ 2];
-   char           *bytes;
    NSUInteger     length;
    NSUInteger     original_length;
+   unsigned int   i;
+   char           *bytes;
    int            c;
    int            d;
-   unsigned int   i;
 
    stdin      = [stdinString dataUsingEncoding:NSUTF8StringEncoding];
    dictionary = [self mulleDataSystemCallWithArguments:argv
+                                           environment:environment
                                       workingDirectory:dir
                                      standardInputData:stdin
                                                options:options];
-   if( [dictionary :NSTaskExceptionKey])
-      return( dictionary);
+   assert( dictionary);
 
-   for( i = 0; i < 2; i++)
+   exception = [dictionary :NSTaskExceptionKey];
+   if( exception)
    {
-      data[ i] = [dictionary :((i == 0)
-                               ? NSTaskStandardOutputDataKey
-                               : NSTaskStandardErrorDataKey)];
-
-      //
-      // remove single trailing linefeed, if this is inconvenient use
-      // the data methods
-      //
-      original_length = [data[ i] length];
-      if( ! original_length)
+      status     = @( -1);
+      string[ 0] = @"";
+      data[ 0]   = [NSData data];
+      string[ 1] = [exception reason];
+      data[ 1]   = [string[ 1] dataUsingEncoding:NSUTF8StringEncoding];
+   }
+   else
+   {
+      status = [dictionary :NSTaskTerminationStatusKey];
+      for( i = 0; i < 2; i++)
       {
-         string[ i] = @"";
-         continue;
-      }
+         data[ i] = [dictionary :((i == 0)
+                                  ? NSTaskStandardOutputDataKey
+                                  : NSTaskStandardErrorDataKey)];
 
-      bytes  = [data[ i] bytes];
-      length = original_length;
-
-      d = bytes[ length - 1];
-      if( d == '\r' || d == '\n')
-         if( ! --length)
+         //
+         // remove single trailing linefeed, if this is inconvenient use
+         // the data methods
+         //
+         original_length = [data[ i] length];
+         if( ! original_length)
          {
             string[ i] = @"";
+            assert( data[ i]);
             continue;
          }
 
-      if( d == '\n')
-      {
-         c = bytes[ length - 1];
-         if( c == '\r')
+         bytes  = [data[ i] bytes];
+         length = original_length;
+
+         d = bytes[ length - 1];
+         if( d == '\r' || d == '\n')
             if( ! --length)
             {
                string[ i] = @"";
                continue;
             }
-      }
 
-      string[ i] = [[[NSString alloc] initWithBytes:bytes
-                                             length:length
-                                           encoding:NSUTF8StringEncoding] autorelease];
+         if( d == '\n')
+         {
+            c = bytes[ length - 1];
+            if( c == '\r')
+               if( ! --length)
+               {
+                  string[ i] = @"";
+                  continue;
+               }
+         }
+
+         string[ i] = [[[NSString alloc] initWithBytes:bytes
+                                                length:length
+                                              encoding:NSUTF8StringEncoding] autorelease];
+      }
    }
 
    // we have data anyway, so plop it in as well
    return( @{
-               NSTaskTerminationStatusKey    : [dictionary :NSTaskTerminationStatusKey],
+               NSTaskTerminationStatusKey    : status,
                NSTaskStandardOutputDataKey   : data[ 0],
                NSTaskStandardOutputStringKey : string[ 0],
                NSTaskStandardErrorDataKey    : data[ 1],
@@ -324,17 +404,80 @@ static int   readFileHandleData( NSThread *thread, void *_info)
 }
 
 
++ (NSDictionary *) mulleStringSystemCallWithArguments:(NSArray *) argv
+                                     workingDirectory:(NSString *) dir
+                                  standardInputString:(NSString *) stdinString
+                                              options:(NSTaskSystemOptions) options
+{
+   return( [self mulleStringSystemCallWithArguments:argv
+                                        environment:nil
+                                   workingDirectory:dir
+                                standardInputString:stdinString
+                                            options:options]);
+}
+
+
++ (NSDictionary *) mulleStringSystemCallWithArguments:(NSArray *) argv
+                                          environment:(NSDictionary *) environment
+                                  standardInputString:(NSString *) stdinString
+{
+   return( [self mulleStringSystemCallWithArguments:argv
+                                        environment:environment
+                                   workingDirectory:nil
+                                standardInputString:stdinString
+                                            options:NSTaskSystemOptionsDefault]);
+}
+
+
+
 /*
  * conveniences
  */
-+ (NSDictionary *) mulleStringSystemCallWithArguments:(NSArray *) argv
-                                  standardInputString:(NSString *) s
+
+
++ (NSDictionary *) mulleStringSystemCallWithCommandString:(NSString *) s
+                                              environment:(NSDictionary *) environment
+                                      standardInputString:(NSString *) standardInputString
 {
+   NSArray  *argv;
+
+   argv = [s mulleComponentsSeparatedByWhitespaceWithDoubleQuoting];
    return( [self mulleStringSystemCallWithArguments:argv
+                                        environment:environment
                                    workingDirectory:nil
-                                standardInputString:s
+                                standardInputString:standardInputString
                                             options:NSTaskSystemOptionsDefault]);
 }
+
+
++ (NSDictionary *) mulleStringSystemCallWithCommandString:(NSString *) s
+                                      standardInputString:(NSString *) standardInputString
+{
+   NSArray  *argv;
+
+   argv = [s mulleComponentsSeparatedByWhitespaceWithDoubleQuoting];
+   return( [self mulleStringSystemCallWithArguments:argv
+                                        environment:nil
+                                   workingDirectory:nil
+                                standardInputString:standardInputString
+                                            options:NSTaskSystemOptionsDefault]);
+}
+
+
++ (NSDictionary *) mulleStringSystemCallWithCommandString:(NSString *) s
+                                              environment:(NSDictionary *) environment
+{
+   NSArray  *argv;
+
+   argv = [s mulleComponentsSeparatedByWhitespaceWithDoubleQuoting];
+   return( [self mulleStringSystemCallWithArguments:argv
+                                        environment:environment
+                                   workingDirectory:nil
+                                standardInputString:nil
+                                            options:NSTaskSystemOptionsDefault]);
+}
+
+
 
 + (NSDictionary *) mulleStringSystemCallWithCommandString:(NSString *) s
 {
@@ -342,19 +485,10 @@ static int   readFileHandleData( NSThread *thread, void *_info)
 
    argv = [s mulleComponentsSeparatedByWhitespaceWithDoubleQuoting];
    return( [self mulleStringSystemCallWithArguments:argv
+                                        environment:nil
                                    workingDirectory:nil
                                 standardInputString:nil
                                             options:NSTaskSystemOptionsDefault]);
-}
-
-
-+ (NSDictionary *) mulleDataSystemCallWithArguments:(NSArray *) argv
-                                  standardInputData:(NSData *) data
-{
-   return( [self mulleDataSystemCallWithArguments:argv
-                                 workingDirectory:nil
-                                standardInputData:data
-                                          options:NSTaskSystemOptionsDefault]);
 }
 
 

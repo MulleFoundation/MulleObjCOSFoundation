@@ -83,13 +83,21 @@
 //
 - (void) launch
 {
-   pid_t        pid;
-   char         **envp;
-   char         *path;
-   NSUInteger   argc;
-   NSUInteger   i;
-   int          fds[ 2][ 3];
-   int          rval;
+   char           **envp;
+   char           **envp_storage;
+   char           *c_environment_storage;
+   char           *next;
+   char           *path;
+   char           *s;
+   id             *keys;
+   id             *objects;
+   int            fds[ 2][ 3];
+   int            rval;
+   NSUInteger     argc;
+   NSUInteger     i;
+   NSUInteger     len;
+   NSUInteger     n;
+   pid_t          pid;
 
    MulleObjCSetPosixErrorDomain();
 
@@ -101,7 +109,65 @@
    //
    path = [_launchPath fileSystemRepresentation];
    argc = [_arguments count];
-   envp = [NSTask _environment];
+
+   envp_storage          = NULL;
+   c_environment_storage = NULL;
+
+   // though I could swear I read somewhere, that execve will inherit the
+   // current environment on NULL, it ain't happening for me on Linux here
+   // so we do: _environment = nil (get Task environment), otherwise supplant
+   // so to have a clean environment set it to @{}.
+   //
+   // convert our Objective-C environment into a C envstring, we use
+   // two mallocs for this, which is kinda shabby ;)
+   //
+   if( ! _environment)
+   {
+      envp = [NSTask _environment];
+   }
+   else
+   {
+      n            = [_environment count];
+      envp         =
+      envp_storage = mulle_malloc( sizeof( id) * 2 * (n + 1));
+      keys         = (id *) envp;
+      objects      = &keys[ n];
+
+      [_environment getObjects:objects
+                       andKeys:keys
+                         count:n];
+
+      // create buffer and print all key/value pairs, '\n' will
+      // be later replaced by '\0', remember length of each line
+      // in keys
+      mulle_buffer_do( buffer)
+      {
+         for( i = 0; i < n; i++)
+         {
+            mulle_buffer_sprintf( buffer, "%s=%s%tn\n",
+                                          [keys[ i] UTF8String],
+                                          [objects[ i] UTF8String],
+                                          &len);
+            keys[ i] = (id) len;
+         }
+         // extract from buffer, so now permanent
+         s = mulle_buffer_extract_string( buffer);
+      }
+
+      // remember for later dealloc
+      c_environment_storage = s;
+
+      // now \0 terminate each string, and place it into envp
+      for( i = 0; i < n; i++)
+      {
+         len      = (NSUInteger) keys[ i];
+         next     = &s[ len];
+         *next++  = 0;
+         envp[ i] = s;
+         s        = next;
+      }
+      envp[ n] = NULL;
+   }
 
    //
    // Objective-C is NOT a good idea inside the vfork child.
@@ -207,6 +273,9 @@
 #ifdef DEBUG_TASK
    fprintf( stderr, "task %d closes handles\n", (int) getpid());
 #endif
+
+   mulle_free( envp_storage);
+   mulle_free( c_environment_storage);
 
    for( i = 0; i < 3; i++)
       if( fds[ 1][ i])
