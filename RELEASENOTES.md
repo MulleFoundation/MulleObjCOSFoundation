@@ -1,3 +1,8 @@
+## 0.22.0
+
+* NSTask system methods now have variants where you can *modify* (not set) the tasks environment
+
+
 ### 0.21.4
 
 * fix for cosmopolitan
