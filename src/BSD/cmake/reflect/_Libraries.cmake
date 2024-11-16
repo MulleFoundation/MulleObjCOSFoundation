@@ -75,6 +75,6 @@ if( NOT MULLE_OBJC_POSIX_FOUNDATION_HEADER)
       endif()
    else()
       # Disable with: `mulle-sourcetree mark MulleObjCPosixFoundation no-require`
-      message( FATAL_ERROR "MULLE_OBJC_POSIX_FOUNDATION_HEADER was not found")
+      message( SEND_ERROR "MULLE_OBJC_POSIX_FOUNDATION_HEADER was not found")
    endif()
 endif()

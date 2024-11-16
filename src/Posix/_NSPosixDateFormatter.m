@@ -113,7 +113,7 @@ MULLE_OBJC_DEPENDS_ON_LIBRARY( MulleObjCStandardFoundation);
 
    *obj = date;
    if( rangep)
-      *rangep = NSMakeRange( 0, c_end - c_begin);
+      *rangep = NSRangeMake( 0, c_end - c_begin);
    return( YES);
 }
 

@@ -17,7 +17,7 @@
 @class NSFileHandle;
 
 
-@interface NSPipe : NSObject
+@interface NSPipe : NSObject < MulleObjCImmutableProtocols>
 {
    NSFileHandle   *_read;
    NSFileHandle   *_write;

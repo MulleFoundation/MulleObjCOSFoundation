@@ -55,11 +55,12 @@
 
 
 // the whole NSTimer/NSRunLoop interface is strange and crappy
-// there is no "removeTimer" on NSRunLoop but only this
-
+// there is no "removeTimer" on NSRunLoop but only this.
+// Also the timer may "invalidate" when the NSRunLoop is no longer
+// around (due to autoreleasepool order)
 - (void) invalidate
 {
-   [[NSRunLoop currentRunLoop] _removeTimer:self];
+   [[NSRunLoop mulleCurrentRunLoop] _removeTimer:self];
 
    [self->_o.target autorelease];
    self->_o.target = nil;

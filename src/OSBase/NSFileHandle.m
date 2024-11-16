@@ -17,7 +17,7 @@
 
 
 // https://developer.apple.com/documentation/foundation/nsfilehandleoperationexception
-NSString *NSFileHandleOperationException                    = @"NSFileHandleOperationException";
+NSString *NSFileHandleOperationException = @"NSFileHandleOperationException";
 
 
 @implementation NSNullDeviceFileHandle
@@ -154,7 +154,7 @@ static id   NSInitFileHandle( NSFileHandle *self, void *fd)
 
 - (int) fileDescriptor
 {
-   return( (int) (intptr_t) _fd);
+   return( (int)(intptr_t) _fd);
 }
 
 

@@ -70,13 +70,6 @@ NSString   *NSFileTypeUnknown          = @"NSFileTypeUnknown";
 
 @implementation NSFileManager
 
-//
-// need to make this thread safe ?
-// spec is dubious, it says you should do alloc/init
-// for thread safety.  (but why ?)
-// There are no instance variables here ??
-// (probably for the delegate, that we don't support)
-//
 + (NSFileManager *) defaultManager
 {
    return( [self sharedInstance]);
@@ -94,6 +87,7 @@ NSString   *NSFileTypeUnknown          = @"NSFileTypeUnknown";
 {
    [super dealloc];
 }
+
 
 // useless fluff routines
 - (BOOL) createFileAtPath:(NSString *) path
@@ -132,7 +126,7 @@ NSString   *NSFileTypeUnknown          = @"NSFileTypeUnknown";
 }
 
 
-- (BOOL) _removeDirectoryItemAtPath:(NSString *) path
+- (BOOL) _removeDirectoryAtPath:(NSString *) path
 {
    NSArray   *contents;
    NSString  *name;
@@ -171,9 +165,9 @@ NSString   *NSFileTypeUnknown          = @"NSFileTypeUnknown";
          return( NO);
 
    if( isDirectory)
-      flag = [self _removeDirectoryItemAtPath:path];
+      flag = [self _removeDirectoryAtPath:path];
    else
-      flag = [self _removeFileItemAtPath:path];
+      flag = [self _removeFileAtPath:path];
 
    return( flag);
 }

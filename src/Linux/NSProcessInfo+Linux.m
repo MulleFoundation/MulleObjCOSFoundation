@@ -217,7 +217,7 @@ static void   unlazyExecutablePath( NSProcessInfo *self)
 
 - (NSString *) _executablePath
 {
-   if( ! _executablePath)
+   if( ! (id) _executablePath)
       unlazyExecutablePath( self);
    return( _executablePath);
 }

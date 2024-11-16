@@ -1,3 +1,37 @@
+## 0.23.0
+
+feat: enhance thread safety and system integration
+
+* Add Thread Affine Objects (TAO) support
+  - Enable TAO for debug builds via `OBJC_TAO_DEBUG_ENABLED` option
+  - Add TAO compiler flag (-fobjc-tao) when enabled
+  - Improve thread safety in object access patterns
+
+* Enhance NSTask system integration
+  - Add thread safety with mulleGainAccess/mulleRelinquishAccess
+  - Replace mulleStartUndetached with mulleStart for better thread control
+  - Add new convenience methods for environment modification
+  - Support both single and double quotes in command parsing
+  - Add workingDirectory support to string-based system calls
+  - Improve debug tracing with `trace_launch` function
+
+* Optimize BSD date handling
+  - Remove unused `mulle_mini_tm_init_with_time` function
+  - Remove redundant temporary variables
+  - Improve time conversion efficiency
+
+* Improve build system resilience
+  - Change `FATAL_ERROR` to `SEND_ERROR` for better build continuity
+  - Fix `WANTED_WARNINGS` vs `UNWANTED_WARNINGS` logic
+  - Add better error reporting with detailed messages
+  - Support version 0.23.0 improvements
+
+* Add debugging improvements
+  - Add conditional compilation for debug features
+  - Enhance error reporting with better context
+  - Add trace functionality for command execution
+
+
 ## 0.22.0
 
 * NSTask system methods now have variants where you can *modify* (not set) the tasks environment

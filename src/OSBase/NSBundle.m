@@ -51,6 +51,8 @@ NSString   *NSBundleDidLoadNotification = @"NSBundleDidLoadNotification";
 
 @implementation NSBundle
 
+MULLE_OBJC_DEPENDS_ON_LIBRARY( MulleObjCStandardFoundation);
+
 static struct
 {
    mulle_thread_mutex_t   _lock;
@@ -91,7 +93,7 @@ static inline void   SelfUnlock( void)
 }
 
 
-// shoud pair load with unload, otherwise +initialize may run too late
+// should pair load with unload, otherwise +initialize may run too late
 + (void) load
 {
    if( mulle_thread_mutex_init( &Self._lock))
@@ -224,7 +226,7 @@ void       (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path
 
    if( libInfo)
    {
-      _executablePath = [libInfo->path copy];
+      MulleObjCAtomicIdSetCopy( &_executablePath, libInfo->path);
       _startAddress   = libInfo->start;
       _endAddress     = libInfo->end;
       _handle         = libInfo->handle;
@@ -298,8 +300,8 @@ void       (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path
 #endif
 
    [_path release];
-   [_executablePath release];
-   [_resourcePath release];
+   MulleObjCAtomicIdRelease( &_executablePath);
+   MulleObjCAtomicIdRelease( &_resourcePath);
 
    [_languageCode release];
    [_localizedStringTables release];
@@ -492,9 +494,13 @@ void       (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path
 
 - (NSString *) resourcePath
 {
-   if( ! _resourcePath)
-      _resourcePath = [[self _resourcePath] copy];
-   return( _resourcePath);
+   NSString   *value;
+
+   value = MulleObjCAtomicIdGetLazyCopy( &_resourcePath,
+                                         self,
+                                         @selector( _resourcePath));
+
+   return( value);
 }
 
 
@@ -502,12 +508,11 @@ void       (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path
 {
    NSString   *value;
 
-   if( ! _executablePath)
-   {
-      value           = [self _executablePath];
-      _executablePath = [value copy];
-   }
-   return( _executablePath);
+   value = MulleObjCAtomicIdGetLazyCopy( &_executablePath,
+                                         self,
+                                         @selector( _executablePath));
+
+   return( value);
 }
 
 
