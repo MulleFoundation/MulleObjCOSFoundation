@@ -69,7 +69,7 @@
              usedLength:NULL
                encoding:[self _cStringEncoding]
                 options:0
-                  range:NSMakeRange( 0, -1)
+                  range:NSRangeMake( 0, -1)
          remainingRange:NULL])
    {
       [NSException raise:@"fail"
@@ -89,7 +89,7 @@
              usedLength:&usedLength
                encoding:[self _cStringEncoding]
                 options:0
-                  range:NSMakeRange( 0, -1)
+                  range:NSRangeMake( 0, -1)
          remainingRange:NULL])
    {
       [NSException raise:@"fail"
@@ -135,7 +135,7 @@
              usedLength:&usedLength
                encoding:encoding
                 options:0
-                  range:NSMakeRange( 0, -1)
+                  range:NSRangeMake( 0, -1)
          remainingRange:NULL])
    {
       [NSException raise:@"fail"

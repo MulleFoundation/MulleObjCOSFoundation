@@ -233,14 +233,14 @@ static NSRange  getLastPathComponentRange( NSString *self)
    if( range.location == len - 1)
       range = [self rangeOfString:NSFilePathComponentSeparator
                           options:NSBackwardsSearch
-                            range:NSMakeRange( 0, len - 1)];
+                            range:NSRangeMake( 0, len - 1)];
 
    if( range.location == 0 || range.length == 0) // is root or just the file
-      return( NSMakeRange( 0, len));
+      return( NSRangeMake( 0, len));
 
    // otherwise range it toge
    range.location++;   // skip over '/'
-   return( NSMakeRange( range.location, len - range.location));
+   return( NSRangeMake( range.location, len - range.location));
 }
 
 
@@ -259,10 +259,10 @@ static NSRange  getPathExtensionRange( NSString *self)
                           range:range1];
    // /.tiff is not an extension!
    if( ! range2.length || range2.location <= range1.location)
-      return( NSMakeRange( NSNotFound, 0));
+      return( NSRangeMake( NSNotFound, 0));
 
    ++range2.location;
-   return( NSMakeRange( range2.location, (range1.location + range1.length) - range2.location));
+   return( NSRangeMake( range2.location, (range1.location + range1.length) - range2.location));
 }
 
 

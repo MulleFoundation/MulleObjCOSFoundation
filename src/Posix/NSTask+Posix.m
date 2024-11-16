@@ -12,6 +12,7 @@
 #import "import-private.h"
 
 #import <MulleObjCOSBaseFoundation/NSTask-Private.h>
+#import <MulleObjC/NSDebug.h>
 
 // other libraries of MulleObjCPosixFoundation
 #import "NSError+Posix.h"
@@ -72,6 +73,35 @@
 //       dup( other_fd);
 //    }
 // }
+
+static void   trace_launch( char **envp, char **argv)
+{
+   char  **s;
+   char  *key;
+   char  *value;
+
+   mulle_buffer_do( buffer)
+   {
+      for( s = envp; *s; s++)
+      {
+         key   = *s;
+         value = strchr( key, '=') + 1;
+         assert( value);
+
+         mulle_buffer_add_string_if_not_empty( buffer, " ");
+         mulle_buffer_add_bytes( buffer, key, value - key);
+         mulle_buffer_add_c_string( buffer, value);
+      }
+
+      for( s = argv; *s; s++)
+      {
+         mulle_buffer_add_string_if_not_empty( buffer, " ");
+         mulle_buffer_add_c_string( buffer, *s);
+      }
+
+      mulle_fprintf( stderr, "%s\n", mulle_buffer_get_string( buffer));
+   }
+}
 
 
 //
@@ -198,6 +228,9 @@
       assert( i < argc + 2);
       argv[ i] = 0;
       argv[ 0] = path;  // [[_launchPath lastPathComponent] cString];
+
+      if( NSDebugEnabled)
+         trace_launch( envp, argv);
 
 #ifdef DEBUG_TASK
       fprintf( stderr, "task %d starts\n", (int) getpid());

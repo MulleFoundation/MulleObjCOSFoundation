@@ -17,7 +17,7 @@
 @class NSFileManager;
 
 
-@interface NSDirectoryEnumerator : NSEnumerator
+@interface NSDirectoryEnumerator : NSEnumerator < NSEnumerator>
 {
    NSFileManager     *_manager;
    NSString          *_rootPath;

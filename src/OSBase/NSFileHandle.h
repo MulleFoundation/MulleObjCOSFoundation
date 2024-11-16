@@ -20,12 +20,16 @@
 MULLE_OBJC_OSBASE_FOUNDATION_GLOBAL
 NSString  *NSFileHandleOperationException;
 
-// this class contains the abstract code for a NSFileHandle
+//
+// This class contains the abstract code for a NSFileHandle
+// it could be made thread safe with little effort, but a filehandle object
+// should only be accessed by a single thread anyway (the underlying file
+// descriptor (like 1 for stdout) is a different thing)
 //
 @interface NSFileHandle : NSObject <MulleObjCInputStream, MulleObjCOutputStream>
 {
    void  *_fd;
-   int   (*_closer)( void *);
+   int   (*_closer)( void *); // TODO: use mulle_buffer_stdio_functions ??
    int   _mode;
    struct
    {

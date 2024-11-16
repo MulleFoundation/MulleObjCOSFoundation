@@ -75,6 +75,9 @@ static int   writeFileHandleDataAndClose( NSThread *thread, void *_info)
 {
    struct thread_info *info = _info;
 
+   [info->fileHandle mulleGainAccess];
+   [info->data mulleGainAccess];
+
 #ifdef DEBUG_IO
    fprintf( stderr, "write data\n");
 #endif
@@ -96,6 +99,8 @@ static int   readFileHandleData( NSThread *thread, void *_info)
 {
    struct thread_info *info = _info;
 
+   [info->fileHandle mulleGainAccess];
+
 #ifdef DEBUG_IO
    fprintf( stderr, "read err data\n");
 #endif
@@ -104,10 +109,12 @@ static int   readFileHandleData( NSThread *thread, void *_info)
    fprintf( stderr, "end read err thread\n");
 #endif
    [info->fileHandle autorelease];
+   [info->data mulleRelinquishAccess];
+
    return( 0);
 }
 
-
+// @selector( mulleDataSystemCallWithArguments:environment:workingDirectory:standardInputData:options:)
 @implementation NSTask( System)
 
 + (NSDictionary *) mulleDataSystemCallWithArguments:(NSArray *) argv
@@ -137,7 +144,7 @@ static int   readFileHandleData( NSThread *thread, void *_info)
    if( ! argc)
       return( @{ NSTaskExceptionKey: [NSException exceptionWithName:NSInvalidArgumentException
                                                              reason:@"empty arguments"
-                                                          userInfo:nil] });
+                                                           userInfo:nil] });
 
    exception = 0;
    rval      = -1;
@@ -182,7 +189,7 @@ static int   readFileHandleData( NSThread *thread, void *_info)
          if( [dir length])
             [task setCurrentDirectoryPath:dir];
 
-         arguments = [argv subarrayWithRange:NSMakeRange( 1, argc - 1)];
+         arguments = [argv subarrayWithRange:NSRangeMake( 1, argc - 1)];
          [task setArguments:arguments];
          [task setStandardInput:stdinPipe];
          [task setStandardOutput:stdoutPipe];
@@ -192,10 +199,14 @@ static int   readFileHandleData( NSThread *thread, void *_info)
          if( stdinPipe)
          {
             info[ 0].data       = [inputData copy];
+            [info[0].data mulleRelinquishAccess];
+
             info[ 0].fileHandle = [[stdinPipe fileHandleForWriting] retain];
+            [info[0].fileHandle mulleRelinquishAccess];
+
             info[ 0].thread     = [[[NSThread alloc] mulleInitWithFunction:writeFileHandleDataAndClose
                                                                   argument:&info[ 0]] autorelease];
-            [info[ 0].thread mulleStartUndetached];
+            [info[ 0].thread mulleStart];
          }
 
    //         info[ 1].data       = nil
@@ -208,9 +219,10 @@ static int   readFileHandleData( NSThread *thread, void *_info)
          {
             info[ 2].data       = nil;
             info[ 2].fileHandle = [[stderrPipe fileHandleForReading] retain];
+            [info[2].fileHandle mulleRelinquishAccess];
             info[ 2].thread     = [[[NSThread alloc] mulleInitWithFunction:readFileHandleData
                                                                   argument:&info[ 2]] autorelease];
-            [info[ 2].thread mulleStartUndetached];
+            [info[ 2].thread mulleStart];
          }
 
          if( stdoutPipe)
@@ -233,6 +245,7 @@ static int   readFileHandleData( NSThread *thread, void *_info)
          fprintf( stderr, "join stderr\n");
 #endif
          [info[ 2].thread mulleJoin];
+         [info[ 2].data mulleGainAccess];
 #ifdef DEBUG_IO
          fprintf( stderr, "join stdin\n");
 #endif
@@ -429,10 +442,57 @@ static int   readFileHandleData( NSThread *thread, void *_info)
 }
 
 
++ (NSDictionary *) mulleStringSystemCallWithArguments:(NSArray *) argv
+                                          environment:(NSDictionary *) environment
+{
+   return( [self mulleStringSystemCallWithArguments:argv
+                                        environment:environment
+                                   workingDirectory:nil
+                                standardInputString:nil
+                                            options:NSTaskSystemOptionsDefault]);
+}
+
++ (NSDictionary *) mulleStringSystemCallWithArguments:(NSArray *) argv
+                                  standardInputString:(NSString *) stdinString
+{
+   return( [self mulleStringSystemCallWithArguments:argv
+                                        environment:nil
+                                   workingDirectory:nil
+                                standardInputString:stdinString
+                                            options:NSTaskSystemOptionsDefault]);
+}
+
+
++ (NSDictionary *) mulleStringSystemCallWithArguments:(NSArray *) argv
+{
+   return( [self mulleStringSystemCallWithArguments:argv
+                                        environment:nil
+                                   workingDirectory:nil
+                                standardInputString:nil
+                                            options:NSTaskSystemOptionsDefault]);
+}
+
+
 
 /*
  * conveniences
  */
+
++ (NSDictionary *) mulleStringSystemCallWithCommandString:(NSString *) s
+                                         workingDirectory:(NSString *) dir
+                                              environment:(NSDictionary *) environment
+                                      standardInputString:(NSString *) standardInputString
+{
+   NSArray  *argv;
+
+   argv = [s mulleComponentsSeparatedByWhitespaceWithSingleAndDoubleQuoting];
+   return( [self mulleStringSystemCallWithArguments:argv
+                                        environment:environment
+                                   workingDirectory:dir
+                                standardInputString:standardInputString
+                                            options:NSTaskSystemOptionsDefault]);
+}
+
 
 
 + (NSDictionary *) mulleStringSystemCallWithCommandString:(NSString *) s
@@ -441,7 +501,7 @@ static int   readFileHandleData( NSThread *thread, void *_info)
 {
    NSArray  *argv;
 
-   argv = [s mulleComponentsSeparatedByWhitespaceWithDoubleQuoting];
+   argv = [s mulleComponentsSeparatedByWhitespaceWithSingleAndDoubleQuoting];
    return( [self mulleStringSystemCallWithArguments:argv
                                         environment:environment
                                    workingDirectory:nil
@@ -455,7 +515,7 @@ static int   readFileHandleData( NSThread *thread, void *_info)
 {
    NSArray  *argv;
 
-   argv = [s mulleComponentsSeparatedByWhitespaceWithDoubleQuoting];
+   argv = [s mulleComponentsSeparatedByWhitespaceWithSingleAndDoubleQuoting];
    return( [self mulleStringSystemCallWithArguments:argv
                                         environment:nil
                                    workingDirectory:nil
@@ -469,7 +529,7 @@ static int   readFileHandleData( NSThread *thread, void *_info)
 {
    NSArray  *argv;
 
-   argv = [s mulleComponentsSeparatedByWhitespaceWithDoubleQuoting];
+   argv = [s mulleComponentsSeparatedByWhitespaceWithSingleAndDoubleQuoting];
    return( [self mulleStringSystemCallWithArguments:argv
                                         environment:environment
                                    workingDirectory:nil
@@ -483,7 +543,7 @@ static int   readFileHandleData( NSThread *thread, void *_info)
 {
    NSArray  *argv;
 
-   argv = [s mulleComponentsSeparatedByWhitespaceWithDoubleQuoting];
+   argv = [s mulleComponentsSeparatedByWhitespaceWithSingleAndDoubleQuoting];
    return( [self mulleStringSystemCallWithArguments:argv
                                         environment:nil
                                    workingDirectory:nil

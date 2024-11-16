@@ -121,8 +121,11 @@ static NSArray   *identifiers;
 
 + (void) unload
 {
-   [identifiers release];
-   identifiers = nil;
+   if( identifiers) // avoid +initialize due to -release (noticed in trace)
+   {
+      [identifiers release];
+      identifiers = nil;
+   }
 }
 
 // So on linux the locale available from <locale.h> is basically the contents
@@ -159,7 +162,7 @@ static NSArray   *identifiers;
       s           = [NSString stringWithContentsOfFile:tmpFile];
       identifiers = [s componentsSeparatedByString:@"\n"];
    }
-   [[NSFileManager defaultManager] _removeFileItemAtPath:tmpFile];
+   [[NSFileManager defaultManager] _removeFileAtPath:tmpFile];
 
    if( ! [identifiers count])
       identifiers  = @[ @"C", @"POSIX", @"en_US.utf8" ];

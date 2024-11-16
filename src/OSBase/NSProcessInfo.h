@@ -28,7 +28,10 @@ enum
 };
 
 
-@interface NSProcessInfo : NSObject < MulleObjCSingleton>
+//
+// MEMO: this is supposed to be threadsafe, gotta take care of this though
+//
+@interface NSProcessInfo : NSObject < MulleObjCSingleton, MulleObjCThreadSafe>
 {
    NSArray       *_arguments;
    NSDictionary  *_environment;

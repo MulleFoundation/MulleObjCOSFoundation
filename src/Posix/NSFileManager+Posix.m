@@ -616,7 +616,7 @@ static NSString   *link_contents( NSString *path)
                                       recursively:NO]);
 }
 
-- (BOOL) _removeFileItemAtPath:(NSString *) path
+- (BOOL) _removeFileAtPath:(NSString *) path
 {
    char  *c_path;
 

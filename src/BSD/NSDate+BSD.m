@@ -16,7 +16,7 @@
 #include <time.h>
 
 
-
+#if 0
 static void   mulle_mini_tm_init_with_time( struct mulle_mini_tm *mini, time_t time)
 {
    struct tm   tmp;
@@ -27,7 +27,7 @@ static void   mulle_mini_tm_init_with_time( struct mulle_mini_tm *mini, time_t t
    mulle_bsd_tm_init_with_time( &tmp, time);
    *mini = mulle_posix_tm_get_mini_tm( &tmp);
 }
-
+#endif
 
 static time_t    mulle_mini_tm_get_time( struct mulle_mini_tm mini)
 {
@@ -127,7 +127,6 @@ static void  _MulleObjCConcreteCalendarDateInitBSD( _MulleObjCConcreteCalendarDa
 
 - (NSTimeInterval) timeIntervalSince1970
 {
-   struct tm        tmp;
    time_t           value;
    NSTimeInterval   interval;
 

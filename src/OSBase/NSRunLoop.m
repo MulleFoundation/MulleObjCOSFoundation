@@ -497,7 +497,7 @@ static NSArray *
    if( ! n)
       return( nil);
 
-   range = NSMakeRange( 0, n);
+   range = NSRangeMake( 0, n);
    array = [p->timers subarrayWithRange:range];
 
    MulleRunLoopModeRemoveTimersInRange( p, range);
@@ -655,10 +655,19 @@ static NSRunLoop   *runLoopForThread( NSThread *thread)
    {
       assert( _mulle_objc_universe_is_initialized( _mulle_objc_object_get_universe( thread)));
 
-      runLoop = [[NSRunLoop new] autorelease];
+      runLoop = [NSRunLoop object];
       runLoop = [thread mulleSetRunLoop:runLoop];
    }
    return( runLoop);
+}
+
+
++ (NSRunLoop *) mulleCurrentRunLoop
+{
+   NSThread  *thread;
+
+   thread = [NSThread currentThread];
+   return( thread ? runLoopForThread( thread) : nil);
 }
 
 

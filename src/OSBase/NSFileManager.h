@@ -17,6 +17,12 @@
 @class NSDirectoryEnumerator;
 
 
+//
+// General wording:
+//
+// An `Item` is either a `Directory` or a `SymbolicLink` or a `File`
+// (incl. special Files, like devices)
+//
 @class NSFileManager;
 
 @protocol NSFileManagerHandler
@@ -72,8 +78,17 @@ shouldProceedAfterError:(NSError *)error
 @end
 
 
-
-@interface NSFileManager : NSObject < MulleObjCSingleton>
+//
+// ThreadSafety
+//
+// The NSFileManager's methods can be invoked from various threads without
+// issues. Nonetheless, if you're employing a delegate to monitor the outcomes
+// of move, copy, delete, and link actions, it's advisable to instantiate a
+// separate file manager object, appoint your delegate to this instance, and
+// then utilize this file manager for executing your operations.
+//
+//
+@interface NSFileManager : NSObject < MulleObjCSingleton, MulleObjCThreadSafe>
 
 @property( assign) id   delegate;
 
@@ -106,6 +121,10 @@ shouldProceedAfterError:(NSError *)error
 
 @interface NSFileManager (Future)
 
+- (char *) fileSystemRepresentationWithPath:(NSString *) path;
+- (NSString *) stringWithFileSystemRepresentation:(char *) s
+                                           length:(NSUInteger) len;
+
 - (BOOL) changeCurrentDirectoryPath:(NSString *) path;
 - (NSString *) currentDirectoryPath;
 - (BOOL) fileExistsAtPath:(NSString *) path;
@@ -125,24 +144,21 @@ shouldProceedAfterError:(NSError *)error
                     attributes:(NSDictionary *) attributes
                          error:(NSError **) error;
 
-- (NSDictionary *) fileSystemAttributesAtPath:(NSString *) path;
 
 - (NSString *) pathContentOfSymbolicLinkAtPath:(NSString *) path;
-
 - (NSArray *) directoryContentsAtPath:(NSString *) path;
 
-
 - (NSDictionary *) fileSystemAttributesAtPath:(NSString *) path;
+
+// TODO: why is this not named fileSystemAttributesAtPath:traverseLink: ?
 - (NSDictionary *) fileAttributesAtPath:(NSString *) path
                            traverseLink:(BOOL) flag;
 
-- (NSArray *) directoryContentsAtPath:(NSString *) path;
-- (NSString *) pathContentOfSymbolicLinkAtPath:(NSString *) path;
-
-- (char *) fileSystemRepresentationWithPath:(NSString *) path;
-- (NSString *) stringWithFileSystemRepresentation:(char *) s
-                                           length:(NSUInteger) len;
-
+// TODO: why u no nem sis setFileSystemAttributesAtPath: ??
+// MEMO: some stuff is missing like:
+// - attributesOfItemAtPath:error:
+// - attributesOfFileSystemForPath:error:
+//
 - (BOOL) setAttributes:(NSDictionary *) attributes
           ofItemAtPath:(NSString *) path
                  error:(NSError **) error;
@@ -150,7 +166,7 @@ shouldProceedAfterError:(NSError *)error
 - (int) _createDirectoryAtPath:(NSString *) path
                     attributes:(NSDictionary *) attributes;
 
-- (BOOL) _removeFileItemAtPath:(NSString *) path;
+- (BOOL) _removeFileAtPath:(NSString *) path;
 - (BOOL) _removeEmptyDirectoryItemAtPath:(NSString *) path;
 - (BOOL) removeItemAtPath:(NSString *) path
                     error:(NSError **) error;

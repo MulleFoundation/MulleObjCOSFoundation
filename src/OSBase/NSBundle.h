@@ -18,8 +18,12 @@
 // there will be subclasses for Frameworks proper
 // and unix "spread" over multiple folders kinda bundles
 //
-@interface NSBundle : NSObject
+// MEMO: NSBundle is declared as MulleObjCThreadSafe, so additional methods
+//       added by subclasses must be thread safe as well.
+//
+@interface NSBundle : NSObject <MulleObjCThreadSafe>
 {
+   // these are read only set by init
    NSString              *_path;
    NSLock                *_lock;  // used for lazy resources
 
@@ -28,8 +32,8 @@
    void                  *_endAddress;
 
    //
-   // localization, we cach only for a single languageCode
-   // because this is "usual"
+   // localization, we cache only for a single languageCode
+   // because this is "usual". Protected by lock
    //
    NSString              *_languageCode;
    NSMutableDictionary   *_localizedStringTables;
@@ -38,8 +42,8 @@
    id                    _infoDictionary;      // lazy can be NSNull
 
 @private
-   NSString              *_executablePath;  // for "already loaded" bundles
-   NSString              *_resourcePath;    // for "already loaded" bundles
+   mulle_atomic_id_t     _executablePath;      // for "already loaded" bundles
+   mulle_atomic_id_t     _resourcePath;        // for "already loaded" bundles
 }
 
 

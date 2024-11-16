@@ -78,8 +78,21 @@ extern NSString   *NSTaskStandardErrorStringKey;   // = @"standardErrorString";
                                           environment:(NSDictionary *) environment
                                   standardInputString:(NSString *) stdinString;
 
++ (NSDictionary *) mulleStringSystemCallWithArguments:(NSArray *) argv
+                                  standardInputString:(NSString *) stdinString;
+
++ (NSDictionary *) mulleStringSystemCallWithArguments:(NSArray *) argv
+                                          environment:(NSDictionary *) environment;
+
++ (NSDictionary *) mulleStringSystemCallWithArguments:(NSArray *) argv;
+
 // even more convenient, string 's' is parsed and separated into the arguments
 // array...
++ (NSDictionary *) mulleStringSystemCallWithCommandString:(NSString *) s
+                                         workingDirectory:(NSString *) dir
+                                              environment:(NSDictionary *) environment
+                                      standardInputString:(NSString *) stdinString;
+
 + (NSDictionary *) mulleStringSystemCallWithCommandString:(NSString *) s
                                               environment:(NSDictionary *) environment
                                       standardInputString:(NSString *) stdinString;

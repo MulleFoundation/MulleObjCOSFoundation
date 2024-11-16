@@ -53,17 +53,26 @@ NSString   *NSDefaultRunLoopMode;
 //
 // basically a wrapper around select(2) in POSIX
 //
+// this object is supposed to exist per thread, and should not be shared
+// with other threads
+//
 @interface NSRunLoop : NSObject
 {
-   NSMapTable                 *_modeTable;
-   NSMapTable                 *_fileHandleTable;  // todo: move to mode
-   NSMutableArray             *_readyHandles;
-   NSRunLoopMode              _currentModeName;
-   mulle_thread_mutex_t       _lock;
+   NSMapTable             *_modeTable;
+   NSMapTable             *_fileHandleTable;  // todo: move to mode
+   NSMutableArray         *_readyHandles;
+   NSRunLoopMode          _currentModeName;
+   mulle_thread_mutex_t   _lock;
 }
 
 + (NSRunLoop *) currentRunLoop;
 + (NSRunLoop *) mainRunLoop;
+
+//
+// this may return "nil" when the thread is going down and will not create
+// a spurious runloop (useful for -finalize/-dealloc kinda code)
+//
++ (NSRunLoop *) mulleCurrentRunLoop;
 
 - (NSRunLoopMode) currentMode;
 

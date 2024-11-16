@@ -158,7 +158,7 @@ static NSString   *resourcesPath( NSBundle *self)
    // If we are a regular bundle, this might not be determined so
    // just check ivar (see _executablePath below)
    //
-   if( [[_executablePath pathExtension] isEqualToString:@"dylib"])
+   if( [[_executablePath.object pathExtension] isEqualToString:@"dylib"])
       return( [self _posixResourcePath]);
 
    // else stay in bundlePath
@@ -185,7 +185,7 @@ static NSString   *resourcesPath( NSBundle *self)
    // we skip this.
    //
    exe = nil;
-   if( ! _executablePath)
+   if( ! _executablePath.object)
       exe = [[self infoDictionary] objectForKey:@"NSExecutable"];
 
    if( ! exe)
