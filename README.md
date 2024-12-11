@@ -17,7 +17,7 @@ It builds differently on each platform.
 
 | Release Version                                       | Release Notes
 |-------------------------------------------------------|--------------
-| ![Mulle kybernetiK tag](https://img.shields.io/github/tag/MulleFoundation/MulleObjCOSFoundation.svg?branch=release) [![Build Status](https://github.com/MulleFoundation/MulleObjCOSFoundation/workflows/CI/badge.svg?branch=release)](//github.com/MulleFoundation/MulleObjCOSFoundation/actions) | [RELEASENOTES](RELEASENOTES.md) |
+| ![Mulle kybernetiK tag](https://img.shields.io/github/tag/MulleFoundation/MulleObjCOSFoundation.svg) [![Build Status](https://github.com/MulleFoundation/MulleObjCOSFoundation/workflows/CI/badge.svg)](//github.com/MulleFoundation/MulleObjCOSFoundation/actions) | [RELEASENOTES](RELEASENOTES.md) |
 
 
 ## API
@@ -56,8 +56,6 @@ mulle-sde add github:MulleFoundation/MulleObjCOSFoundation
 
 ## Install
 
-### Install with mulle-sde
-
 Use [mulle-sde](//github.com/mulle-sde) to build and install MulleObjCOSFoundation:
 
 ``` sh
@@ -65,7 +63,7 @@ mulle-sde install --prefix /usr/local \
    https://github.com/MulleFoundation/MulleObjCOSFoundation/archive/latest.tar.gz
 ```
 
-### Manual Installation
+### Legacy Installation
 
 
 Download the latest [tar](https://github.com/MulleFoundation/MulleObjCOSFoundation/archive/refs/tags/latest.tar.gz) or [zip](https://github.com/MulleFoundation/MulleObjCOSFoundation/archive/refs/tags/latest.zip) archive and unpack it.
