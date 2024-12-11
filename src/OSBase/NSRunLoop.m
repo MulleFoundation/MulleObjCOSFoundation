@@ -650,6 +650,12 @@ static NSRunLoop   *runLoopForThread( NSThread *thread)
 {
    NSRunLoop   *runLoop;
 
+   //
+   // if thread is already finalized, don't create another runloop
+   //
+   if( thread && _mulle_objc_object_is_finalized( thread))
+      return( nil);
+
    runLoop = [thread mulleRunLoop];
    if( ! runLoop && ! Self._isFinalizing)
    {

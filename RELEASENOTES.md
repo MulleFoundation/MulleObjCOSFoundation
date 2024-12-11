@@ -1,3 +1,8 @@
+## 0.24.0
+
+* made NSFileHandle threadsafe, which needed -closeFile to explicitly call -finalize now
+
+
 ## 0.23.0
 
 feat: enhance thread safety and system integration

@@ -20,25 +20,27 @@
 MULLE_OBJC_OSBASE_FOUNDATION_GLOBAL
 NSString  *NSFileHandleOperationException;
 
+enum NSFileHandleStateBit
+{
+   NSFileHandleStateEOF   = 1,
+   NSFileHandleStatePipe  = 2,
+   NSFileHandleStateAgain = 4
+};
+
 //
 // This class contains the abstract code for a NSFileHandle
 // it could be made thread safe with little effort, but a filehandle object
 // should only be accessed by a single thread anyway (the underlying file
 // descriptor (like 1 for stdout) is a different thing)
 //
-@interface NSFileHandle : NSObject <MulleObjCInputStream, MulleObjCOutputStream>
+@interface NSFileHandle : NSObject <MulleObjCInputStream, MulleObjCOutputStream, MulleObjCThreadSafe>
 {
-   void  *_fd;
-   int   (*_closer)( void *); // TODO: use mulle_buffer_stdio_functions ??
-   int   _mode;
-   struct
-   {
-      unsigned int   eof    : 1;
-      unsigned int   pipe   : 1;
-      unsigned int   again  : 1;
-   } _state;
+   void              *_fd;
+   int               (*_closer)( void *); // TODO: use mulle_buffer_stdio_functions ??
+   int               _mode;
+   int               _closerRval;
+   NSUIntegerAtomic  _state;
 }
-
 + (instancetype) fileHandleForReadingAtPath:(NSString *) path;
 + (instancetype) fileHandleForWritingAtPath:(NSString *) path;
 + (instancetype) fileHandleForUpdatingAtPath:(NSString *) path;
@@ -65,11 +67,16 @@ NSString  *NSFileHandleOperationException;
 - (int) _fileDescriptorForReading;
 - (int) _fileDescriptorForWriting;
 
+
+// does -finalize
+- (void) closeFile;
+
 // mulle addition, if len == -1, it will strlen bytes!!
 - (void) mulleWriteBytes:(void *) bytes
                   length:(NSUInteger) len;
 
-- (void) closeFile;
+- (void) mulleAddToStateBits:(NSUInteger) bits;
+- (NSUInteger) mulleGetStateBits;
 
 @end
 

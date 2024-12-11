@@ -95,6 +95,7 @@ static id   NSInitFileHandle( NSFileHandle *self, void *fd)
    return( self);
 }
 
+
 - (instancetype) initWithFileDescriptor:(int) fd
 {
    return( NSInitFileHandle( self, (void *) (intptr_t) fd));
@@ -128,9 +129,20 @@ static id   NSInitFileHandle( NSFileHandle *self, void *fd)
 }
 
 
+///
+// we basically use -finalize as a thread sync mechanism here, as only
+// one thread can be executing close
+//
 - (void) finalize
 {
-   [self closeFile];
+   if( _closer)
+   {
+      _closerRval = (*_closer)( _fd);
+      if( _closerRval == 0)
+         _closer = 0;
+      // else, raise or what ?
+   }
+
    [super finalize];
 }
 
@@ -140,15 +152,7 @@ static id   NSInitFileHandle( NSFileHandle *self, void *fd)
 
 - (void) closeFile
 {
-   int   rval;
-
-   if( ! _closer)
-      return;
-
-   rval = (*_closer)( _fd);
-   if( rval == 0)
-      _closer = 0;
-   // raise or what ?
+   [self mullePerformFinalize];
 }
 
 
@@ -188,7 +192,7 @@ static NSData   *readDataOfLength( NSFileHandle *self,
    char            *buf;
    char            *start;
 
-   if( ! length || self->_state.eof)
+   if( ! length || (NSUIntegerAtomicGet( &self->_state) & NSFileHandleStateEOF))
       return( nil);
 
    data  = [NSMutableData dataWithLength:length];
@@ -271,7 +275,7 @@ static NSData   *readAllData( NSFileHandle *self, BOOL untilFullOrEOF)
    {
       written = [self _writeBytes:buf
                            length:len];
-      if( ! written && _state.eof)
+      if( ! written && (NSUIntegerAtomicGet( &self->_state) & NSFileHandleStateEOF))
          break;
 
       len -= written;
@@ -307,6 +311,21 @@ static NSData   *readAllData( NSFileHandle *self, BOOL untilFullOrEOF)
 {
    [self _seek:offset
           mode:_MulleObjCSeekCur]; // TODO: check!
+}
+
+
+- (void) mulleAddToStateBits:(NSUInteger) bits
+{
+   NSUIntegerAtomicMaskedOr( &self->_state, ~0L, bits);
+}
+
+
+- (NSUInteger) mulleGetStateBits
+{
+   NSUInteger   state;
+
+   state = NSUIntegerAtomicGet( &self->_state);
+   return( state);
 }
 
 @end

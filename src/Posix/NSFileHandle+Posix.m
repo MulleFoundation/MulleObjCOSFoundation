@@ -123,20 +123,24 @@ retry:
 
       if( errno == EPIPE)
       {
-         _state.eof  = 1;
-         _state.pipe = 1;
+         NSUIntegerAtomicOr( &self->_state, NSFileHandleStateEOF|NSFileHandleStatePipe);
          return( 0);
       }
 
       if( errno == EAGAIN)
       {
-         _state.again = 1;
+         NSUIntegerAtomicOr( &self->_state, NSFileHandleStateAgain);
          return( 0);
       }
 
       MulleObjCThrowErrnoException( @"read");
    }
-   _state.eof  = len && ! result;
+
+   // _state.eof  = len && ! result;
+   NSUIntegerAtomicMaskedOr( &self->_state,
+                             ~NSFileHandleStateEOF,
+                             (len && ! result) ? NSFileHandleStateEOF : 0);
+
    return( result);
 }
 
@@ -163,21 +167,22 @@ retry:
 
       if( errno == EPIPE)
       {
-         _state.eof  = 1;
-         _state.pipe = 1;
+         NSUIntegerAtomicOr( &self->_state, NSFileHandleStateEOF|NSFileHandleStatePipe);
          return( 0);
       }
 
       if( errno == EAGAIN)
       {
-         _state.again = 1;
+         NSUIntegerAtomicOr( &self->_state, NSFileHandleStateAgain);
          return( 0);
       }
 
       MulleObjCThrowErrnoException( @"write");
    }
 
-   _state.eof = len && ! result;
+   NSUIntegerAtomicMaskedOr( &self->_state,
+                             ~NSFileHandleStateEOF,
+                             (len && ! result) ? NSFileHandleStateEOF : 0);
    return( (size_t) result);
 }
 
@@ -209,8 +214,7 @@ retry:
       {
          if( errno == EPIPE)
          {
-            _state.eof  = 1;
-            _state.pipe = 1;
+            NSUIntegerAtomicOr( &self->_state, NSFileHandleStateEOF|NSFileHandleStatePipe);
             return( 0);
          }
 
