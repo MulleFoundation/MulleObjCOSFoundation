@@ -81,7 +81,7 @@ static NSMutableDictionary   *applicationDomain( NSUserDefaults *self)
 
 
 - (void) setObject:(id) value
-            forKey:(id <NSCopying>) key
+            forKey:(id <NSObject, MulleObjCImmutableCopying>) key
 {
    NSParameterAssert( [(NSObject *) key isKindOfClass:[NSString class]]);
 

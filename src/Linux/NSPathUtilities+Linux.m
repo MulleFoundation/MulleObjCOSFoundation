@@ -58,6 +58,45 @@ static NSString   *LinuxUserName( void)
 }
 
 
+static NSString  *pathForType( NSSearchPathDirectory type, NSSearchPathDomainMask domain)
+{
+   NSString  *path;
+
+   path = nil;
+   switch( type)
+   {
+   case NSApplicationDirectory          : path = (domain == NSLocalDomainMask) ? nil : @"bin"; break;
+   case NSDeveloperApplicationDirectory : path = (domain == NSLocalDomainMask) ? nil : @"Developer/Applications"; break;
+   case NSDeveloperDirectory            : path = (domain == NSLocalDomainMask) ? nil : @"Developer"; break;
+   case NSAdminApplicationDirectory     : path = (domain == NSLocalDomainMask) ? nil : @"sbin"; break;
+   case NSLibraryDirectory              : path = (domain == NSLocalDomainMask) ? @"" : @"lib"; break;
+   case NSApplicationSupportDirectory   : path = (domain == NSLocalDomainMask) ? nil : @"libexec"; break;
+   case NSUserDirectory                 : path = (domain == NSUserDomainMask) ? @"" : nil; break;
+   case NSMusicDirectory                : path = (domain == NSUserDomainMask) ? @"Music" : nil; break;
+   case NSMoviesDirectory               : path = (domain == NSUserDomainMask) ? @"Movies" : nil; break;
+   case NSPicturesDirectory             : path = (domain == NSUserDomainMask) ? @"Pictures" : nil; break;
+   case NSCachesDirectory               : path = @"caches"; break;
+   case NSDocumentationDirectory        : path = @"man"; break;
+   case NSDocumentDirectory             : path = (domain == NSUserDomainMask) ? @"Documents" : nil; break;
+   case NSDesktopDirectory              : path = (domain == NSUserDomainMask) ? @"Desktop" : nil; break;
+   }
+   return( path);
+}
+
+
+static void  addPrefixedPathForType( NSMutableArray *array, NSString *prefix, NSSearchPathDirectory type, NSSearchPathDomainMask domain)
+{
+   NSString  *path;
+
+   path = pathForType( type, domain);
+   if( path)
+   {
+      path = [prefix stringByAppendingPathComponent:path];
+      [array addObject:path];
+   }
+}
+
+
 
 static NSArray   *LinuxSearchPathForDirectoriesInDomains( NSSearchPathDirectory type,
                                                           NSSearchPathDomainMask domains)
@@ -67,7 +106,6 @@ static NSArray   *LinuxSearchPathForDirectoriesInDomains( NSSearchPathDirectory 
    NSSearchPathDomainMask   leftoverDomains;
    NSString                 *systemRoot;
    NSString                 *prefix;
-   NSString                 *path;
 
    systemRoot      = NSOpenStepRootDirectory();
    array           = [NSMutableArray array];
@@ -102,17 +140,22 @@ static NSArray   *LinuxSearchPathForDirectoriesInDomains( NSSearchPathDirectory 
 
       leftoverDomains &= ~currentDomain;
 
-      path = nil;
       switch( type)
       {
-         case NSAllApplicationsDirectory : // fake but better than nothing
-            break;
+      case NSAllApplicationsDirectory : // fake but better than nothing
+         addPrefixedPathForType( array, prefix, NSApplicationDirectory, currentDomain);
+         addPrefixedPathForType( array, prefix, NSAdminApplicationDirectory, currentDomain);
+         addPrefixedPathForType( array, prefix, NSDeveloperApplicationDirectory, currentDomain);
+         break;
 
-         case NSAllLibrariesDirectory  :
-            break;
+      case NSAllLibrariesDirectory  :
+         addPrefixedPathForType( array, prefix, NSLibraryDirectory, currentDomain);
+         addPrefixedPathForType( array, prefix, NSDeveloperDirectory, currentDomain);  // curious but compatible
+         break;
 
-         default  :
-            break;
+      default :
+         addPrefixedPathForType( array, prefix, type, currentDomain);
+         break;
       }
    }
    // TODO: code needed!!

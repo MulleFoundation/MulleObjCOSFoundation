@@ -12,9 +12,9 @@ endif()
 
 set( INCLUDE_DIRS
 .
-Functions
-Timezone
 reflect
+Timezone
+Functions
 )
 
 #
