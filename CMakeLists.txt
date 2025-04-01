@@ -1,6 +1,6 @@
 cmake_minimum_required( VERSION 3.15)
 
-project( MulleObjCOSFoundation VERSION 0.24.0 LANGUAGES C)
+project( MulleObjCOSFoundation VERSION 0.24.1 LANGUAGES C)
 
 
 # we don't produce any Loader, the subprojects do that

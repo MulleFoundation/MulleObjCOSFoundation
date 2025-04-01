@@ -32,7 +32,7 @@
 
 - (id) objectForKey:(id) key;
 - (void) setObject:(id) value
-            forKey:(id <NSCopying>) key;
+            forKey:(id <NSObject, MulleObjCImmutableCopying>) key;
 - (void) removeObjectForKey:(id) key;
 
 - (void) registerDefaults:(NSDictionary *) registrationDictionary;

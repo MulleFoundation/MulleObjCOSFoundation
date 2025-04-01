@@ -12,9 +12,9 @@ endif()
 
 set( INCLUDE_DIRS
 .
+reflect
 Categories
 Functions
-reflect
 )
 
 #
