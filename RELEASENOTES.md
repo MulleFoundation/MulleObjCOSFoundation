@@ -1,3 +1,8 @@
+### 0.24.1
+
+
+* better searchpath code for linux
+
 ## 0.24.0
 
 * made NSFileHandle threadsafe, which needed -closeFile to explicitly call -finalize now
