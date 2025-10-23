@@ -661,7 +661,7 @@ static NSRunLoop   *runLoopForThread( NSThread *thread)
    {
       assert( _mulle_objc_universe_is_initialized( _mulle_objc_object_get_universe( thread)));
 
-      runLoop = [NSRunLoop object];
+      runLoop = [NSRunLoop instance];
       runLoop = [thread mulleSetRunLoop:runLoop];
    }
    return( runLoop);
