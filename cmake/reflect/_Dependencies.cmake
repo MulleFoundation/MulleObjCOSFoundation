@@ -25,7 +25,7 @@ else()
          ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
          ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
          MulleObjCOSBaseFoundation
-         NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH
+         NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
       )
       if( NOT OS_BASE_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
          find_library( OS_BASE_LIBRARY NAMES
@@ -91,7 +91,9 @@ else()
          endif()
       else()
          # Disable with: `mulle-sourcetree mark src/OSBase no-require-link`
-         message( SEND_ERROR "OS_BASE_LIBRARY was not found")
+         message( SEND_ERROR "OS_BASE_LIBRARY was not found in ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
+MulleObjCOSBaseFoundation")
       endif()
    endif()
 endif()
@@ -112,7 +114,7 @@ if( NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
             ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
             ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
             MulleObjCPosixFoundation
-            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH
+            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
          )
          if( NOT POSIX_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
             find_library( POSIX_LIBRARY NAMES
@@ -178,7 +180,9 @@ if( NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
             endif()
          else()
             # Disable with: `mulle-sourcetree mark src/Posix no-require-link`
-            message( SEND_ERROR "POSIX_LIBRARY was not found")
+            message( SEND_ERROR "POSIX_LIBRARY was not found in ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
+MulleObjCPosixFoundation")
          endif()
       endif()
    endif()
@@ -200,7 +204,7 @@ if( NOT (${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES 
             ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCBSDFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
             ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCBSDFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
             MulleObjCBSDFoundation
-            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH
+            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
          )
          if( NOT BSD_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
             find_library( BSD_LIBRARY NAMES
@@ -266,7 +270,9 @@ if( NOT (${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES 
             endif()
          else()
             # Disable with: `mulle-sourcetree mark src/BSD no-require-link`
-            message( SEND_ERROR "BSD_LIBRARY was not found")
+            message( SEND_ERROR "BSD_LIBRARY was not found in ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCBSDFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCBSDFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
+MulleObjCBSDFoundation")
          endif()
       endif()
    endif()
@@ -288,7 +294,7 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
             ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
             ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
             MulleObjCFreeBSDFoundation
-            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH
+            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
          )
          if( NOT FREE_BSD_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
             find_library( FREE_BSD_LIBRARY NAMES
@@ -354,7 +360,9 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
             endif()
          else()
             # Disable with: `mulle-sourcetree mark src/FreeBSD no-require-link`
-            message( SEND_ERROR "FREE_BSD_LIBRARY was not found")
+            message( SEND_ERROR "FREE_BSD_LIBRARY was not found in ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
+MulleObjCFreeBSDFoundation")
          endif()
       endif()
    endif()
@@ -376,7 +384,7 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCDarwinFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
             ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCDarwinFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
             MulleObjCDarwinFoundation
-            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH
+            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
          )
          if( NOT DARWIN_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
             find_library( DARWIN_LIBRARY NAMES
@@ -442,7 +450,9 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             endif()
          else()
             # Disable with: `mulle-sourcetree mark src/Darwin no-require-link`
-            message( SEND_ERROR "DARWIN_LIBRARY was not found")
+            message( SEND_ERROR "DARWIN_LIBRARY was not found in ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCDarwinFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCDarwinFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
+MulleObjCDarwinFoundation")
          endif()
       endif()
    endif()
@@ -464,7 +474,7 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES "Linu
             ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCLinuxFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
             ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCLinuxFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
             MulleObjCLinuxFoundation
-            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH
+            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
          )
          if( NOT LINUX_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
             find_library( LINUX_LIBRARY NAMES
@@ -530,7 +540,9 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES "Linu
             endif()
          else()
             # Disable with: `mulle-sourcetree mark src/Linux no-require-link`
-            message( SEND_ERROR "LINUX_LIBRARY was not found")
+            message( SEND_ERROR "LINUX_LIBRARY was not found in ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCLinuxFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCLinuxFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
+MulleObjCLinuxFoundation")
          endif()
       endif()
    endif()
@@ -552,7 +564,7 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
             ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCWindowsFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
             ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCWindowsFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
             MulleObjCWindowsFoundation
-            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH
+            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
          )
          if( NOT WINDOWS_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
             find_library( WINDOWS_LIBRARY NAMES
@@ -618,7 +630,9 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
             endif()
          else()
             # Disable with: `mulle-sourcetree mark src/Windows no-require-link`
-            message( SEND_ERROR "WINDOWS_LIBRARY was not found")
+            message( SEND_ERROR "WINDOWS_LIBRARY was not found in ${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCWindowsFoundation${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+${CMAKE_STATIC_LIBRARY_PREFIX}MulleObjCWindowsFoundation${CMAKE_STATIC_LIBRARY_SUFFIX}
+MulleObjCWindowsFoundation")
          endif()
       endif()
    endif()

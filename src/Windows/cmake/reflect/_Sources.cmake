@@ -12,6 +12,7 @@ endif()
 #
 set( SOURCES
 MulleObjCWindowsFoundation.m
+NSProcessInfo+Windows.m
 )
 
 #

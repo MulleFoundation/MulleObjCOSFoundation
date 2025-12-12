@@ -14,6 +14,7 @@
 
 
 #import "MulleObjCLoader+MulleObjCOSWindowsFoundation.h"
+#import "NSProcessInfo+Windows.h"
 
 
 #endif
