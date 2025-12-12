@@ -33,6 +33,7 @@
 #include <mach-o/fat.h>
 
 #pragma clang diagnostic ignored "-Wparentheses"
+#pragma clang diagnostic ignored "-Wobjc-protocol-method-implementation"
 
 
 @interface NSBundle( Posix)

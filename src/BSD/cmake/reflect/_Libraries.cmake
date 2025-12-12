@@ -18,7 +18,15 @@ endif()
 # Disable for a sdk: `mulle-sourcetree mark MulleObjCPosixFoundation no-cmake-sdk-<name>`
 #
 if( NOT MULLE_OBJC_POSIX_FOUNDATION_HEADER)
-   find_file( MULLE_OBJC_POSIX_FOUNDATION_HEADER NAMES MulleObjCPosixFoundation/MulleObjCPosixFoundation.h MulleObjCPosixFoundation/MulleObjCPosixFoundation.h)
+   find_file( MULLE_OBJC_POSIX_FOUNDATION_HEADER NAMES
+      MulleObjCPosixFoundation/MulleObjCPosixFoundation.h MulleObjCPosixFoundation/MulleObjCPosixFoundation.h
+      NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
+   )
+   if( NOT MULLE_OBJC_POSIX_FOUNDATION_HEADER AND NOT DEPENDENCY_IGNORE_SYSTEM_HEADERS)
+      find_file( MULLE_OBJC_POSIX_FOUNDATION_HEADER NAMES
+         MulleObjCPosixFoundation/MulleObjCPosixFoundation.h MulleObjCPosixFoundation/MulleObjCPosixFoundation.h
+      )
+   endif()
    message( STATUS "MULLE_OBJC_POSIX_FOUNDATION_HEADER is ${MULLE_OBJC_POSIX_FOUNDATION_HEADER}")
 
    #
@@ -75,6 +83,6 @@ if( NOT MULLE_OBJC_POSIX_FOUNDATION_HEADER)
       endif()
    else()
       # Disable with: `mulle-sourcetree mark MulleObjCPosixFoundation no-require`
-      message( SEND_ERROR "MULLE_OBJC_POSIX_FOUNDATION_HEADER was not found")
+      message( SEND_ERROR "MULLE_OBJC_POSIX_FOUNDATION_HEADER was not found in MulleObjCPosixFoundation/MulleObjCPosixFoundation.h MulleObjCPosixFoundation/MulleObjCPosixFoundation.h")
    endif()
 endif()

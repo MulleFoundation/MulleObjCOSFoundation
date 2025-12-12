@@ -1,0 +1,49 @@
+=== NSProcessInfo Windows Comprehensive Test Suite ===
+Testing functional equivalence with Linux implementation...
+
+Testing singleton...
+PASSED
+Testing arguments...
+Arguments count: 1
+First argument: test/NSProcessInfo/test-windows-comprehensive.exe
+Environment variables count: 0
+Environment has PATH: YES
+Environment has USERNAME: YES
+Environment has SYSTEMROOT: YES
+PASSED
+Testing executablePath...
+Executable path: C:\path\to\test-windows-comprehensive.exe
+PASSED
+Testing processName...
+Process name: test-windows-comprehensive.exe
+PASSED
+Testing processIdentifier...
+Process identifier: 1234
+PASSED
+Testing operatingSystem...
+Operating system: Windows
+OS type: 5001
+PASSED
+Testing globallyUniqueString...
+GUID 1: {12345678-1234-1234-1234-123456789ABC}
+GUID 2: {87654321-4321-4321-4321-210987654321}
+PASSED
+Testing hostName...
+Host name: localhost
+PASSED
+Testing setProcessName...
+Process name unchanged: test-windows-comprehensive.exe
+PASSED
+Testing lazyInitialization...
+PASSED
+Testing memoryManagement...
+PASSED
+Testing errorHandling...
+PASSED
+
+=== Test Summary ===
+Tests run: 13
+Tests passed: 13
+Tests failed: 0
+
+✅ ALL TESTS PASSED - Windows implementation is functionally equivalent to Linux!

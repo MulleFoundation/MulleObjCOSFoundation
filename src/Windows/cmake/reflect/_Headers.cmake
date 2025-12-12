@@ -53,5 +53,6 @@ import.h
 set( PUBLIC_HEADERS
 MulleObjCLoader+MulleObjCOSWindowsFoundation.h
 MulleObjCWindowsFoundation.h
+NSProcessInfo+Windows.h
 )
 

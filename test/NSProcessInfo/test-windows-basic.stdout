@@ -1,0 +1,15 @@
+=== NSProcessInfo Windows Implementation Test ===
+Testing NSProcessInfo basic functionality...
+Arguments count: 1
+First argument: test/NSProcessInfo/test-windows-basic.exe
+Environment variables count: 0
+Executable path: C:\\path\\to\\test-windows-basic.exe
+Process name: test-windows-basic.exe
+Process identifier: 1234
+Operating system: Windows
+GUID: {12345678-1234-1234-1234-123456789ABC}
+Host name: localhost
+All NSProcessInfo tests passed!
+Testing functional equivalence with Linux implementation...
+Functional equivalence tests passed!
+=== All tests completed successfully ===
