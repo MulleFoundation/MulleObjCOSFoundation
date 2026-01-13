@@ -1,3 +1,12 @@
+## 0.25.0
+
+
+feature: add Windows NSProcessInfo implementation
+
+* NSProcessInfo category for Windows platform support
+* comprehensive API documentation in assets
+
+
 ### 0.24.1
 
 
