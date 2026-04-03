@@ -1,0 +1,9 @@
+Default timezone: (null)
+Default abbreviation: GMT
+Default seconds from GMT: 0
+
+System timezone: (null)
+System abbreviation: GMT
+System seconds from GMT: 0
+
+PASS: Default timezone is GMT/UTC

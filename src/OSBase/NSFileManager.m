@@ -27,33 +27,60 @@
 // std-c and dependencies
 
 
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileAppendOnly            = @"NSFileAppendOnly";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileBusy                  = @"NSFileBusy";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileCreationDate          = @"NSFileCreationDate";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileDeviceIdentifier      = @"NSFileDeviceIdentifier";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileExtensionHidden       = @"NSFileExtensionHidden";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileGroupOwnerAccountID   = @"NSFileGroupOwnerAccountID";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileGroupOwnerAccountName = @"NSFileGroupOwnerAccountName";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileHFSCreatorCode        = @"NSFileHFSCreatorCode";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileHFSTypeCode           = @"NSFileHFSTypeCode";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileImmutable             = @"NSFileImmutable";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileModificationDate      = @"NSFileModificationDate";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileOwnerAccountID        = @"NSFileOwnerAccountID";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileOwnerAccountName      = @"NSFileOwnerAccountName";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFilePosixPermissions      = @"NSFilePosixPermissions";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileReferenceCount        = @"NSFileReferenceCount";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileSize                  = @"NSFileSize";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileSystemFileNumber      = @"NSFileSystemFileNumber";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileSystemNumber          = @"NSFileSystemNumber";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileType                  = @"NSFileType";
 
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileTypeBlockSpecial     = @"NSFileTypeBlockSpecial";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileTypeCharacterSpecial = @"NSFileTypeCharacterSpecial";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileTypeDirectory        = @"NSFileTypeDirectory";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileTypePipe             = @"NSFileTypePipe";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileTypeRegular          = @"NSFileTypeRegular";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileTypeSocket           = @"NSFileTypeSocket";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileTypeSymbolicLink     = @"NSFileTypeSymbolicLink";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSFileTypeUnknown          = @"NSFileTypeUnknown";
 
 

@@ -89,3 +89,6 @@ test*/**/*.test.*
 !/AGENTS.md
 !/README.md
 research/
+plans/
+.roam
+.graveyard

@@ -17,7 +17,7 @@
 @class NSData;
 
 
-MULLE_OBJC_OSBASE_FOUNDATION_GLOBAL
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL
 NSString  *NSFileHandleOperationException;
 
 enum NSFileHandleStateBit
@@ -60,12 +60,12 @@ enum NSFileHandleStateBit
 
 - (void) writeData:(NSData *) data;
 
-- (int) fileDescriptor;
+- (NSInteger) fileDescriptor;
 
 
 // hackish for pipes
-- (int) _fileDescriptorForReading;
-- (int) _fileDescriptorForWriting;
+- (NSInteger) _fileDescriptorForReading;
+- (NSInteger) _fileDescriptorForWriting;
 
 
 // does -finalize

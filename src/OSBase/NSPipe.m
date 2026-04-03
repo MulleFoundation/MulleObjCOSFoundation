@@ -52,15 +52,15 @@
 }
 
 
-- (int) _fileDescriptorForReading
+- (NSInteger) _fileDescriptorForReading
 {
-   return( [_read fileDescriptor]);
+   return( [_read _fileDescriptorForReading]);
 }
 
 
-- (int) _fileDescriptorForWriting
+- (NSInteger) _fileDescriptorForWriting
 {
-   return( [_write fileDescriptor]);
+   return( [_write _fileDescriptorForWriting]);
 }
 
 @end

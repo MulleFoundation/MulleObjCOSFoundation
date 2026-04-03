@@ -61,22 +61,25 @@ if( NOT MULLE_OBJC_POSIX_FOUNDATION_HEADER)
             list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_MULLE_OBJC_POSIX_FOUNDATION_DIR}")
             #
             unset( MULLE_OBJC_POSIX_FOUNDATION_DEFINITIONS)
+            unset( MULLE_OBJC_POSIX_FOUNDATION_RENDEZVOUS_GLOBALS)
             include( "${_TMP_MULLE_OBJC_POSIX_FOUNDATION_DIR}/Definitions.cmake" OPTIONAL)
             list( APPEND INHERITED_DEFINITIONS ${MULLE_OBJC_POSIX_FOUNDATION_DEFINITIONS})
+            include( "${_TMP_MULLE_OBJC_POSIX_FOUNDATION_DIR}/Definitions.cmake" OPTIONAL)
+            list( APPEND RENDEZVOUS_GLOBALS ${MULLE_OBJC_POSIX_FOUNDATION_RENDEZVOUS_GLOBALS})
             break()
          else()
             message( STATUS "${_TMP_MULLE_OBJC_POSIX_FOUNDATION_DIR} not found")
          endif()
       endforeach()
       #
-      # Search for "MulleObjCLoader+<name>.h" in include directory.
+      # Search for "MulleObjCDeps+<name>.h" in include directory.
       # Disable with: `mulle-sourcetree mark MulleObjCPosixFoundation no-cmake-loader`
       #
-      if( NOT NO_INHERIT_OBJC_LOADERS)
+      if( NOT NO_INHERIT_OBJC_DEPS)
          foreach( _TMP_MULLE_OBJC_POSIX_FOUNDATION_NAME IN LISTS _TMP_MULLE_OBJC_POSIX_FOUNDATION_NAME)
-            set( _TMP_MULLE_OBJC_POSIX_FOUNDATION_FILE "${_TMP_MULLE_OBJC_POSIX_FOUNDATION_ROOT}/include/${_TMP_MULLE_OBJC_POSIX_FOUNDATION_NAME}/MulleObjCLoader+${_TMP_MULLE_OBJC_POSIX_FOUNDATION_NAME}.h")
+            set( _TMP_MULLE_OBJC_POSIX_FOUNDATION_FILE "${_TMP_MULLE_OBJC_POSIX_FOUNDATION_ROOT}/include/${_TMP_MULLE_OBJC_POSIX_FOUNDATION_NAME}/MulleObjCDeps+${_TMP_MULLE_OBJC_POSIX_FOUNDATION_NAME}.h")
             if( EXISTS "${_TMP_MULLE_OBJC_POSIX_FOUNDATION_FILE}")
-               list( APPEND INHERITED_OBJC_LOADERS ${_TMP_MULLE_OBJC_POSIX_FOUNDATION_FILE})
+               list( APPEND INHERITED_OBJC_DEPS ${_TMP_MULLE_OBJC_POSIX_FOUNDATION_FILE})
                break()
             endif()
          endforeach()

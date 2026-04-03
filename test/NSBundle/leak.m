@@ -39,11 +39,11 @@ int   main( int argc, const char * argv[])
    nInfoLibs         = [sharedLibraryInfo length] / sizeof( struct _MulleObjCSharedLibrary);
    nInfoLibs         = nInfoLibs > max ? max : nInfoLibs;
    sentinel          = &infoLibs[ nInfoLibs];
-   fprintf( stderr, "shared: %td\n", nInfoLibs);
+   mulle_fprintf( stderr, "shared: %td\n", nInfoLibs);
 
    while( infoLibs < sentinel)
    {
-      fprintf( stderr, "%p\n", infoLibs);
+      mulle_fprintf( stderr, "%p\n", infoLibs);
       path = [NSBundle _bundlePathForExecutablePath:infoLibs->path];
 
       // superflous check ?

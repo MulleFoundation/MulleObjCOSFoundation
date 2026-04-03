@@ -14,6 +14,7 @@
 #include <string.h>
 
 
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSDefaultRunLoopMode = @"NSDefaultRunLoopMode";
 
 
@@ -591,7 +592,7 @@ static struct
       _readyHandles    = [NSMutableArray new];
       if( mulle_thread_mutex_init( &_lock))
       {
-         fprintf( stderr, "%s could not get a mutex\n", __FUNCTION__);
+         mulle_fprintf( stderr, "%s could not get a mutex\n", __FUNCTION__);
          abort();
       }
    }
@@ -748,7 +749,6 @@ static NSRunLoop   *runLoopForThread( NSThread *thread)
 - (BOOL) runMode:(NSRunLoopMode) modeName
       beforeDate:(NSDate *) limitDate
 {
-   enum MulleRunLoopInputState   state;
    struct MulleRunLoopMode       *mode;
 
    if( _currentModeName)
@@ -766,10 +766,9 @@ static NSRunLoop   *runLoopForThread( NSThread *thread)
       return( NO);
 
    _currentModeName = modeName;
-   state = [self _acceptInputForRunLoopMode:mode
-                                 beforeDate:limitDate];
+   [self _acceptInputForRunLoopMode:mode
+                         beforeDate:limitDate];
    _currentModeName = nil;
-   fprintf( stderr, "state=%d\n", state);
    return( YES);
 }
 
@@ -795,11 +794,11 @@ static NSRunLoop   *runLoopForThread( NSThread *thread)
       if( ! [self runMode:NSDefaultRunLoopMode
                beforeDate:date])  // isn't this our date now ?
       {
-         fprintf( stderr, "runUntilDate pre-empts\n");
+         mulle_fprintf( stderr, "runUntilDate pre-empts\n");
          break;
       }
       now = [NSDate timeIntervalSinceReferenceDate];
-      fprintf( stderr, "runUntilDate until: %.3f now: %.3f\n", now, until);
+      mulle_fprintf( stderr, "runUntilDate until: %.3f now: %.3f\n", now, until);
    }
    while( now < until);
 }

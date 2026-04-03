@@ -20,7 +20,7 @@
 
 @implementation NSProcessInfo (Posix)
 
-- (int) processIdentifier
+- (NSInteger) processIdentifier
 {
    MulleObjCSetPosixErrorDomain();
 

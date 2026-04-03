@@ -19,7 +19,7 @@
 static void   print_fail_if( int state)
 {
    if( state)
-      printf( "FAIL\n");
+      mulle_printf( "FAIL\n");
 }
 
 

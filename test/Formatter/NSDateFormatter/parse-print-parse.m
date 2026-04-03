@@ -23,7 +23,7 @@ static void   test_formatter( NSDateFormatter *formatter,
    date = [formatter dateFromString:dateString];
    s    = [formatter stringFromDate:date];
 
-   printf( "   %s: %s (%0.17g)\n",
+   mulle_printf( "   %s: %s (%0.17g)\n",
                [NSStringFromClass( [date class]) UTF8String],
                [s UTF8String],
                [date timeIntervalSinceReferenceDate]);
@@ -35,7 +35,7 @@ static void   test_formatter( NSDateFormatter *formatter,
 
 static void   test( NSDateFormatter *formatter, NSString *dateString)
 {
-   printf( "%s\n", [dateString UTF8String]);
+   mulle_printf( "%s\n", [dateString UTF8String]);
 
    [formatter setGeneratesCalendarDates:NO];
    test_formatter( formatter, dateString, 0);
@@ -53,6 +53,8 @@ int   main( int argc, const char * argv[])
    if( mulle_objc_global_check_universe( __MULLE_OBJC_UNIVERSENAME__) != mulle_objc_universe_is_ok)
       return( 1);
 #endif
+
+   [NSTimeZone setDefaultTimeZone:[NSTimeZone mulleGMTTimeZone]];
 
    formatter = [[[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%dT%H:%M:%S:%F%z"
                                        allowNaturalLanguage:NO] autorelease];

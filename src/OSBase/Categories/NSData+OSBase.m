@@ -15,7 +15,6 @@
 
 // other files in this library
 #import "NSString+OSBase.h"
-#import "NSLog.h"
 
 // other libraries of MulleObjCPosixFoundation
 
@@ -35,6 +34,7 @@
                                 options:(NSUInteger) options
                                   error:(NSError **) error
 {
+   MULLE_C_UNUSED( options );
    NSError   *dummy;
    NSData    *data;
 

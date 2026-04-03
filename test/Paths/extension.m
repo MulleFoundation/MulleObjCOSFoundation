@@ -19,7 +19,7 @@ static void  test( char *s, char *expect)
 
    path = [NSString stringWithUTF8String:s];
    ext  = [path pathExtension];
-   printf( "%s\n", strcmp( [ext UTF8String], expect) ? "failed" : "passed");
+   mulle_printf( "%s\n", strcmp( [ext UTF8String], expect) ? "failed" : "passed");
 }
 
 

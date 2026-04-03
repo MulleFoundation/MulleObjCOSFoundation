@@ -77,7 +77,7 @@ static time_t    mulle_mini_tm_get_time( struct mulle_mini_tm mini)
 {
    static struct _mulle_objc_dependency   dependencies[] =
    {
-      { @selector( MulleObjCLoader), @selector( MulleObjCPosixFoundation) },
+      { @selector( MulleObjCDeps), @selector( MulleObjCPosixFoundation) },
       { 0, 0 }
    };
 
@@ -147,7 +147,7 @@ static void  _MulleObjCConcreteCalendarDateInitBSD( _MulleObjCConcreteCalendarDa
 {
    static struct _mulle_objc_dependency   dependencies[] =
    {
-      { @selector( MulleObjCLoader), @selector( MulleObjCPosixFoundation) },
+      { @selector( MulleObjCDeps), @selector( MulleObjCPosixFoundation) },
       { 0, 0 }
    };
 

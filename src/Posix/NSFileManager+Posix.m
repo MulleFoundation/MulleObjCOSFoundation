@@ -103,6 +103,7 @@ THE SOFTWARE.
           ofItemAtPath:(NSString *) path
                  error:(NSError **) error
 {
+   MULLE_C_UNUSED( error );
    char       *s;
    int        group;
    int        owner;
@@ -173,6 +174,9 @@ THE SOFTWARE.
               withDestinationPath:(NSString *) otherpath
                             error:(NSError **) error
 {
+   MULLE_C_UNUSED( path );
+   MULLE_C_UNUSED( otherpath );
+   MULLE_C_UNUSED( error );
    MulleObjCSetPosixErrorDomain();
 
    abort();  // not yet coded
@@ -738,6 +742,7 @@ static NSString   *link_contents( NSString *path)
                  toPath:(NSString *) dstPath
                   error:(NSError **) error
 {
+    MULLE_C_UNUSED( error );
     /*
      It's not this easy...
      return rename([src fileSystemRepresentation],[dest fileSystemRepresentation])?NO:YES;

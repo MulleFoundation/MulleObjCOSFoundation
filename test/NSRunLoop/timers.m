@@ -21,7 +21,7 @@
 
 - (void) a:(NSTimer *) timer
 {
-   printf( "%s %d\n", __PRETTY_FUNCTION__, [[timer userInfo] intValue]);
+   mulle_printf( "%s %d\n", __PRETTY_FUNCTION__, [[timer userInfo] intValue]);
 }
 
 @end
@@ -55,21 +55,21 @@ int   main( int argc, const char * argv[])
                                              userInfo:argument
                                               repeats:NO];
 
-      printf( "1. \n");
+      mulle_printf( "1. \n");
       now = [NSDate timeIntervalSinceReferenceDate];
       [runLoop runUntilDate:[NSDate dateWithTimeIntervalSinceReferenceDate:now]];
 
       // now should be later than
       if( [timer mulleFireTimeInterval] > now + 0.1000)
-         printf( "Hein ???\n");
+         mulle_printf( "Hein ???\n");
 
-      printf( "2. \n");
+      mulle_printf( "2. \n");
       [runLoop runUntilDate:[NSDate dateWithTimeIntervalSinceReferenceDate:now + 0.1000]];
 
-      printf( "3. \n");
+      mulle_printf( "3. \n");
       [runLoop runUntilDate:[NSDate dateWithTimeIntervalSinceReferenceDate:now + 0.1000]];
 
-      printf( "4. \n");
+      mulle_printf( "4. \n");
    }
 
    return( 0);

@@ -13,8 +13,12 @@
 #define _mulle_objc_windows_foundation__export_h__
 
 
-#import "MulleObjCLoader+MulleObjCOSWindowsFoundation.h"
-#import "NSProcessInfo+Windows.h"
+#import "NSLog.h"
+#import "MulleObjCDeps+MulleObjCOSWindowsFoundation.h"
+#import "NSErrorWindows.h"
+#import "NSFileManager+Windows.h"
+#import "NSString+Windows.h"
+#import "NSTask+Windows.h"
 
 
 #endif

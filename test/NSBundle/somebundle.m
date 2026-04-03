@@ -29,14 +29,14 @@ int   main( int argc, const char * argv[])
    bundle      = [[[NSBundle alloc] initWithPath:bundle_path] autorelease];
    if( ! bundle)
    {
-      printf( "fail\n");
+      mulle_printf( "fail\n");
       return( -1);
    }
 
    bundle_path     = [bundle bundlePath];
    bundle_exe_path = [bundle executablePath];
 
-   printf( "path: \"%s\"\n", [[bundle_path lastPathComponent] UTF8String]);
-   printf( "exe : \"%s\"\n", [[bundle_exe_path lastPathComponent] UTF8String]);
+   mulle_printf( "path: \"%s\"\n", [[bundle_path lastPathComponent] UTF8String]);
+   mulle_printf( "exe : \"%s\"\n", [[bundle_exe_path lastPathComponent] UTF8String]);
    return( 0);
 }

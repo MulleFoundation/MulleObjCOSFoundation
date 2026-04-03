@@ -1,0 +1,40 @@
+=== NSProcessInfo Comprehensive Test Suite ===
+Testing singleton...
+PASSED
+Testing arguments...
+PASSED
+Testing environment...
+  Environment has PATH: YES
+  Environment has USERNAME: YES
+  Environment has SYSTEMROOT: NO
+PASSED
+Testing executablePath...
+PASSED
+Testing processName...
+  Process name: test-comprehensive.exe
+PASSED
+Testing processIdentifier...
+PASSED
+Testing operatingSystem...
+  Operating system: Windows
+  OS type: 1
+PASSED
+Testing hostName...
+  Host name: localhost
+PASSED
+Testing setProcessName...
+  Process name unchanged: test-comprehensive.exe
+PASSED
+Testing lazyInitialization...
+PASSED
+Testing memoryManagement...
+PASSED
+Testing errorHandling...
+PASSED
+
+=== Test Summary ===
+Tests run: 12
+Tests passed: 12
+Tests failed: 0
+
+✅ ALL TESTS PASSED

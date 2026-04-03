@@ -13,6 +13,7 @@
 #define _mulle_objc_posix_foundation__export_h__
 
 
+#import "NSLog.h"
 #import "NSError+Posix.h"
 #import "NSLocale+Posix.h"
 

@@ -30,7 +30,7 @@ int   main( int argc, const char * argv[])
    runLoop  = [NSRunLoop currentRunLoop];
    date     = [runLoop limitDateForMode:@"NoMode"];
    if( date)
-      printf( "Failed\n");
+      mulle_printf( "Failed\n");
 
    return( 0);
 }

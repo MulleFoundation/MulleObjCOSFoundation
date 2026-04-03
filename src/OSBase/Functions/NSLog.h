@@ -14,8 +14,12 @@
 #import "import.h"
 
 //
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL
 void   NSLog( NSString *format, ...);
+
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL
 void   NSLogv( NSString *format, va_list args);
 
 // mulle addition, NSLogv is a clang builtin...NSLogv
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL
 void   NSLogArguments( NSString *format, mulle_vararg_list args);

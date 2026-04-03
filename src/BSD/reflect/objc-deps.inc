@@ -1,0 +1,10 @@
+      { @selector( MulleObjCDeps), @selector( MulleFoundationBase) },      // 47a9beb6;MulleObjCDeps;efab19ea;MulleFoundationBase
+      { @selector( NSCalendarDate), @selector( BSD) },      // b8742fcb;NSCalendarDate;999e852d;BSD
+      { @selector( NSDate), @selector( BSD) },      // cfcedd21;NSDate;999e852d;BSD
+      { @selector( NSDateFormatter), @selector( BSD) },      // 6d2cd542;NSDateFormatter;999e852d;BSD
+      { @selector( NSLocale), @selector( BSD) },      // 22b7d78c;NSLocale;999e852d;BSD
+      { @selector( NSProcessInfo), @selector( BSD) },      // 208b1df5;NSProcessInfo;999e852d;BSD
+      { @selector( NSTask), @selector( BSD) },      // 90ec29ba;NSTask;999e852d;BSD
+      { @selector( NSTimeZone), @selector( BSD) },      // 190d1ade;NSTimeZone;999e852d;BSD
+      { @selector( _MulleGMTTimeZone), @selector( BSD) },      // d6f534a3;_MulleGMTTimeZone;999e852d;BSD
+      { @selector( _MulleObjCConcreteCalendarDate), @selector( BSD) },      // a2be208e;_MulleObjCConcreteCalendarDate;999e852d;BSD

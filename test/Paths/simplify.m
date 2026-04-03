@@ -19,7 +19,7 @@ static void  test( NSString *s, NSString *expect)
 
    result = [s mulleStringBySimplifyingPath];
    if( ! [result isEqualToString:expect])
-      printf( "failed with \"%s\" (Expected: \"%s\")\n",
+      mulle_printf( "failed with \"%s\" (Expected: \"%s\")\n",
 		          result ? [result cString] : "<NULL>",
 		          [expect cString]);
 }

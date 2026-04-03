@@ -60,20 +60,20 @@ int   main( int argc, const char * argv[])
       date = [NSCalendarDate dateWithNaturalLanguageString:s
                                                     locale:nil];
 #endif
-      printf( "%s -> ", *p);
+      mulle_printf( "%s -> ", *p);
       if( date)
       {
-         printf( "%.3f -> ", [date timeIntervalSinceReferenceDate]);
+         mulle_printf( "%.3f -> ", [date timeIntervalSinceReferenceDate]);
          s = [formatter stringFromDate:date];
          if( ! s)
-            printf( "*nil*");
+            mulle_printf( "*nil*");
          else
-            printf( "\"%s\"", [s UTF8String]);
+            mulle_printf( "\"%s\"", [s UTF8String]);
       }
       else
-         printf( "*nil*");
+         mulle_printf( "*nil*");
 
-      printf( "\n");
+      mulle_printf( "\n");
    }
 
    return( 0);

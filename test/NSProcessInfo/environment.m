@@ -28,7 +28,7 @@ int   main( int argc, const char * argv[])
    environment = [[NSProcessInfo processInfo] environment];
    if( ! [environment count])
    {
-      printf( "fail\n");
+      mulle_printf( "fail\n");
       return( -1);
    }
 
@@ -40,10 +40,10 @@ int   main( int argc, const char * argv[])
       cString = [NSString stringWithCString:env_s];
       value   = [environment objectForKey:key];
       if( ! value)
-         printf( "#%u: environment key %s value missing\n", i, key_s);
+         mulle_printf( "#%u: environment key %s value missing\n", i, key_s);
 
       if( ! [value isEqualToString:cString])
-         printf( "#%u: environment key %s value \'%s\' != \"%s\"\n",
+         mulle_printf( "#%u: environment key %s value \'%s\' != \"%s\"\n",
                         i,
                         key_s, env_s ? env_s : "",
                         [value cString] ? [value cString] : "");

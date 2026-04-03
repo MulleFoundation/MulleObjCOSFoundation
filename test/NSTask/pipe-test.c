@@ -32,11 +32,11 @@ void  *write_data_threaded( struct write_thread_info *info)
 
    bytes  = info->bytes;
    length = info->length;
-   fprintf( stderr, "parent write\n");
+   mulle_fprintf( stderr, "parent write\n");
    for(;;)
    {
       len = write( info->fd, bytes, length);
-      fprintf( stderr, "parent wrote (%lld of %lld)\n", (long long) len, (long long) info->length);
+      mulle_fprintf( stderr, "parent wrote (%lld of %lld)\n", (long long) len, (long long) info->length);
       if( len == 0)
          break;
       if( len == -1)
@@ -51,7 +51,7 @@ void  *write_data_threaded( struct write_thread_info *info)
             exit( 1);
 
          case EPIPE  :
-            fprintf( stderr, "broken pipe\n");
+            mulle_fprintf( stderr, "broken pipe\n");
             break;
 
          case EAGAIN :
@@ -63,7 +63,7 @@ void  *write_data_threaded( struct write_thread_info *info)
       length -= len;
    }
 
-   fprintf( stderr, "parent close write\n");
+   mulle_fprintf( stderr, "parent close write\n");
    close( info->fd);
    return( NULL);
 }
@@ -87,17 +87,17 @@ int main()
    pid_t p;
 
    if (pipe(fd1) == -1) {
-      fprintf(stderr, "Pipe Failed");
+      mulle_fprintf(stderr, "Pipe Failed");
       return 1;
    }
    if (pipe(fd2) == -1) {
-      fprintf(stderr, "Pipe Failed");
+      mulle_fprintf(stderr, "Pipe Failed");
       return 1;
    }
 
    p = fork();
    if (p < 0) {
-      fprintf(stderr, "fork Failed");
+      mulle_fprintf(stderr, "fork Failed");
       return 1;
    }
 
@@ -132,23 +132,23 @@ int main()
                    (void *(*)( void *)) write_data_threaded,
                    &write_thread_info);
 
-   fprintf( stderr, "parent read\n");
+   mulle_fprintf( stderr, "parent read\n");
    for(;;)
    {
       len = read( fd2[ 0], random, sizeof( random));
-      fprintf( stderr, "parent close read (%lld)\n", (long long) len);
+      mulle_fprintf( stderr, "parent close read (%lld)\n", (long long) len);
       if( ! len)
           break;
-      printf("%.*s\n", 256, random);
+      mulle_printf("%.*s\n", 256, random);
    }
    close(fd2[0]);
 
    // Wait for child to send a string
-   fprintf( stderr, "parent wait\n");
+   mulle_fprintf( stderr, "parent wait\n");
    wait(NULL);
 
    pthread_join( write_thread, NULL);
 
-   fprintf( stderr, "parent done\n");
+   mulle_fprintf( stderr, "parent done\n");
    return( 0);
 }

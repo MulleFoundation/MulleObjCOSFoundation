@@ -238,7 +238,7 @@ static _NSPathUtilityVectorTable   _DarwinTable =
 {
    static struct _mulle_objc_dependency   dependencies[] =
    {
-      { @selector( MulleObjCLoader), @selector( MulleObjCBSDFoundation) },
+      { @selector( MulleObjCDeps), @selector( MulleObjCBSDFoundation) },
       { 0, 0 }
    };
 

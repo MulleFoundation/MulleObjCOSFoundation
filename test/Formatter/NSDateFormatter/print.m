@@ -36,7 +36,7 @@ int   main( int argc, const char * argv[])
    date     = [[[NSCalendarDate alloc] initWithTimeIntervalSinceReferenceDate:(24*60*60)*33+(01*60*60)+(5*60)+6] autorelease];
    [date setTimeZone:timeZone];
 #endif
-   printf( "%s (%.f)\n", [[formatter stringFromDate:date] UTF8String], [date timeIntervalSinceReferenceDate]);
+   mulle_printf( "%s (%.f)\n", [[formatter stringFromDate:date] UTF8String], [date timeIntervalSinceReferenceDate]);
 
    return( 0);
 }

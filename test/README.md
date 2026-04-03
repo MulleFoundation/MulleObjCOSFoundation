@@ -1,7 +1,7 @@
 # How to clean
 
-`mulle-sde test clean` will not force a rebuild of the subprojects. For this
-you need to `mulle-sde test clean MulleObjCInetFoundation`, or some other
-dependency that is bellow MulleObjCOSFoundation.
+We need to clean from FoundationBase because otherwise the subprojects
+would not rebuild. (or we make mulle-sde more complex: -> future)
+Well the future is probably no subprojects...
 
 

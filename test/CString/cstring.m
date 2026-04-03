@@ -13,23 +13,23 @@ int   main( int argc, const char * argv[])
    cString = [[[NSString alloc] initWithUTF8String:""] autorelease];
 
    if( [cString length] != 0)
-      printf( "FAIL\n");
+      mulle_printf( "FAIL\n");
    if( [cString cStringLength] != 0)
-      printf( "FAIL\n");
+      mulle_printf( "FAIL\n");
 
    cString = [[[NSString alloc] initWithUTF8String:"VfL"] autorelease];
 
    if( [cString length] != 3)
-      printf( "FAIL\n");
+      mulle_printf( "FAIL\n");
    if( [cString cStringLength] != 3)
-      printf( "FAIL\n");
+      mulle_printf( "FAIL\n");
 
    cString = [[[NSString alloc] initWithUTF8String:"VfL"] autorelease];
 
    if( [cString length] != 3)
-      printf( "FAIL\n");
+      mulle_printf( "FAIL\n");
    if( [cString cStringLength] != 3)
-      printf( "FAIL\n");
+      mulle_printf( "FAIL\n");
 
    return( 0);
 }

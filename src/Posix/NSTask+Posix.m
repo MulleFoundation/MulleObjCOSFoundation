@@ -67,7 +67,7 @@
 //    if( other_fd != fd)
 //    {
 // #ifdef DEBUG_TASK
-//       fprintf( stderr, "task %d dup %d -> %d\n", (int) getpid(), other_fd, fd);
+//       mulle_fprintf( stderr, "task %d dup %d -> %d\n", (int) getpid(), other_fd, fd);
 // #endif
 //       close( fd);
 //       dup( other_fd);
@@ -233,24 +233,24 @@ static void   trace_launch( char **envp, char **argv)
          trace_launch( envp, argv);
 
 #ifdef DEBUG_TASK
-      fprintf( stderr, "task %d starts\n", (int) getpid());
+      mulle_fprintf( stderr, "task %d starts\n", (int) getpid());
 #endif
       _status = _NSTaskIsPresumablyRunning;
 
 #ifdef DEBUG_TASK
-      fprintf( stderr, "task %d %s\n", (int) getpid(), vfork_name);
+      mulle_fprintf( stderr, "task %d %s\n", (int) getpid(), vfork_name);
 #endif
 #ifdef DEBUG_TASK
       {
          char   *sep = "";
 
-         fprintf( stderr, "task %d %s with \"%s\" (", (int) getpid(), vfork_name, path);
+         mulle_fprintf( stderr, "task %d %s with \"%s\" (", (int) getpid(), vfork_name, path);
          for( i = 0; i <= argc; i++)
          {
-            fprintf( stderr, "%s%s", sep, argv[ i]);
+            mulle_fprintf( stderr, "%s%s", sep, argv[ i]);
             sep = " ";
          }
-         fprintf( stderr, ")\n");
+         mulle_fprintf( stderr, ")\n");
       }
 #endif
 
@@ -258,7 +258,7 @@ static void   trace_launch( char **envp, char **argv)
       {
          // output this first before stderr gets redirected
 #ifdef DEBUG_TASK
-         fprintf( stderr, "task %d closes / dups handles\n", (int) getpid());
+         mulle_fprintf( stderr, "task %d closes / dups handles\n", (int) getpid());
 #endif
          for( i = 0; i < 3; i++)
          {
@@ -267,19 +267,19 @@ static void   trace_launch( char **envp, char **argv)
                rval = close( fds[ 0][ i]);
                if( rval == -1)
                {
-                  fprintf( stderr, "task %d could not close filehandle %d properly (%d:%s)\n", (int) getpid(), fds[ 0][ i], errno, strerror( errno));
+                  mulle_fprintf( stderr, "task %d could not close filehandle %d properly (%d:%s)\n", (int) getpid(), fds[ 0][ i], errno, strerror( errno));
                   _exit( 1);
                }
                rval = close( i);
                if( rval == -1)
                {
-                  fprintf( stderr, "task %d could not close filehandle %d properly (%d:%s)\n", (int) getpid(), (int) i, errno, strerror( errno));
+                  mulle_fprintf( stderr, "task %d could not close filehandle %d properly (%d:%s)\n", (int) getpid(), (int) i, errno, strerror( errno));
                   _exit( 1);
                }
                rval = dup( fds[ 1][ i]);
                if( rval == -1)
                {
-                  fprintf( stderr, "task %d could not dup filehandle %d properly (%d:%s)\n", (int) getpid(), fds[ 1][ i], errno, strerror( errno));
+                  mulle_fprintf( stderr, "task %d could not dup filehandle %d properly (%d:%s)\n", (int) getpid(), fds[ 1][ i], errno, strerror( errno));
                   _exit( 1);
                }
             }
@@ -290,7 +290,7 @@ static void   trace_launch( char **envp, char **argv)
          // oughta be back in "parent" here in vfork case or ?
          _status = _NSTaskHasFailedLaunching;
          // error
-         fprintf( stderr, "task %d could not launch %s (%d:%s)\n", (int) getpid(), path, errno, strerror( errno));
+         mulle_fprintf( stderr, "task %d could not launch %s (%d:%s)\n", (int) getpid(), path, errno, strerror( errno));
          _exit( 1);
       }
 
@@ -300,11 +300,11 @@ static void   trace_launch( char **envp, char **argv)
    _pid = pid;
 
 #ifdef DEBUG_TASK
-   fprintf( stderr, "task %d %s -> %d\n", (int) getpid(), vfork_name, (int) pid);
+   mulle_fprintf( stderr, "task %d %s -> %d\n", (int) getpid(), vfork_name, (int) pid);
 #endif
 
 #ifdef DEBUG_TASK
-   fprintf( stderr, "task %d closes handles\n", (int) getpid());
+   mulle_fprintf( stderr, "task %d closes handles\n", (int) getpid());
 #endif
 
    mulle_free( envp_storage);
@@ -331,14 +331,14 @@ static void   trace_launch( char **envp, char **argv)
    case _NSTaskIsPresumablyRunning :
       NSParameterAssert( _pid);
 #ifdef DEBUG_TASK
-      fprintf( stderr, "task %d checks for %d\n", (int) getpid(), (int) _pid);
+      mulle_fprintf( stderr, "task %d checks for %d\n", (int) getpid(), (int) _pid);
 #endif
       if( waitpid( _pid, &_terminationStatus, WNOHANG) == -1)
          return( YES);  // guess
       if( ! WIFEXITED( _terminationStatus))
          return( YES);
 #ifdef DEBUG_TASK
-      fprintf( stderr, "task %d considers %d terminated with %d\n",
+      mulle_fprintf( stderr, "task %d considers %d terminated with %d\n",
                        (int) getpid(),
                        (int) _pid,
                        (int) _terminationStatus);
@@ -365,12 +365,12 @@ static void   trace_launch( char **envp, char **argv)
    case _NSTaskIsPresumablyRunning :
       NSParameterAssert( _pid);
 #ifdef DEBUG_TASK
-      fprintf( stderr, "task %d waits for %d\n", (int) getpid(), (int) _pid);
+      mulle_fprintf( stderr, "task %d waits for %d\n", (int) getpid(), (int) _pid);
 #endif
       if( waitpid( _pid, &_terminationStatus, 0) == -1)
          MulleObjCThrowErrnoException(  @"waitpid failed");
 #ifdef DEBUG_TASK
-      fprintf( stderr, "task %d considers %d terminated with %d\n",
+      mulle_fprintf( stderr, "task %d considers %d terminated with %d\n",
                        (int) getpid(),
                        (int) _pid,
                        (int) _terminationStatus);

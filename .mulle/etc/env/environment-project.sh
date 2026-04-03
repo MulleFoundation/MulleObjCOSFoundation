@@ -58,3 +58,9 @@ export PROJECT_EXTENSIONS="m:aam"
 
 
 
+#
+#
+#
+export PROJECT_ASSET_DIR="asset"
+
+

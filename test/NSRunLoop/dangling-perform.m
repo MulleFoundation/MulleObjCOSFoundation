@@ -22,14 +22,14 @@
 
 - (void) dealloc
 {
-   printf( "%s\n", __PRETTY_FUNCTION__);
+   mulle_printf( "%s\n", __PRETTY_FUNCTION__);
    [super dealloc];
 }
 
 
 - (void) whatever:(id) unused
 {
-   printf( "%s\n", __PRETTY_FUNCTION__);
+   mulle_printf( "%s\n", __PRETTY_FUNCTION__);
 }
 
 @end
@@ -51,13 +51,13 @@ int   main( int argc, const char * argv[])
    foo      = [[Foo new] autorelease];
    argument = @[ @1848];
 
-   printf( "Setup\n");
+   mulle_printf( "Setup\n");
    [[NSRunLoop currentRunLoop] performSelector:@selector( whatever:)
                                         target:foo
                                       argument:argument
                                          order:1848
                                          modes:@[ @"foo"]];
-   printf( "Exit\n");
+   mulle_printf( "Exit\n");
 
    // timer is scheduled but will not fire, will it be reclaimed though ?
 

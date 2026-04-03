@@ -28,8 +28,8 @@
 - (NSFileHandle *) fileHandleForReading;
 - (NSFileHandle *) fileHandleForWriting;
 
-- (int) _fileDescriptorForReading;
-- (int) _fileDescriptorForWriting;
+- (NSInteger) _fileDescriptorForReading;
+- (NSInteger) _fileDescriptorForWriting;
 
 @end
 

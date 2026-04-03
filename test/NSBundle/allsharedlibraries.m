@@ -24,13 +24,13 @@ int   main( int argc, const char * argv[])
    p        = [data bytes];
    sentinel = (struct _MulleObjCSharedLibrary *) &((char *)p )[ [data length]];
 
-   fprintf( stderr, "Informational output only (not checked):\n");
+   mulle_fprintf( stderr, "Informational output only (not checked):\n");
    while( p < sentinel)
    {
-      fprintf( stderr, "path   : %s\n", [p->path UTF8String]);
-      fprintf( stderr, "start  : %p\n", p->start);
-      fprintf( stderr, "end    : %p\n", p->end);
-      fprintf( stderr, "handle : %p\n", p->handle);
+      mulle_fprintf( stderr, "path   : %s\n", [p->path UTF8String]);
+      mulle_fprintf( stderr, "start  : %p\n", p->start);
+      mulle_fprintf( stderr, "end    : %p\n", p->end);
+      mulle_fprintf( stderr, "handle : %p\n", p->handle);
       ++p;
    }
 

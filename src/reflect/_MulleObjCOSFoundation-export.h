@@ -13,7 +13,7 @@
 #define _mulle_objc_os_foundation__export_h__
 
 
-#import "MulleObjCLoader+MulleObjCOSFoundation.h"
+#import "MulleObjCDeps+MulleObjCOSFoundation.h"
 
 
 #endif

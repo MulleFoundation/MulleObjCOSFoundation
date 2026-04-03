@@ -17,12 +17,13 @@
 
 
 // https://developer.apple.com/documentation/foundation/nsfilehandleoperationexception
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString *NSFileHandleOperationException = @"NSFileHandleOperationException";
 
 
 @implementation NSNullDeviceFileHandle
 
-- (int) fileDescriptor
+- (NSInteger) fileDescriptor
 {
    return( -1);
 }
@@ -42,6 +43,7 @@ NSString *NSFileHandleOperationException = @"NSFileHandleOperationException";
 
 - (NSData *) readDataOfLength:(NSUInteger) length
 {
+   MULLE_C_UNUSED( length);
    return( [NSData data]);
 }
 
@@ -60,6 +62,7 @@ NSString *NSFileHandleOperationException = @"NSFileHandleOperationException";
 
 - (void) seekToFileOffset:(unsigned long long) offset
 {
+   MULLE_C_UNUSED( offset);
 }
 
 
@@ -75,6 +78,7 @@ NSString *NSFileHandleOperationException = @"NSFileHandleOperationException";
 
 - (void) truncateFileAtOffset:(unsigned long long) offset
 {
+   MULLE_C_UNUSED( offset);
 }
 
 @end
@@ -156,21 +160,21 @@ static id   NSInitFileHandle( NSFileHandle *self, void *fd)
 }
 
 
-- (int) fileDescriptor
+- (NSInteger) fileDescriptor
 {
-   return( (int)(intptr_t) _fd);
+   return( (NSInteger) _fd);
 }
 
 
-- (int) _fileDescriptorForReading
+- (NSInteger) _fileDescriptorForReading
 {
-   return( (int)(intptr_t) _fd);
+   return( (NSInteger) _fd);
 }
 
 
-- (int) _fileDescriptorForWriting
+- (NSInteger) _fileDescriptorForWriting
 {
-   return( (int)(intptr_t) _fd);
+   return( (NSInteger) _fd);
 }
 
 

@@ -13,7 +13,6 @@ endif()
 set( SOURCES
 Functions/NSLog.m
 Functions/mulle-posix-tm.c
-MulleObjCPOSIXString.m
 NSBundle+Posix.m
 NSCalendarDate+Posix.m
 NSData+Posix.m
@@ -37,5 +36,5 @@ Timezone/localtime.c
 # contents selected with patternfile ??-source--stage2-sources
 #
 set( STAGE2_SOURCES
-MulleObjCLoader+MulleObjCPosixFoundation.m
+MulleObjCDeps+MulleObjCPosixFoundation.m
 )

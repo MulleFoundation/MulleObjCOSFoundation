@@ -15,6 +15,7 @@
 
 #import "import-private.h"
 
+#import "NSLog.h"
 // other files in this library
 
 // std-c and dependencies
@@ -64,7 +65,7 @@ void   NSLogv( NSString *format, va_list args)
       s = [NSString mulleStringWithFormat:format
                                 arguments:args];
       cString = [s cString];
-      fprintf( stderr, "%s\n", cString);  // this first i'd say
+      mulle_fprintf( stderr, "%s\n", cString);  // this first i'd say
       syslog( __NSLogPriority, "%s", cString);
    }
 }
@@ -81,7 +82,7 @@ void   NSLogArguments( NSString *format, mulle_vararg_list args)
                      mulleVarargList:args];
       cString = [s cString];
       syslog( __NSLogPriority, "%s", cString);
-      fprintf( stderr, "%s\n", cString);
+      mulle_fprintf( stderr, "%s\n", cString);
    }
 }
 

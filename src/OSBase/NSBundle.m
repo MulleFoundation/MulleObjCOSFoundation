@@ -20,7 +20,6 @@
 // other files in this library
 #import "NSDirectoryEnumerator.h"
 #import "NSFileManager.h"
-#import "NSLog.h"
 #import "NSProcessInfo.h"
 #import "NSDictionary+OSBase.h"
 #import "NSString+CString.h"
@@ -34,7 +33,9 @@
 #include <dlfcn.h>
 
 
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSLoadedClasses             = @"NSLoadedClasses";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSBundleDidLoadNotification = @"NSBundleDidLoadNotification";
 
 
@@ -85,7 +86,7 @@ static inline void   SelfUnlock( void)
    @autoreleasepool
    {
 #ifdef BUNDLE_REGISTRATION_DEBUG
-      fprintf( stderr, "Releasing all registered bundles\n");
+      mulle_fprintf( stderr, "Releasing all registered bundles\n");
 #endif
       [Self._registeredBundleInfo autorelease];
       Self._registeredBundleInfo = nil;
@@ -98,7 +99,7 @@ static inline void   SelfUnlock( void)
 {
    if( mulle_thread_mutex_init( &Self._lock))
    {
-      fprintf( stderr, "%s could not get a mutex\n", __FUNCTION__);
+      mulle_fprintf( stderr, "%s could not get a mutex\n", __FUNCTION__);
       abort();
    }
 }
@@ -133,7 +134,7 @@ static NSBundle  *get_or_register_bundle( NSBundle *bundle, NSString *path)
          mulle_fprintf( stderr, "Added bundle %p for path %@\n", bundle, path);
 #endif
          if( NSDebugEnabled)
-            NSLog( @"Added Bundle %p for path \"%@\"", bundle, path);
+            mulle_fprintf( stderr, "Added Bundle %p for path \"%@\"", bundle, path);
          other = bundle;
       }
       else
@@ -182,12 +183,16 @@ static void   deregister_bundle( NSBundle *bundle, NSString *path)
 //
 // you can pass a nil for bundle, to just lookup
 //
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSBundle  *(*NSBundleGetOrRegisterBundleWithPath)( NSBundle *bundle, NSString *path) = get_or_register_bundle;
+
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 void       (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path) = deregister_bundle;
 
 
 + (BOOL) isBundleFilesystemExtension:(NSString *) extension
 {
+   MULLE_C_UNUSED( extension);
    return( NO);
 }
 
@@ -261,7 +266,7 @@ void       (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path
       if( bundle == self)
       {
 #ifdef BUNDLE_REGISTRATION_DEBUG
-         fprintf( stderr, "Bundle %p lives\n", self);
+         mulle_fprintf( stderr, "Bundle %p lives\n", self);
 #endif
          return( self);
       }
@@ -296,7 +301,7 @@ void       (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path
 - (void) dealloc
 {
 #ifdef BUNDLE_REGISTRATION_DEBUG
-   fprintf( stderr, "Bundle %p dies\n", self);
+   mulle_fprintf( stderr, "Bundle %p dies\n", self);
 #endif
 
    [_path release];
@@ -524,6 +529,7 @@ void       (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path
 
 - (BOOL) preflightAndReturnError:(NSError **) error
 {
+   MULLE_C_UNUSED( error);
    return( YES);
 }
 
@@ -767,6 +773,8 @@ void       (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path
                       locale:(NSLocale *) locale
                        table:(NSString *) tableName
 {
+   MULLE_C_UNUSED( locale );
+   MULLE_C_UNUSED( tableName );
    return( key);
 }
 
@@ -895,7 +903,7 @@ static id  readDictionaryOrNull( NSBundle *self, NSString *name, NSString *type)
    if( ! [localizedValue length])
    {
       if( [[NSUserDefaults standardUserDefaults] boolForKey:@"NSShowNonLocalizedStrings"])
-         NSLog( @"Localization for %@ and language %@ is missing", key, [locale languageCode]);
+         mulle_fprintf( stderr, "Localization for %@ and language %@ is missing", key, [locale languageCode]);
       return( key);
    }
    return( localizedValue);

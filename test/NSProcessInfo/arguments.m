@@ -30,7 +30,7 @@ int   main( int argc, const char * argv[])
 
       if( ! [s isEqualToString:cString])
       {
-          printf( "%d failed (%s <> %s)\n", i, [s UTF8String], argv[ i]);
+          mulle_printf( "%d failed (%s <> %s)\n", i, [s UTF8String], argv[ i]);
       }
    }
 

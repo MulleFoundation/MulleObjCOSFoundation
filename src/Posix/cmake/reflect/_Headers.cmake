@@ -72,6 +72,7 @@ include.h
 # contents selected with patternfile ??-header--public-headers
 #
 set( PUBLIC_HEADERS
+Functions/NSLog.h
 Functions/mulle-posix-tm.h
 MulleObjCPosixFoundation.h
 NSError+Posix.h

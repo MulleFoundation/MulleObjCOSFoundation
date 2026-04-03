@@ -25,7 +25,7 @@ int   main( int argc, const char * argv[])
    rover    = [[NSFileManager defaultManager] enumeratorAtPath:@"demo2"];
    contents = [rover allObjects];
    contents = [contents sortedArrayUsingSelector:@selector( compare:)];
-   printf( "%s\n", [[contents description] UTF8String]);
+   mulle_printf( "%s\n", [[contents description] UTF8String]);
 
    return( 0);
 }

@@ -67,13 +67,13 @@
 // MEMO: missing methods need to be implemented OS specific
 //       see -> Darwin
 //
-- (int) processIdentifier
+- (NSInteger) processIdentifier
 {
    return( _pid);
 }
 
 
-- (int) terminationStatus
+- (NSInteger) terminationStatus
 {
    return( _terminationStatus);
 }

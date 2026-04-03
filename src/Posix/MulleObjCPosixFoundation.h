@@ -8,6 +8,4 @@
 
 // Some symbols need to be shared
 
-#import "NSLocale+Posix.h"
-#import "NSError+Posix.h"
-
+#import "_MulleObjCPosixFoundation-export.h"
