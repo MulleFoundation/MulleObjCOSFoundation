@@ -13,10 +13,15 @@
  */
 #import "NSUserDefaults.h"
 
-
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString          *NSGlobalDomain       = @"NSGlobalDomain";
+
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString          *NSArgumentDomain     = @"NSArgumentDomain";
+
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString          *NSRegistrationDomain = @"NSRegistrationDomain";
+
 static NSString   *NSApplicationDomain  = @"NSApplicationDomain";
 
 

@@ -28,12 +28,22 @@
 
 // #define DEBUG_IO
 
-
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSTaskExceptionKey            = @"exception";
+
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSTaskTerminationStatusKey    = @"terminationStatus";
+
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSTaskStandardOutputDataKey   = @"standardOutputData";
+
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSTaskStandardOutputStringKey = @"standardOutputString";
+
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSTaskStandardErrorDataKey    = @"standardErrorData";
+
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString   *NSTaskStandardErrorStringKey  = @"standardErrorString";
 
 
@@ -50,8 +60,17 @@ NSString   *NSTaskStandardErrorStringKey  = @"standardErrorString";
    if( ! envPATH)
       envPATH = [[[NSProcessInfo processInfo] environment] objectForKey:@"PATH"];
 
+#ifdef _WIN32
+   for( executablePath in [envPATH componentsSeparatedByString:@";"])
+#else
    for( executablePath in [envPATH componentsSeparatedByString:@":"])
+#endif
    {
+      if( ! [executablePath length])
+         continue;
+      // Convert from native filesystem format to internal format
+      executablePath = [self stringWithFileSystemRepresentation:[executablePath UTF8String]
+                                                          length:[executablePath length]];
       absolute = [executablePath stringByAppendingPathComponent:name];
       if( [self isExecutableFileAtPath:absolute])
          return( absolute);
@@ -79,15 +98,15 @@ static int   writeFileHandleDataAndClose( NSThread *thread, void *_info)
    [info->data mulleGainAccess];
 
 #ifdef DEBUG_IO
-   fprintf( stderr, "write data\n");
+   mulle_fprintf( stderr, "write data\n");
 #endif
    [info->fileHandle writeData:info->data];
 #ifdef DEBUG_IO
-   fprintf( stderr, "close write\n");
+   mulle_fprintf( stderr, "close write\n");
 #endif
    [info->fileHandle closeFile];
 #ifdef DEBUG_IO
-   fprintf( stderr, "end write thread\n");
+   mulle_fprintf( stderr, "end write thread\n");
 #endif
    [info->data autorelease];
    [info->fileHandle autorelease];
@@ -102,11 +121,11 @@ static int   readFileHandleData( NSThread *thread, void *_info)
    [info->fileHandle mulleGainAccess];
 
 #ifdef DEBUG_IO
-   fprintf( stderr, "read err data\n");
+   mulle_fprintf( stderr, "read err data\n");
 #endif
    info->data = [[info->fileHandle readDataToEndOfFile] retain];
 #ifdef DEBUG_IO
-   fprintf( stderr, "end read err thread\n");
+   mulle_fprintf( stderr, "end read err thread\n");
 #endif
    [info->fileHandle autorelease];
    [info->data mulleRelinquishAccess];
@@ -136,7 +155,6 @@ static int   readFileHandleData( NSThread *thread, void *_info)
    NSTask               *task;
    NSMutableDictionary  *merged;
    NSFileManager        *fileManager;
-   void                 (*previous_handler)(int);
    id                   exception;
    struct thread_info   info[ 3] = { 0 };
 
@@ -151,8 +169,6 @@ static int   readFileHandleData( NSThread *thread, void *_info)
 
    @autoreleasepool
    {
-     // signal is too POSIX specific (move to NSTask+Posix)
-      previous_handler = signal( SIGPIPE, SIG_IGN);
       @try
       {
          task       = [[NSTask new] autorelease];
@@ -168,11 +184,16 @@ static int   readFileHandleData( NSThread *thread, void *_info)
             merged = [NSMutableDictionary dictionaryWithDictionary:[[NSProcessInfo processInfo] environment]];
             [merged addEntriesFromDictionary:environment];
             [task setEnvironment:merged];
-            mulle_fprintf( stderr, "%merged: %@", merged);
             envPATH = [merged :@"PATH"];
          }
 
+#ifdef _WIN32
+         if( ! [executablePath isAbsolutePath]
+             && ! ([executablePath length] >= 2
+                   && [executablePath characterAtIndex:1] == ':'))
+#else
          if( ! [executablePath isAbsolutePath])
+#endif
          {
             fileManager = [NSFileManager defaultManager];
             absolute    = [fileManager mulleFindExecutable:executablePath
@@ -230,24 +251,24 @@ static int   readFileHandleData( NSThread *thread, void *_info)
          // save a thread by running stdout reader in this thread
             file = [stdoutPipe fileHandleForReading];
 #ifdef DEBUG_IO
-            fprintf( stderr, "start read\n");
+            mulle_fprintf( stderr, "start read\n");
 #endif
             info[ 1].data = [[file readDataToEndOfFile] retain];
 #ifdef DEBUG_IO
-            fprintf( stderr, "close read\n");
+            mulle_fprintf( stderr, "close read\n");
 #endif
          }
 #ifdef DEBUG_IO
-         fprintf( stderr, "wait\n");
+         mulle_fprintf( stderr, "wait\n");
 #endif
          [task waitUntilExit];
 #ifdef DEBUG_IO
-         fprintf( stderr, "join stderr\n");
+         mulle_fprintf( stderr, "join stderr\n");
 #endif
          [info[ 2].thread mulleJoin];
          [info[ 2].data mulleGainAccess];
 #ifdef DEBUG_IO
-         fprintf( stderr, "join stdin\n");
+         mulle_fprintf( stderr, "join stdin\n");
 #endif
          [info[ 0].thread mulleJoin];  // not really needed
 
@@ -257,7 +278,6 @@ static int   readFileHandleData( NSThread *thread, void *_info)
       {
          exception = [e retain];
       }
-      signal( SIGPIPE, previous_handler);
    }
 
    [info[ 1].data autorelease];
@@ -328,7 +348,7 @@ static int   readFileHandleData( NSThread *thread, void *_info)
                                               options:(NSTaskSystemOptions) options
 {
    NSData         *data[ 2];
-   NSData         *stdin;
+   NSData         *stdinData;
    NSDictionary   *dictionary;
    NSException    *exception;
    NSNumber       *status;
@@ -340,11 +360,11 @@ static int   readFileHandleData( NSThread *thread, void *_info)
    int            c;
    int            d;
 
-   stdin      = [stdinString dataUsingEncoding:NSUTF8StringEncoding];
+   stdinData  = [stdinString dataUsingEncoding:NSUTF8StringEncoding];
    dictionary = [self mulleDataSystemCallWithArguments:argv
                                            environment:environment
                                       workingDirectory:dir
-                                     standardInputData:stdin
+                                     standardInputData:stdinData
                                                options:options];
    assert( dictionary);
 

@@ -21,11 +21,13 @@ int   main( int argc, const char * argv[])
 {
    NSDate            *date;
 
+   [NSTimeZone setDefaultTimeZone:[NSTimeZone mulleGMTTimeZone]];
+
    date = [[[NSDate alloc] initWithTimeIntervalSince1970:0] autorelease];
-   printf( "1970: %s (%0.17g)\n", [[date description] UTF8String], [date timeIntervalSinceReferenceDate]);
+   mulle_printf( "1970: %s (%0.17g)\n", [[date description] UTF8String], [date timeIntervalSinceReferenceDate]);
 
    date = [[[NSDate alloc] initWithTimeIntervalSinceReferenceDate:0] autorelease];
-   printf( "ReferenceDate: %s (%0.17g)\n", [[date description] UTF8String], [date timeIntervalSinceReferenceDate]);
+   mulle_printf( "ReferenceDate: %s (%0.17g)\n", [[date description] UTF8String], [date timeIntervalSinceReferenceDate]);
 
    return( 0);
 }

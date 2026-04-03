@@ -97,6 +97,7 @@ MULLE_OBJC_DEPENDS_ON_LIBRARY( MulleObjCStandardFoundation);
                   range:(NSRange *) rangep
                   error:(NSError **) error
 {
+   MULLE_C_UNUSED( error );
    char     *c_begin;
    char     *c_end;
    NSDate   *date;
@@ -228,7 +229,7 @@ static int   tm_sprintf_character( struct tm *tm,
       minutes  -= hours * 60;
 
       // we could put a ':' between hours and minutes but we don't have to
-      mulle_buffer_sprintf( buffer, "%c%02d%02d", sign, hours, minutes);
+      mulle_buffer_sprintf( buffer, "%c%02td%02td", sign, hours, minutes);
       break;
 
    case 'Z' :
@@ -385,6 +386,7 @@ static int   tm_sprintf_character( struct tm *tm,
                      formatUTF8String:(char *) c_format
                                locale:(NSLocale *) locale
 {
+   MULLE_C_UNUSED( locale );
    //locale_t               xlocale;
    char                   *s;
    char                   *input;

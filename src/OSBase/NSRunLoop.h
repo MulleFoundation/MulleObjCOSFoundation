@@ -47,7 +47,7 @@ struct MulleRunLoopMode
 };
 
 
-MULLE_OBJC_OSBASE_FOUNDATION_GLOBAL
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL
 NSString   *NSDefaultRunLoopMode;
 
 //

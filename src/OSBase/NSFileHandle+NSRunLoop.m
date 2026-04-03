@@ -19,18 +19,24 @@
 #import "NSPageAllocation.h"
 
 
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString  *NSFileHandleReadCompletionNotification = @"NSFileHandleReadCompletionNotification";
 
 // why should I put this into the info dict again ?
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString  *NSFileHandleNotificationFileHandleItem = @"fileHandle";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString  *NSFileHandleNotificationDataItem       = @"data";
 
 //
 // we don't dot these yet, or maybe never because file reading with callbacks
 // is just not very nice
 //
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString *NSFileHandleConnectionAcceptedNotification        = @"NSFileHandleConnectionAcceptedNotification";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString *NSFileHandleDataAvailableNotification             = @"NSFileHandleDataAvailableNotification";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 NSString *NSFileHandleReadToEndOfFileCompletionNotification = @"NSFileHandleReadToEndOfFileCompletionNotification";
 
 
@@ -46,6 +52,7 @@ NSString *NSFileHandleReadToEndOfFileCompletionNotification = @"NSFileHandleRead
 // the runloop notifies us, that there is stuff to read
 - (void) _notifyWithRunLoop:(NSRunLoop *) runloop
 {
+   MULLE_C_UNUSED( runloop);
    NSData         *data;
    NSDictionary   *info;
 

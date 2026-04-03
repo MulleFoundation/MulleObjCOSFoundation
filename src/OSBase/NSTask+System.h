@@ -25,13 +25,12 @@ typedef NS_ENUM( int, NSTaskSystemOptions)
 
 #define NSTaskSystemOptionsDefault  (NSTaskSystemSendStandardInput|NSTaskSystemReceiveStandardOutput|NSTaskSystemReceiveStandardError)
 
-extern NSString   *NSTaskExceptionKey;             // = @"exception";
-
-extern NSString   *NSTaskTerminationStatusKey;     // = @"terminationStatus";
-extern NSString   *NSTaskStandardOutputDataKey;    // = @"standardOutputData";
-extern NSString   *NSTaskStandardOutputStringKey;  // = @"standardOutputString";
-extern NSString   *NSTaskStandardErrorDataKey;     // = @"standardErrorData";
-extern NSString   *NSTaskStandardErrorStringKey;   // = @"standardErrorString";
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL NSString   *NSTaskExceptionKey;
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL NSString   *NSTaskTerminationStatusKey;
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL NSString   *NSTaskStandardOutputDataKey;
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL NSString   *NSTaskStandardOutputStringKey;
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL NSString   *NSTaskStandardErrorDataKey;
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL NSString   *NSTaskStandardErrorStringKey;
 
 
 // just so convenient...

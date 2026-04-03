@@ -52,3 +52,9 @@ export PROJECT_DOWNCASE_IDENTIFIER="mulle_objc_posix_foundation"
 export PROJECT_UPCASE_IDENTIFIER="MULLE_OBJC_POSIX_FOUNDATION"
 
 
+#
+#
+#
+export PROJECT_ASSET_DIR="asset"
+
+

@@ -21,7 +21,7 @@ static void  test( char *s, char *expect)
    path   = [NSString stringWithCString:s];
    result = [path stringByStandardizingPath];
    if( strcmp( [result cString], expect))
-      printf( "failed with \"%s\" (Expected: \"%s\")\n", 
+      mulle_printf( "failed with \"%s\" (Expected: \"%s\")\n",
 		result ? [result cString] : "<NULL>",
 		expect);
 }

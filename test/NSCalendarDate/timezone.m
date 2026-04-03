@@ -22,16 +22,16 @@ static void   printDate( id date)
    formatter = [[[NSDateFormatter alloc] initWithDateFormat:@"%y-%m-%dT%H:%M:%SZ%z"
                                        allowNaturalLanguage:NO] autorelease];
 
-   printf( "%s %.3f -> ",
+   mulle_printf( "%s %.3f -> ",
       [NSStringFromClass( [date class]) UTF8String],
       [date timeIntervalSinceReferenceDate]);
 
    s = [formatter stringFromDate:date];
    if( ! s)
-      printf( "*nil*");
+      mulle_printf( "*nil*");
    else
-      printf( "\"%s\"", [s UTF8String]);
-   printf( "\n");
+      mulle_printf( "\"%s\"", [s UTF8String]);
+   mulle_printf( "\n");
 }
 
 
@@ -49,6 +49,8 @@ int   main( int argc, const char * argv[])
       return( 1);
 #endif
 
+   [NSTimeZone setDefaultTimeZone:[NSTimeZone mulleGMTTimeZone]];
+
    whatever = [NSTimeZone timeZoneForSecondsFromGMT:-2 * 60 * 60];
    today    = [[[NSCalendarDate alloc] mulleInitWithTimeIntervalSinceReferenceDate:12 * 60 * 60
                                                                           timeZone:whatever] autorelease];
@@ -58,8 +60,8 @@ int   main( int argc, const char * argv[])
    date = [[[NSDate alloc] initWithTimeIntervalSinceReferenceDate:12 * 60 * 60] autorelease];
    printDate( date);
 
-   printf( "NSCalendarDate %s NSDate\n", [date isEqual:today] ? "equals" : "not equals");
-   printf( "NSDate %s NSCalendarDate\n", [today isEqual:date] ? "equals" : "not equals");
+   mulle_printf( "NSCalendarDate %s NSDate\n", [date isEqual:today] ? "equals" : "not equals");
+   mulle_printf( "NSDate %s NSCalendarDate\n", [today isEqual:date] ? "equals" : "not equals");
 
    return( 0);
 }

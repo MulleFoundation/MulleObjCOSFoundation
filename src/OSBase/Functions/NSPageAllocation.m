@@ -20,9 +20,7 @@
 #include "NSPageAllocation-Private.h"
 
 // std-c and dependencies
-#ifndef _WIN32
-# include <unistd.h>
-#endif
+#include <mulle-mmap/mulle-mmap.h>
 
 # pragma mark - Allocations
 
@@ -45,15 +43,36 @@ void  _MulleObjCSetPageSize( size_t pagesize)
 
 NSUInteger   NSPageSize( void)
 {
-   assert( _ns_log_page_size);
-   return( _ns_page_size);  // or let compiler determine it with ifdefs
+   if( ! _ns_log_page_size)
+      _MulleObjCSetPageSize( mulle_mmap_get_system_pagesize());
+   
+   return( _ns_page_size);
 }
 
 
 NSUInteger   NSLogPageSize( void)
 {
-   assert( _ns_log_page_size);
+   if( ! _ns_log_page_size)
+      _MulleObjCSetPageSize( mulle_mmap_get_system_pagesize());
+   
    return( _ns_log_page_size);
+}
+
+
+void   *NSAllocateMemoryPages( NSUInteger size)
+{
+   size = NSRoundUpToMultipleOfPageSize( size);
+   return( mulle_mmap_alloc_pages( size));
+}
+
+
+void   NSDeallocateMemoryPages( void *ptr, NSUInteger size)
+{
+   if( ! ptr)
+      return;
+   
+   size = NSRoundUpToMultipleOfPageSize( size);
+   mulle_mmap_free_pages( ptr, size);
 }
 
 

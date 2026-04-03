@@ -34,7 +34,7 @@
 {
    static struct _mulle_objc_dependency   dependencies[] =
    {
-      { @selector( MulleObjCLoader), @selector( MulleObjCPosixFoundation) },
+      { @selector( MulleObjCDeps), @selector( MulleObjCPosixFoundation) },
       { 0, 0 }
    };
 
@@ -259,6 +259,7 @@ static void   unlazyExecutablePath( NSProcessInfo *self)
 
 - (void) setProcessName:(NSString *) name
 {
+   MULLE_C_UNUSED( name);
    // we aren't doing this on Linux as setprogname is not native and we
    // want to avoid linking against bsd-compat
 }

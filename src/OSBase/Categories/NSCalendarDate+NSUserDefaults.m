@@ -726,6 +726,8 @@ enum date_kind
 + (instancetype) dateWithNaturalLanguageString:(NSString *) s
                                         locale:(id) locale
 {
+   MULLE_C_UNUSED( s );
+   MULLE_C_UNUSED( locale );
    abort();
 #if 0
    return( [self _dateWithNaturalLanguageString:s

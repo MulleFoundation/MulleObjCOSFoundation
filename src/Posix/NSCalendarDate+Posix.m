@@ -134,6 +134,7 @@ static void  _MulleObjCConcreteCalendarDateInitPosix( _MulleObjCConcreteCalendar
                  nanoseconds:(unsigned long long) nanoseconds  // ignored
                     timeZone:(NSTimeZone *) tz
 {
+   MULLE_C_UNUSED( nanoseconds );
    struct mulle_mini_tm   mini;
 
    mini = mulle_posix_tm_get_mini_tm( tm);

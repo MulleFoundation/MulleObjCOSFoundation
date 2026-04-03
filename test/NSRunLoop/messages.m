@@ -21,19 +21,19 @@
 
 - (void) a:(NSNumber *) nr
 {
-   printf( "%s %d\n", __PRETTY_FUNCTION__, [nr intValue]);
+   mulle_printf( "%s %d\n", __PRETTY_FUNCTION__, [nr intValue]);
 }
 
 
 - (void) b:(NSNumber *) nr
 {
-   printf( "%s %d\n", __PRETTY_FUNCTION__, [nr intValue]);
+   mulle_printf( "%s %d\n", __PRETTY_FUNCTION__, [nr intValue]);
 }
 
 
 - (void) c:(NSNumber *) nr
 {
-   printf( "%s %d\n", __PRETTY_FUNCTION__, [nr intValue]);
+   mulle_printf( "%s %d\n", __PRETTY_FUNCTION__, [nr intValue]);
 }
 
 

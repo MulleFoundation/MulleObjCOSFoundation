@@ -32,5 +32,13 @@ if( LINK_PHASE)
 endif()
 
 include( Library)
+
+if( LINK_PHASE)
+   # Allow unresolved symbols on Windows (for mulle_atexit, __register_mulle_objc_universe)
+   if( WIN32 OR MINGW)
+      target_link_options( "${LIBRARY_LINK_TARGET}" PRIVATE "-Wl,/FORCE:UNRESOLVED")
+   endif()
+endif()
+
 include( InstallLibrary)
 include( FinalOutput OPTIONAL)

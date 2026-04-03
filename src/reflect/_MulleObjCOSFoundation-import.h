@@ -19,7 +19,7 @@
 //    remove #import      : `mulle-sde dependency mark src/OSBase no-header`
 //    rename              : `mulle-sde dependency|library set src/OSBase include whatever.h`
 //    reorder             : `mulle-sde dependency move src/OSBase <up|down>`
-//    toggle #import      : `mulle-sde dependency mark src/OSBase [no-]import`
+//    toggle objc         : `mulle-sde dependency mark src/OSBase [no-]import`
 //    toggle public       : `mulle-sde dependency mark src/OSBase [no-]public`
 //    toggle optional     : `mulle-sde dependency mark src/OSBase [no-]require`
 //    remove for platform : `mulle-sde dependency mark src/OSBase no-platform-<uname>`
@@ -34,7 +34,7 @@
 //    remove #import      : `mulle-sde dependency mark src/Posix no-header`
 //    rename              : `mulle-sde dependency|library set src/Posix include whatever.h`
 //    reorder             : `mulle-sde dependency move src/Posix <up|down>`
-//    toggle #import      : `mulle-sde dependency mark src/Posix [no-]import`
+//    toggle objc         : `mulle-sde dependency mark src/Posix [no-]import`
 //    toggle public       : `mulle-sde dependency mark src/Posix [no-]public`
 //    toggle optional     : `mulle-sde dependency mark src/Posix [no-]require`
 //    remove for platform : `mulle-sde dependency mark src/Posix no-platform-<uname>`
@@ -51,7 +51,7 @@
 //    remove #import      : `mulle-sde dependency mark src/Windows no-header`
 //    rename              : `mulle-sde dependency|library set src/Windows include whatever.h`
 //    reorder             : `mulle-sde dependency move src/Windows <up|down>`
-//    toggle #import      : `mulle-sde dependency mark src/Windows [no-]import`
+//    toggle objc         : `mulle-sde dependency mark src/Windows [no-]import`
 //    toggle public       : `mulle-sde dependency mark src/Windows [no-]public`
 //    toggle optional     : `mulle-sde dependency mark src/Windows [no-]require`
 //    remove for platform : `mulle-sde dependency mark src/Windows no-platform-<uname>`

@@ -11,7 +11,7 @@
 #import "import-private.h"
 
 #import <MulleObjCOSBaseFoundation/NSPageAllocation-Private.h>
-
+#import "NSLog.h"
 #import "NSError+Posix.h"
 
 // std-c and dependencies
@@ -24,10 +24,9 @@
 
 
 // could be anywhere
-// TODO: use mulle_mmap_get_system_pagesize
 + (void) load
 {
-   _MulleObjCSetPageSize( sysconf(_SC_PAGESIZE));
+   _MulleObjCSetPageSize( mulle_mmap_get_system_pagesize());
 }
 
 

@@ -16,7 +16,7 @@
 
 @protocol _NSFileDescriptor
 
-- (int) fileDescriptor;
+- (NSInteger) fileDescriptor;
 - (void) _notifyWithRunLoop:(NSRunLoop *) runloop;
 
 @end

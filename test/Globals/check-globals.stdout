@@ -1,0 +1,11 @@
+=== Global Variables Test ===
+NSFilePathComponentSeparator: /
+NSFilePathExtensionSeparator: .
+NSTaskExceptionKey: exception
+NSTaskTerminationStatusKey: terminationStatus
+NSTaskStandardOutputDataKey: standardOutputData
+NSTaskStandardOutputStringKey: standardOutputString
+NSTaskStandardErrorDataKey: standardErrorData
+NSTaskStandardErrorStringKey: standardErrorString
+NSBundleGetOrRegisterBundleWithPath: exists
+NSBundleDeregisterBundleWithPath: exists

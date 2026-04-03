@@ -1,0 +1,12 @@
+=== NSProcessInfo Implementation Test ===
+Testing NSProcessInfo basic functionality...
+Arguments count: 1
+PATH environment variable found
+User environment variable found
+Process name: test-basic.exe
+Operating system: Windows
+Host name: localhost
+All NSProcessInfo tests passed!
+Testing functional equivalence with Linux implementation...
+Functional equivalence tests passed!
+=== All tests completed successfully ===

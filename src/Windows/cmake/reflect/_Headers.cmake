@@ -13,6 +13,7 @@ endif()
 set( INCLUDE_DIRS
 .
 reflect
+Functions
 )
 
 #
@@ -28,6 +29,16 @@ reflect/_MulleObjCWindowsFoundation-include-private.h
 #
 set( PRIVATE_GENERIC_HEADERS
 import-private.h
+include-private.h
+)
+
+#
+# contents selected with patternfile ??-header--private-headers
+#
+set( PRIVATE_HEADERS
+MulleObjCWindowsString+Private.h
+NSDate+Windows-Private.h
+NSTimeZone+Windows-Private.h
 )
 
 #
@@ -45,14 +56,21 @@ reflect/_MulleObjCWindowsFoundation-provide.h
 #
 set( PUBLIC_GENERIC_HEADERS
 import.h
+include.h
 )
 
 #
 # contents selected with patternfile ??-header--public-headers
 #
 set( PUBLIC_HEADERS
-MulleObjCLoader+MulleObjCOSWindowsFoundation.h
+Functions/NSLog.h
+Functions/mulle-windows-tm.h
+MulleObjCDeps+MulleObjCOSWindowsFoundation.h
 MulleObjCWindowsFoundation.h
-NSProcessInfo+Windows.h
+NSErrorWindows.h
+NSFileManager+Windows.h
+NSString+Windows.h
+NSTask+Windows.h
+_NSWindowsDateFormatter.h
 )
 

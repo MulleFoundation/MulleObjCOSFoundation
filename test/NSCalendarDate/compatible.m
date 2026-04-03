@@ -22,16 +22,16 @@ static void   printDate( id date)
    formatter = [[[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%dT%H:%M:%S%z"
                                        allowNaturalLanguage:NO] autorelease];
 
-   printf( "%s %.3f -> ",
+   mulle_printf( "%s %.3f -> ",
       [NSStringFromClass( [date class]) UTF8String],
       [date timeIntervalSinceReferenceDate]);
 
    s = [formatter stringFromDate:date];
    if( ! s)
-      printf( "*nil*");
+      mulle_printf( "*nil*");
    else
-      printf( "\"%s\"", [s UTF8String]);
-   printf( "\n");
+      mulle_printf( "\"%s\"", [s UTF8String]);
+   mulle_printf( "\n");
 }
 
 
@@ -56,7 +56,7 @@ int   main( int argc, const char * argv[])
    interval     = 12 * 60 * 60;
    interval1970 = _NSTimeIntervalSinceReferenceDateAsSince1970( interval);
 
-   printf( "NSDate\n");
+   mulle_printf( "NSDate\n");
    date = [[[NSDate alloc] initWithTimeIntervalSinceReferenceDate:interval] autorelease];
    printDate( date);
 
@@ -64,7 +64,7 @@ int   main( int argc, const char * argv[])
    printDate( date);
 
 
-   printf( "NSCalendarDate (ReferenceDate)\n");
+   mulle_printf( "NSCalendarDate (ReferenceDate)\n");
    // noon 2000
    today = [[[NSCalendarDate alloc] initWithTimeIntervalSinceReferenceDate:interval] autorelease];
    printDate( today);
@@ -73,7 +73,7 @@ int   main( int argc, const char * argv[])
                                                                        timeZone:gmtTimeZone] autorelease];
    printDate( today);
 
-   printf( "NSCalendarDate (Since1970)\n");
+   mulle_printf( "NSCalendarDate (Since1970)\n");
    today = [[[NSCalendarDate alloc] initWithTimeIntervalSince1970:interval1970] autorelease];
    printDate( today);
 
@@ -81,7 +81,7 @@ int   main( int argc, const char * argv[])
                                                              timeZone:gmtTimeZone] autorelease];
    printDate( today);
 
-   printf( "NSCalendarDate (Date)\n");
+   mulle_printf( "NSCalendarDate (Date)\n");
    today = [[[NSCalendarDate alloc] initWithDate:date] autorelease];
    printDate( today);
 

@@ -24,14 +24,14 @@
 
 - (void) a:(NSTimer *) timer
 {
-   printf( "%s %d\n", __PRETTY_FUNCTION__, [[timer userInfo] intValue]);
+   mulle_printf( "%s %d\n", __PRETTY_FUNCTION__, [[timer userInfo] intValue]);
 }
 
 
 // the timer will be reclaimed though
 - (void) dealloc
 {
-   printf( "%s\n", __PRETTY_FUNCTION__);
+   mulle_printf( "%s\n", __PRETTY_FUNCTION__);
    [super dealloc];
 }
 
@@ -58,20 +58,20 @@
 
 - (id) retain
 {
-   fprintf( stderr, "%p %s ++rc=%td\n", self, __PRETTY_FUNCTION__, [self retainCount]);
+   mulle_fprintf( stderr, "%p %s ++rc=%td\n", self, __PRETTY_FUNCTION__, [self retainCount]);
    return( [super retain]);
 }
 
 
 - (void) release
 {
-   fprintf( stderr, "%p %s --rc=%td\n", self, __PRETTY_FUNCTION__, [self retainCount]);
+   mulle_fprintf( stderr, "%p %s --rc=%td\n", self, __PRETTY_FUNCTION__, [self retainCount]);
    [super release];
 }
 
 - (id) autorelease
 {
-   fprintf( stderr, "%p %s rc=%td (-1)\n", self, __PRETTY_FUNCTION__, [self retainCount]);
+   mulle_fprintf( stderr, "%p %s rc=%td (-1)\n", self, __PRETTY_FUNCTION__, [self retainCount]);
    return( [super autorelease]);
 }
 @end

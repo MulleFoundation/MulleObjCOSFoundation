@@ -60,7 +60,7 @@ enum
 - (void) setProcessName:(NSString *) name;
 
 - (NSString *) globallyUniqueString;  // needs NSHost should be moved
-- (int) processIdentifier;
+- (NSInteger) processIdentifier;
 
 // calls setenv (and modifies _environment)
 - (void) mulleSetEnvironmentValue:(NSString *) value 

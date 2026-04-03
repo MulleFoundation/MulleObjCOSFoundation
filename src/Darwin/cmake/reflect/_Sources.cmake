@@ -24,5 +24,5 @@ NSTask+Darwin.m
 # contents selected with patternfile ??-source--stage2-sources
 #
 set( STAGE2_SOURCES
-MulleObjCLoader+MulleObjCDarwinFoundation.m
+MulleObjCDeps+MulleObjCDarwinFoundation.m
 )

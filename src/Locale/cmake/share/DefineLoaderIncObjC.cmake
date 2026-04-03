@@ -10,13 +10,13 @@ if( NOT __DEFINE_LOADER_INC_OBJC_CMAKE__)
 
    if( NOT MULLE_OBJC_LOADER_TOOL)
       if( MSVC)
-         find_program( MULLE_OBJC_LOADER_TOOL mulle-objc-loader-tool.bat
+         find_program( MULLE_OBJC_LOADER_TOOL mulle-objc-deps-tool.bat
                            PATHS "${DEPENDENCY_DIR}/${CMAKE_BUILD_TYPE}/bin"
                                  "${DEPENDENCY_DIR}/bin"
                                  "${DEPENDENCY_DIR}/${FALLBACK_BUILD_TYPE}/bin"
          )
       else()
-         find_program( MULLE_OBJC_LOADER_TOOL mulle-objc-loader-tool
+         find_program( MULLE_OBJC_LOADER_TOOL mulle-objc-deps-tool
                            PATHS "${DEPENDENCY_DIR}/${CMAKE_BUILD_TYPE}/bin"
                                  "${DEPENDENCY_DIR}/bin"
                                  "${DEPENDENCY_DIR}/${FALLBACK_BUILD_TYPE}/bin"
@@ -27,9 +27,9 @@ if( NOT __DEFINE_LOADER_INC_OBJC_CMAKE__)
 
    if( NOT DEFINED CREATE_OBJC_LOADER_INC)
       if( MULLE_OBJC_LOADER_TOOL)
-         option( CREATE_OBJC_LOADER_INC "Create objc-loader.inc for Objective-C libraries" ON)
+         option( CREATE_OBJC_LOADER_INC "Create objc-deps.inc for Objective-C libraries" ON)
       else()
-         option( CREATE_OBJC_LOADER_INC "Create objc-loader.inc for Objective-C libraries" OFF)
+         option( CREATE_OBJC_LOADER_INC "Create objc-deps.inc for Objective-C libraries" OFF)
       endif()
    endif()
 

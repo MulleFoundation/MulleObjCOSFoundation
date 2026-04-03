@@ -25,6 +25,27 @@ int   main( int argc, const char * argv[])
    NSData          *outputData;
    NSUInteger      options;
 
+#ifdef _WIN32
+   // On Windows, test basic command execution and stdout capture
+   // (no cat equivalent available for stdin piping)
+   options    = NSTaskSystemReceiveStandardOutput;
+   dictionary = [NSTask mulleDataSystemCallWithArguments:@[ @"cmd.exe", @"/c", @"echo", @"PASS" ]
+                                        workingDirectory:nil
+                                       standardInputData:nil
+                                                 options:options];
+   if( [dictionary objectForKey:NSTaskExceptionKey])
+   {
+      mulle_fprintf( stderr, "failed %@\n", dictionary);
+      return( 1);
+   }
+
+   outputData = [dictionary objectForKey:NSTaskStandardOutputDataKey];
+   if( ! [outputData length])
+   {
+      mulle_fprintf( stderr, "no output received\n");
+      return( 1);
+   }
+#else
    inputData = [NSMutableData dataWithLength:KB*1024];
    memset( [inputData mutableBytes], 'V', [inputData length]);
 
@@ -41,7 +62,7 @@ int   main( int argc, const char * argv[])
 
    if( [dictionary count] != 3)
    {
-      fprintf( stderr, "failed expectation\n");
+      mulle_fprintf( stderr, "failed expectation\n");
       return( 1);
    }
 
@@ -51,7 +72,7 @@ int   main( int argc, const char * argv[])
       outputData = [dictionary objectForKey:NSTaskStandardOutputDataKey];
       if( [outputData length] < [inputData length])
       {
-         fprintf( stderr, "truncated (%ld -> %ld)\n",
+         mulle_fprintf( stderr, "truncated (%ld -> %ld)\n",
                           (long) [inputData length],
                           (long) [outputData length]);
          return( 1);
@@ -59,21 +80,13 @@ int   main( int argc, const char * argv[])
 
       if( ! [outputData isEqualToData:inputData])
       {
-         fprintf( stderr, "changed:\n%.*s\nto:\n%.*s\n",
+         mulle_fprintf( stderr, "changed:\n%.*s\nto:\n%.*s\n",
                           (int) [outputData length], (char *) [outputData bytes],
                           (int) [inputData length], (char *) [inputData bytes]);
          return( 1);
       }
    }
+#endif
 
-/*
-   data = [array objectAtIndex:1];
-   if( [data length])
-   {
-      fprintf( stderr, "unexpected stderr \"%.*s\"\n",
-                       (int) [data length], (char *) [data bytes]);
-      return( 1);
-   }
-*/
    return( 0);
 }

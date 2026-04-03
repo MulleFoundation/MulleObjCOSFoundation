@@ -26,17 +26,17 @@ int   main( int argc, const char * argv[])
    bundles = [NSBundle allBundles];
    if( ! [bundles count])
    {
-      printf( "fail\n");
+      mulle_printf( "fail\n");
       return( -1);
    }
 
-   fprintf( stderr, "Informational output only (not checked):\n");
+   mulle_fprintf( stderr, "Informational output only (not checked):\n");
    for( bundle in bundles)
    {
-      fprintf( stderr, "bundlePath     : %s\n", [[bundle bundlePath] UTF8String]);
-      fprintf( stderr, "executablePath : %s\n", [[bundle executablePath] UTF8String]);
-      fprintf( stderr, "resourcePath   : %s\n", [[bundle resourcePath] UTF8String]);
-      fprintf( stderr, "isLoaded       : %s\n", [bundle isLoaded] ? "YES" : "NO");
+      mulle_fprintf( stderr, "bundlePath     : %s\n", [[bundle bundlePath] UTF8String]);
+      mulle_fprintf( stderr, "executablePath : %s\n", [[bundle executablePath] UTF8String]);
+      mulle_fprintf( stderr, "resourcePath   : %s\n", [[bundle resourcePath] UTF8String]);
+      mulle_fprintf( stderr, "isLoaded       : %s\n", [bundle isLoaded] ? "YES" : "NO");
    }
 
 

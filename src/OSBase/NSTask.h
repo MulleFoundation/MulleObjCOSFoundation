@@ -43,6 +43,7 @@ typedef NSInteger   NSTaskTerminationReason;
    int           _pid;
    int           _status;
    int           _terminationStatus;
+   void          *_taskHandle;  // Windows process HANDLE
 }
 
 
@@ -57,8 +58,8 @@ typedef NSInteger   NSTaskTerminationReason;
 - (void) setStandardInput:(id) file;
 - (void) setStandardOutput:(id) file;
 
-- (int) processIdentifier;
-- (int) terminationStatus;
+- (NSInteger) processIdentifier;
+- (NSInteger) terminationStatus;
 
 - (id) standardError;
 - (id) standardInput;

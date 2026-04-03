@@ -28,5 +28,5 @@ NSTimeZone+Linux.m
 # contents selected with patternfile ??-source--stage2-sources
 #
 set( STAGE2_SOURCES
-MulleObjCLoader+MulleObjCLinuxFoundation.m
+MulleObjCDeps+MulleObjCLinuxFoundation.m
 )

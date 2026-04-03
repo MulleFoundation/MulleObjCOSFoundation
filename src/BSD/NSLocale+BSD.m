@@ -43,7 +43,7 @@ static NSString   *queryLocaleName( int mask, locale_t base)
 {
    static struct _mulle_objc_dependency   dependencies[] =
    {
-      { @selector( MulleObjCLoader), @selector( MulleObjCPosixFoundation) },
+      { @selector( MulleObjCDeps), @selector( MulleObjCPosixFoundation) },
       { 0, 0 }
    };
 

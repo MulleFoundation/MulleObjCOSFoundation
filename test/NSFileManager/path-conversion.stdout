@@ -1,0 +1,32 @@
+OK: /c/test
+OK: /c/test/file.txt
+OK: /c/
+OK: /c/a/b/c/d/e
+OK: /d/test
+OK: /z/wine/path
+OK: /c/Program Files
+OK: /c/Program Files/test file.txt
+OK: /c/test-file
+OK: /c/test_file
+OK: /c/test.file.txt
+OK: /c/Müller
+OK: /c/Übung/Ärger/Öl
+OK: /c/Größe/Maß
+OK: /c/café
+OK: /c/résumé
+OK: /c/niño/año
+OK: /c/test😀
+OK: /c/folder🎉/file🚀.txt
+OK: /c/🔥hot🔥
+OK: /c/日本語
+OK: /c/中文/文件
+OK: /c/한글
+OK: /c/Привет
+OK: /c/Москва/файл
+OK: /c/a
+OK: /c/.
+OK: /c/..
+OK: /c/...
+OK: /c/very/long/path/with/many/components/to/test/buffer/handling
+OK: /c/Müller's café 🎉/résumé_日本語.txt
+All tests completed

@@ -16,16 +16,16 @@ if( CREATE_OBJC_LOADER_INC)
    endif()
 
    #
-   # Create src/objc-loader.inc for Objective-C projects. This contains a
+   # Create src/objc-deps.inc for Objective-C projects. This contains a
    # list of all the classes and categories, contained in a library.
    #
    # runs in build dir
    if( NOT MULLE_OBJC_LOADER_TOOL)
-      message( FATAL_ERROR "Executable \"mulle-objc-loader-tool\" not found")
+      message( FATAL_ERROR "Executable \"mulle-objc-deps-tool\" not found")
    endif()
 
    if( NOT OBJC_LOADER_INC)
-      set( OBJC_LOADER_INC "${CMAKE_SOURCE_DIR}/./objc-loader.inc")
+      set( OBJC_LOADER_INC "${CMAKE_SOURCE_DIR}/./objc-deps.inc")
    endif()
 
    set_source_files_properties( "${OBJC_LOADER_INC}"

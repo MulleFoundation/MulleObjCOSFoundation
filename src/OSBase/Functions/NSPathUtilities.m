@@ -19,6 +19,7 @@
 
 // std-c and dependencies
 
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL_VAR
 _NSPathUtilityVectorTable   *_NSPathUtilityVectors;
 
 

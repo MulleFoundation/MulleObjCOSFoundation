@@ -42,13 +42,13 @@ int   main( int argc, const char * argv[])
 
    if( ! timer)
    {
-      fprintf( stderr, "failed timer\n");
+      mulle_fprintf( stderr, "failed timer\n");
       return( 1);
    }
 
    if( ! [[timer userInfo] isEqual:argument])
    {
-      fprintf( stderr, "failed userInfo\n");
+      mulle_fprintf( stderr, "failed userInfo\n");
       return( 1);
    }
 
@@ -56,14 +56,14 @@ int   main( int argc, const char * argv[])
    interval = [date timeIntervalSinceReferenceDate];
    if( interval < now + 0.1)
    {
-      fprintf( stderr, "failed fireDate 1 \n");
+      mulle_fprintf( stderr, "failed fireDate 1 \n");
       return( 1);
    }
 
    now = [NSDate timeIntervalSinceReferenceDate];
    if( interval > now + 0.1)
    {
-      fprintf( stderr, "failed fireDate 2 \n");
+      mulle_fprintf( stderr, "failed fireDate 2 \n");
       return( 1);
    }
 
@@ -74,7 +74,7 @@ int   main( int argc, const char * argv[])
 
    if( ! [[timer fireDate] isEqual:newDate])
    {
-      fprintf( stderr, "failed fireDate 2\n");
+      mulle_fprintf( stderr, "failed fireDate 2\n");
       return( 1);
    }
 */

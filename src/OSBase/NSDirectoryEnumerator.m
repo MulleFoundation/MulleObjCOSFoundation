@@ -20,7 +20,6 @@
 #import "NSFileManager.h"
 #import "NSFileManager-Private.h"
 #import "NSString+OSBase.h"
-
 // other libraries of MulleObjCPosixFoundation
 
 // std-c and dependencies

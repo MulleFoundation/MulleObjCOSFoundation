@@ -132,10 +132,16 @@
 @end
 
 
-MULLE_OBJC_OSBASE_FOUNDATION_GLOBAL NSString   *NSLoadedClasses;
-MULLE_OBJC_OSBASE_FOUNDATION_GLOBAL NSString   *NSBundleDidLoadNotification;
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL NSString   *NSLoadedClasses;
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL NSString   *NSBundleDidLoadNotification;
 
-MULLE_OBJC_OSBASE_FOUNDATION_GLOBAL
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL
+NSBundle  *(*NSBundleGetOrRegisterBundleWithPath)( NSBundle *bundle, NSString *path);
+
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL
+void       (*NSBundleDeregisterBundleWithPath)( NSBundle *bundle, NSString *path);
+
+MULLE_OBJC_OS_BASE_FOUNDATION_GLOBAL
 NSString   *MulleObjCBundleLocalizedStringFromTable( NSBundle *bundle,
                                                      NSString *tableName,
                                                      NSString *key,

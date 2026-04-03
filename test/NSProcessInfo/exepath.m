@@ -21,13 +21,13 @@ int   main( int argc, const char * argv[])
    s = [[NSProcessInfo processInfo] _executablePath];
    if( ! s)
    {
-      printf( "fail\n");
+      mulle_printf( "fail\n");
       return( -1);
    }
 
    cString = [NSString stringWithCString:argv[ 0]];
    if( ! [s isEqualToString:cString])
-      printf( "failed\n");
+      mulle_printf( "failed\n");
 
    return( 0);
 }

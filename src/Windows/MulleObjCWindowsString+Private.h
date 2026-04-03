@@ -1,0 +1,5 @@
+MULLE_OBJC_WINDOWS_FOUNDATION_GLOBAL
+NSString  *NSFilePathComponentSeparator;
+
+MULLE_OBJC_WINDOWS_FOUNDATION_GLOBAL
+NSString  *NSFilePathExtensionSeparator;

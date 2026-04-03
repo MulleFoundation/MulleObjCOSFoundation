@@ -19,7 +19,7 @@
 //    remove #import      : `mulle-sde dependency mark MulleObjCOSBaseFoundation no-header`
 //    rename              : `mulle-sde dependency|library set MulleObjCOSBaseFoundation include whatever.h`
 //    reorder             : `mulle-sde dependency move MulleObjCOSBaseFoundation <up|down>`
-//    toggle #import      : `mulle-sde dependency mark MulleObjCOSBaseFoundation [no-]import`
+//    toggle objc         : `mulle-sde dependency mark MulleObjCOSBaseFoundation [no-]import`
 //    toggle public       : `mulle-sde dependency mark MulleObjCOSBaseFoundation [no-]public`
 //    toggle optional     : `mulle-sde dependency mark MulleObjCOSBaseFoundation [no-]require`
 //    remove for platform : `mulle-sde dependency mark MulleObjCOSBaseFoundation no-platform-<uname>`

@@ -18,11 +18,13 @@ int   main( int argc, const char * argv[])
    NSDateFormatter   *formatter;
    NSDate            *date;
 
+   [NSTimeZone setDefaultTimeZone:[NSTimeZone mulleGMTTimeZone]];
+
    formatter = [[[NSDateFormatter alloc] initWithDateFormat:@"%Y-%m-%dT%H:%M:%SZ"
                                        allowNaturalLanguage:NO] autorelease];
 
    date = [formatter dateFromString:@"2013-02-24T20:09:15Z"];
-   printf( "Date: %s\n", [[formatter stringFromDate:date] UTF8String]);
+   mulle_printf( "Date: %s\n", [[formatter stringFromDate:date] UTF8String]);
 
    return( 0);
 }
