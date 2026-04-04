@@ -197,6 +197,7 @@ static void   unlazyExecutablePath( NSProcessInfo *self)
 
 - (void) setProcessName:(NSString *) name
 {
+   MULLE_C_UNUSED( name);
    // Windows doesn't support changing the process name at runtime
    // This is a no-op, like on Linux
 }

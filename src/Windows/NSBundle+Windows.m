@@ -19,6 +19,9 @@
 
 @implementation NSBundle( Windows)
 
+@dependency NSBundle( Private);
+@dependency NSBundle( OSSpecific);
+
 + (BOOL) isBundleFilesystemExtension:(NSString *) extension
 {
    return( [extension isEqualToString:@"dll"]);

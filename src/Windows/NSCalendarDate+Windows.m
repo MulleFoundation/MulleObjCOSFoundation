@@ -117,6 +117,7 @@ static void  _MulleObjCConcreteCalendarDateInitWindows( _MulleObjCConcreteCalend
 {
    struct mulle_mini_tm   mini;
 
+   MULLE_C_UNUSED( nanoseconds);
    mini = mulle_windows_tm_get_mini_tm( tm);
    return( [self mulleInitWithMiniTM:mini
                             timeZone:tz]);
