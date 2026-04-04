@@ -7,6 +7,7 @@
       user="MulleFoundation";
       repo="MulleObjCOSFoundation";
       homepage="https://github.com/MulleFoundation/MulleObjCOSFoundation";
+      version="0.26.0";
       license="BSD-3-Clause";
    };
 }
