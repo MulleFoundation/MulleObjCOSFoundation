@@ -59,6 +59,8 @@ struct windows_mode
 }
 
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmulle-method-implementation"
 - (enum MulleRunLoopInputState) _acceptInputForRunLoopMode:(struct MulleRunLoopMode *) mode
                                                 beforeDate:(NSDate *) date
 {
@@ -150,5 +152,6 @@ loop:
 
    return( MulleRunLoopTimeout);
 }
+#pragma GCC diagnostic pop
 
 @end

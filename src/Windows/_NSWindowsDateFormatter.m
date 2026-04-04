@@ -92,6 +92,7 @@ MULLE_OBJC_DEPENDS_ON_LIBRARY( MulleObjCStandardFoundation);
    char     *c_end;
    NSDate   *date;
 
+   MULLE_C_UNUSED( error);
    c_begin = [string cString];
    c_end   = c_begin;
    date    = [self _dateWithFormatUTF8String:_cformat
@@ -269,6 +270,7 @@ static int   tm_sprintf_character( struct tm *tm,
 
    NSParameterAssert( c_format);
 
+   MULLE_C_UNUSED( locale);
    interval = [date timeIntervalSince1970];
    seconds  = [timeZone mulleSecondsFromGMTForTimeIntervalSince1970:interval];
    mulle_windows_tm_init_with_interval1970( &tm,
@@ -340,6 +342,7 @@ static int   tm_sprintf_character( struct tm *tm,
 
    NSParameterAssert( c_format);
 
+   MULLE_C_UNUSED( locale);
    memset( &tm, 0, sizeof( tm));
 
    timeZone = nil;

@@ -76,6 +76,7 @@
 
 - (NSInteger) mulleSecondsFromGMTForTimeIntervalSince1970:(NSTimeInterval) interval
 {
+   MULLE_C_UNUSED( interval);
    if( _secondsFromGMT != NSIntegerMax)
       return( _secondsFromGMT);
 
@@ -85,6 +86,7 @@
 
 - (NSInteger) secondsFromGMTForDate:(NSDate *) aDate
 {
+   MULLE_C_UNUSED( aDate);
    if( _secondsFromGMT != NSIntegerMax)
       return( _secondsFromGMT);
 
@@ -94,12 +96,14 @@
 
 - (NSString *) abbreviationForDate:(NSDate *) aDate
 {
+   MULLE_C_UNUSED( aDate);
    return( [self name]);
 }
 
 
 - (BOOL) isDaylightSavingTimeForDate:(NSDate *) aDate
 {
+   MULLE_C_UNUSED( aDate);
    return( NO);
 }
 
@@ -110,6 +114,7 @@
 
 - (NSInteger) mulleSecondsFromGMTForTimeIntervalSince1970:(NSTimeInterval) interval
 {
+   MULLE_C_UNUSED( interval);
    return( 0);
 }
 

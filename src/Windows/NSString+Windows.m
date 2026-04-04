@@ -49,6 +49,8 @@
 }
 
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmulle-method-implementation"
 - (BOOL) isAbsolutePath
 {
    NSUInteger   len;
@@ -75,6 +77,7 @@
 
    return( NO);
 }
+#pragma GCC diagnostic pop
 
 
 - (NSString *) mulleUnixFileSystemString

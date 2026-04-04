@@ -67,7 +67,8 @@
 {
    NSString   *path;
    NSString   *converted;
-   
+
+   MULLE_C_UNUSED( len);
    if( ! s)
       return( nil);
    
@@ -84,6 +85,7 @@
    NSString   *path;
    NSString   *converted;
 
+   MULLE_C_UNUSED( len);
    if( ! s_utf16)
       return( nil);
 
@@ -96,6 +98,7 @@
 
 - (NSString *) pathContentOfSymbolicLinkAtPath:(NSString *) path
 {
+   MULLE_C_UNUSED( path);
    // Windows doesn't support symlinks in the same way as Unix
    // Return nil to indicate no symlink
    return( nil);
@@ -256,6 +259,7 @@
    BOOL             result;
    mulle_utf16_t   *s_utf16;
 
+   MULLE_C_UNUSED( attributes);
    s_utf16 = [self fileSystemRepresentationUTF16WithPath:path];
    if( ! s_utf16)
       return( -1);
@@ -285,6 +289,7 @@
    NSUInteger       i, n;
    int              rc;
 
+   MULLE_C_UNUSED( error);
    MulleObjCSetWindowsErrorDomain();
 
    rc = [self _createDirectoryAtPath:path
