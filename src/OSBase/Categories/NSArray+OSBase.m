@@ -22,7 +22,7 @@
 @end
 
 
-@implementation NSArray (Posix)
+@implementation NSArray( OSBase)
 
 + (instancetype) arrayWithContentsOfFile:(NSString *) path
 {

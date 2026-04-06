@@ -6,7 +6,7 @@
 //  Copyright © 2017 Mulle kybernetiK. All rights reserved.
 //
 
-@interface NSTimeZone( Posix_Private)
+@interface NSTimeZone( Posix_PrivateFuture)
 
 - (NSTimeInterval) _timeIntervalSince1970ForTM:(struct tm *) tm;
 - (NSInteger) mulleSecondsFromGMTForTimeIntervalSince1970:(NSTimeInterval) interval;

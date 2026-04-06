@@ -17,6 +17,8 @@
 
 @implementation NSTimeZone( Linux)
 
+@dependency NSTimeZone( Posix);
+
 - (NSTimeInterval) _timeIntervalSince1970ForTM:(struct tm *) tm
 {
    extern long        mulle_get_timeinterval_for_tm( void *, struct tz_tm *);

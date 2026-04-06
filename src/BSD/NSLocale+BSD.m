@@ -39,16 +39,7 @@ static NSString   *queryLocaleName( int mask, locale_t base)
 
 @implementation NSLocale( BSD)
 
-+ (struct _mulle_objc_dependency *) dependencies
-{
-   static struct _mulle_objc_dependency   dependencies[] =
-   {
-      { @selector( MulleObjCDeps), @selector( MulleObjCPosixFoundation) },
-      { 0, 0 }
-   };
-
-   return( dependencies);
-}
+@dependency NSLocale( Posix);
 
 
 static id   newLocaleByQuery( Class self, locale_t base)

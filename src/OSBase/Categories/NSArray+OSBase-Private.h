@@ -11,7 +11,7 @@
  *  $Id$
  *
  */
-@interface NSArray( Posix_Private)
+@interface NSArray( Posix_PrivateFuture)
 
 + (instancetype) _newWithArgc:(int) argc
                          argv:(char **) argv;

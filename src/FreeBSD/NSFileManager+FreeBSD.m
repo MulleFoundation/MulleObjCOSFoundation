@@ -16,16 +16,8 @@
 
 @implementation NSFileManager (FreeBSD)
 
-+ (struct _mulle_objc_dependency *) dependencies
-{
-   static struct _mulle_objc_dependency   dependencies[] =
-   {
-      { @selector( MulleObjCDeps), @selector( MulleObjCBSDFoundation) },
-      { 0, 0 }
-   };
+@dependency NSFileManager( Posix);
 
-   return( dependencies);
-}
 
 //
 // is the idea, that NSFileManager can manage various filesystems

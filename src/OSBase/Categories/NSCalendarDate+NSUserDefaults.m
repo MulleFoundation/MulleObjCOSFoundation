@@ -20,6 +20,9 @@
 
 @implementation NSCalendarDate( NSUserDefaults)
 
+@dependency NSConstantString;
+
+
 + (instancetype) dateWithNaturalLanguageString:(NSString *) s
 {
    NSDictionary   *dictionary;
@@ -92,19 +95,6 @@ static NSString  *NSDecemberString  = @"dec";
 static NSString   *substitutions[ 7 + 1];
 static NSString   *months[ 12];
 static NSString   *weekdays[ 7];
-
-
-+ (struct _mulle_objc_dependency *) dependencies
-{
-
-   static struct _mulle_objc_dependency   dependencies[] =
-   {
-      { @selector( NSConstantString), MULLE_OBJC_NO_CATEGORYID },
-      { MULLE_OBJC_NO_CLASSID, MULLE_OBJC_NO_CATEGORYID }
-   };
-
-   return( dependencies);
-}
 
 
 + (void) load

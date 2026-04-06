@@ -232,16 +232,7 @@ static _NSPathUtilityVectorTable _WindowsTable =
 
 @implementation _NSPathUtilityVectorTable_Loader( Windows)
 
-+ (struct _mulle_objc_dependency *) dependencies
-{
-   static struct _mulle_objc_dependency   dependencies[] =
-   {
-      { @selector( MulleObjCDeps), @selector( MulleObjCOSBaseFoundation) },
-      { 0, 0 }
-   };
-   
-   return( dependencies);
-}
+@dependency _NSPathUtilityVectorTable_Loader;
 
 
 + (void) load

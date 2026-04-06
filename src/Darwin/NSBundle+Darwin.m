@@ -46,16 +46,7 @@
 
 @implementation NSBundle( Darwin)
 
-+ (struct _mulle_objc_dependency *) dependencies
-{
-   static struct _mulle_objc_dependency   dependencies[] =
-   {
-      { @selector( MulleObjCDeps), @selector( MulleObjCBSDFoundation) },
-      { 0, 0 }
-   };
-
-   return( dependencies);
-}
+@dependency NSBundle( Posix);
 
 
 //   extern int   _NSGetExecutablePath( char *buf, size_t *bufsize);

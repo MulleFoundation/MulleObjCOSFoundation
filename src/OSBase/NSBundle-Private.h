@@ -16,7 +16,7 @@ struct _MulleObjCSharedLibrary
 
 
 
-@interface NSBundle( Private)
+@interface NSBundle( PrivateFuture)
 
 + (NSDictionary *) _bundleDictionary;
 + (NSArray *) _allBundlesWhichAreFrameworks:(BOOL) flag;

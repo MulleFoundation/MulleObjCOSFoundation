@@ -28,18 +28,6 @@ struct windows_mode
 
 @implementation NSRunLoop( Windows)
 
-+ (struct _mulle_objc_dependency *) dependencies
-{
-   static struct _mulle_objc_dependency   dependencies[] =
-   {
-      { @selector( MulleObjCDeps), @selector( MulleObjCOSWindowsFoundation) },
-      { 0, 0 }
-   };
-
-   return( dependencies);
-}
-
-
 - (void) _finalizeWindows:(struct windows_mode *) ctxt
 {
    if( ctxt->handles)
