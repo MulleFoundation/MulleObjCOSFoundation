@@ -23,16 +23,7 @@
 
 @implementation NSDateFormatter( Darwin)
 
-+ (struct _mulle_objc_dependency *) dependencies
-{
-   static struct _mulle_objc_dependency   dependencies[] =
-   {
-      { @selector( MulleObjCDeps), @selector( MulleObjCBSDFoundation) },
-      { 0, 0 }
-   };
-
-   return( dependencies);
-}
+@dependency NSDateFormatter( BSD);
 
 //
 // as strange as it may sound, on DARWIN strftime is broken (by design)

@@ -22,16 +22,7 @@
 
 @implementation NSString( FreeBSD)
 
-+ (struct _mulle_objc_dependency *) dependencies
-{
-   static struct _mulle_objc_dependency   dependencies[] =
-   {
-      { @selector( MulleObjCDeps), @selector( MulleObjCBSDFoundation) },
-      { 0, 0 }
-   };
-
-   return( dependencies);
-}
+@dependency NSString( OSBase);
 
 
 // should probably query system locale or something

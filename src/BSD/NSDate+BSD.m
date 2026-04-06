@@ -73,16 +73,7 @@ static time_t    mulle_mini_tm_get_time( struct mulle_mini_tm mini)
 
 @implementation _MulleObjCConcreteCalendarDate( BSD)
 
-+ (struct _mulle_objc_dependency *) dependencies
-{
-   static struct _mulle_objc_dependency   dependencies[] =
-   {
-      { @selector( MulleObjCDeps), @selector( MulleObjCPosixFoundation) },
-      { 0, 0 }
-   };
-
-   return( dependencies);
-}
+@dependency _MulleObjCConcreteCalendarDate( Posix);
 
 
 static void  _MulleObjCConcreteCalendarDateInitBSD( _MulleObjCConcreteCalendarDate *self,
@@ -143,16 +134,7 @@ static void  _MulleObjCConcreteCalendarDateInitBSD( _MulleObjCConcreteCalendarDa
 
 @implementation NSCalendarDate( BSD)
 
-+ (struct _mulle_objc_dependency *) dependencies
-{
-   static struct _mulle_objc_dependency   dependencies[] =
-   {
-      { @selector( MulleObjCDeps), @selector( MulleObjCPosixFoundation) },
-      { 0, 0 }
-   };
-
-   return( dependencies);
-}
+@dependency NSCalendarDate( Posix);
 
 
 - (instancetype) _initWithTM:(struct tm *) tm

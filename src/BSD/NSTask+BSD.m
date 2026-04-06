@@ -22,16 +22,7 @@
 
 @implementation NSTask( BSD)
 
-+ (struct _mulle_objc_dependency *) dependencies
-{
-   static struct _mulle_objc_dependency   dependencies[] =
-   {
-      { @selector( MulleObjCDeps), @selector( MulleObjCPosixFoundation) },
-      { 0, 0 }
-   };
-
-   return( dependencies);
-}
+@dependency NSTask( Posix);
 
 
 - (void) _signal:(int) a_signal

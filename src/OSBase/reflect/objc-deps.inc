@@ -1,6 +1,6 @@
-      { @selector( MulleObjCDeps), @selector( MulleFoundationBase) },      // 47a9beb6;MulleObjCDeps;efab19ea;MulleFoundationBase
+      { @selector( MulleObjCDeps), @selector( MulleFoundationBase) },      // 3c20656f;MulleObjCDeps;efab19ea;MulleFoundationBase
+      { @selector( NSArray), @selector( OSBase) },      // 233490fe;NSArray;b8ece9a7;OSBase
       { @selector( NSArray), @selector( OSBase_Private) },      // 233490fe;NSArray;7cf4cba6;OSBase_Private
-      { @selector( NSArray), @selector( Posix) },      // 233490fe;NSArray;ae1faa81;Posix
       { @selector( NSBundle), MULLE_OBJC_NO_CATEGORYID },      // c2f95c66;NSBundle;;
       { @selector( NSCalendarDate), @selector( NSUserDefaults) },      // b8742fcb;NSCalendarDate;272481b3;NSUserDefaults
       { @selector( NSCondition), @selector( NSString) },      // 0397143e;NSCondition;1994a171;NSString

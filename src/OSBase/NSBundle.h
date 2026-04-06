@@ -116,7 +116,7 @@
 
 
 // OS Specific stuff stuff we need to implement
-@interface NSBundle ( OSSpecific)
+@interface NSBundle ( OSSpecificFuture)
 
 // rename from load because of the wrong type
 - (BOOL) loadBundle;
