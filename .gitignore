@@ -92,3 +92,4 @@ research/
 plans/
 .roam
 .graveyard
+*.tmp.*

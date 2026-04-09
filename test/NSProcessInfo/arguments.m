@@ -25,12 +25,12 @@ int   main( int argc, const char * argv[])
    arguments = [[NSProcessInfo processInfo] arguments];
    for( i = 0; i < argc; i++)
    {
-      cString = [NSString stringWithCString:argv[ i]];
+      cString = [NSString stringWithCString:(char *) argv[ i]];
       s       = [arguments objectAtIndex:i];
 
       if( ! [s isEqualToString:cString])
       {
-          mulle_printf( "%d failed (%s <> %s)\n", i, [s UTF8String], argv[ i]);
+          mulle_printf( "%d failed\n", i);
       }
    }
 

@@ -16,6 +16,10 @@
 
 #include <stdio.h>
 
+@interface NSBundle (Forward)
++ (NSDictionary *) mulleRegisteredBundleInfo;
+@end
+
 
 int   main( int argc, const char * argv[])
 {

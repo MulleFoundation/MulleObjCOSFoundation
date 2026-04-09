@@ -25,7 +25,7 @@ int   main( int argc, const char * argv[])
       return( -1);
    }
 
-   cString = [NSString stringWithCString:argv[ 0]];
+   cString = [NSString stringWithCString:(char *) argv[ 0]];
    if( ! [s isEqualToString:cString])
       mulle_printf( "failed\n");
 

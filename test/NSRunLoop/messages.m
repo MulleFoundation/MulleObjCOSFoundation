@@ -11,6 +11,10 @@
 # import <Foundation/Foundation.h>
 #endif
 
+@interface NSRunLoop (Forward)
+- (id) mulleRunLoopModeForMode:(NSString *) mode;
+- (void) _sendMessagesOfRunLoopMode:(id) mode;
+@end
 
 //#import "MulleStandaloneObjCFoundation.h"
 @interface Foo : NSObject
