@@ -55,9 +55,17 @@ if( NOT MULLE_OBJC_OS_BASE_FOUNDATION_HEADER)
          # use explicit path to avoid "surprises"
          if( IS_DIRECTORY "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_DIR}")
             list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_DIR}")
+            # we only want top level INHERIT_OBJC_DEPS, so disable them
+            if( NOT NO_INHERIT_OBJC_DEPS)
+               set( NO_INHERIT_OBJC_DEPS OFF)
+            endif()
+            list( APPEND _TMP_INHERIT_OBJC_DEPS ${NO_INHERIT_OBJC_DEPS})
+            set( NO_INHERIT_OBJC_DEPS ON)
             #
             include( "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_DIR}/DependenciesAndLibraries.cmake" OPTIONAL)
             #
+            list( GET _TMP_INHERIT_OBJC_DEPS -1 NO_INHERIT_OBJC_DEPS)
+            list( REMOVE_AT _TMP_INHERIT_OBJC_DEPS -1)
             list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_DIR}")
             #
             unset( MULLE_OBJC_OS_BASE_FOUNDATION_DEFINITIONS)

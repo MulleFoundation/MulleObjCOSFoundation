@@ -82,9 +82,17 @@ else()
             # use explicit path to avoid "surprises"
             if( IS_DIRECTORY "${_TMP_MULLE_OBJC_DIR}")
                list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_MULLE_OBJC_DIR}")
+               # we only want top level INHERIT_OBJC_DEPS, so disable them
+               if( NOT NO_INHERIT_OBJC_DEPS)
+                  set( NO_INHERIT_OBJC_DEPS OFF)
+               endif()
+               list( APPEND _TMP_INHERIT_OBJC_DEPS ${NO_INHERIT_OBJC_DEPS})
+               set( NO_INHERIT_OBJC_DEPS ON)
                #
                include( "${_TMP_MULLE_OBJC_DIR}/DependenciesAndLibraries.cmake" OPTIONAL)
                #
+               list( GET _TMP_INHERIT_OBJC_DEPS -1 NO_INHERIT_OBJC_DEPS)
+               list( REMOVE_AT _TMP_INHERIT_OBJC_DEPS -1)
                list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_MULLE_OBJC_DIR}")
                #
                unset( MULLE_OBJC_DEFINITIONS)
@@ -179,9 +187,17 @@ else()
             # use explicit path to avoid "surprises"
             if( IS_DIRECTORY "${_TMP_OS_BASE_DIR}")
                list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_OS_BASE_DIR}")
+               # we only want top level INHERIT_OBJC_DEPS, so disable them
+               if( NOT NO_INHERIT_OBJC_DEPS)
+                  set( NO_INHERIT_OBJC_DEPS OFF)
+               endif()
+               list( APPEND _TMP_INHERIT_OBJC_DEPS ${NO_INHERIT_OBJC_DEPS})
+               set( NO_INHERIT_OBJC_DEPS ON)
                #
                include( "${_TMP_OS_BASE_DIR}/DependenciesAndLibraries.cmake" OPTIONAL)
                #
+               list( GET _TMP_INHERIT_OBJC_DEPS -1 NO_INHERIT_OBJC_DEPS)
+               list( REMOVE_AT _TMP_INHERIT_OBJC_DEPS -1)
                list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_OS_BASE_DIR}")
                #
                unset( OS_BASE_DEFINITIONS)
@@ -277,9 +293,17 @@ if( NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
                # use explicit path to avoid "surprises"
                if( IS_DIRECTORY "${_TMP_POSIX_DIR}")
                   list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_POSIX_DIR}")
+                  # we only want top level INHERIT_OBJC_DEPS, so disable them
+                  if( NOT NO_INHERIT_OBJC_DEPS)
+                     set( NO_INHERIT_OBJC_DEPS OFF)
+                  endif()
+                  list( APPEND _TMP_INHERIT_OBJC_DEPS ${NO_INHERIT_OBJC_DEPS})
+                  set( NO_INHERIT_OBJC_DEPS ON)
                   #
                   include( "${_TMP_POSIX_DIR}/DependenciesAndLibraries.cmake" OPTIONAL)
                   #
+                  list( GET _TMP_INHERIT_OBJC_DEPS -1 NO_INHERIT_OBJC_DEPS)
+                  list( REMOVE_AT _TMP_INHERIT_OBJC_DEPS -1)
                   list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_POSIX_DIR}")
                   #
                   unset( POSIX_DEFINITIONS)
@@ -376,9 +400,17 @@ if( NOT (${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES 
                # use explicit path to avoid "surprises"
                if( IS_DIRECTORY "${_TMP_BSD_DIR}")
                   list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_BSD_DIR}")
+                  # we only want top level INHERIT_OBJC_DEPS, so disable them
+                  if( NOT NO_INHERIT_OBJC_DEPS)
+                     set( NO_INHERIT_OBJC_DEPS OFF)
+                  endif()
+                  list( APPEND _TMP_INHERIT_OBJC_DEPS ${NO_INHERIT_OBJC_DEPS})
+                  set( NO_INHERIT_OBJC_DEPS ON)
                   #
                   include( "${_TMP_BSD_DIR}/DependenciesAndLibraries.cmake" OPTIONAL)
                   #
+                  list( GET _TMP_INHERIT_OBJC_DEPS -1 NO_INHERIT_OBJC_DEPS)
+                  list( REMOVE_AT _TMP_INHERIT_OBJC_DEPS -1)
                   list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_BSD_DIR}")
                   #
                   unset( BSD_DEFINITIONS)
@@ -475,9 +507,17 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
                # use explicit path to avoid "surprises"
                if( IS_DIRECTORY "${_TMP_FREE_BSD_DIR}")
                   list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_FREE_BSD_DIR}")
+                  # we only want top level INHERIT_OBJC_DEPS, so disable them
+                  if( NOT NO_INHERIT_OBJC_DEPS)
+                     set( NO_INHERIT_OBJC_DEPS OFF)
+                  endif()
+                  list( APPEND _TMP_INHERIT_OBJC_DEPS ${NO_INHERIT_OBJC_DEPS})
+                  set( NO_INHERIT_OBJC_DEPS ON)
                   #
                   include( "${_TMP_FREE_BSD_DIR}/DependenciesAndLibraries.cmake" OPTIONAL)
                   #
+                  list( GET _TMP_INHERIT_OBJC_DEPS -1 NO_INHERIT_OBJC_DEPS)
+                  list( REMOVE_AT _TMP_INHERIT_OBJC_DEPS -1)
                   list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_FREE_BSD_DIR}")
                   #
                   unset( FREE_BSD_DEFINITIONS)
@@ -574,9 +614,17 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                # use explicit path to avoid "surprises"
                if( IS_DIRECTORY "${_TMP_DARWIN_DIR}")
                   list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_DARWIN_DIR}")
+                  # we only want top level INHERIT_OBJC_DEPS, so disable them
+                  if( NOT NO_INHERIT_OBJC_DEPS)
+                     set( NO_INHERIT_OBJC_DEPS OFF)
+                  endif()
+                  list( APPEND _TMP_INHERIT_OBJC_DEPS ${NO_INHERIT_OBJC_DEPS})
+                  set( NO_INHERIT_OBJC_DEPS ON)
                   #
                   include( "${_TMP_DARWIN_DIR}/DependenciesAndLibraries.cmake" OPTIONAL)
                   #
+                  list( GET _TMP_INHERIT_OBJC_DEPS -1 NO_INHERIT_OBJC_DEPS)
+                  list( REMOVE_AT _TMP_INHERIT_OBJC_DEPS -1)
                   list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_DARWIN_DIR}")
                   #
                   unset( DARWIN_DEFINITIONS)
@@ -673,9 +721,17 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES "Linu
                # use explicit path to avoid "surprises"
                if( IS_DIRECTORY "${_TMP_LINUX_DIR}")
                   list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_LINUX_DIR}")
+                  # we only want top level INHERIT_OBJC_DEPS, so disable them
+                  if( NOT NO_INHERIT_OBJC_DEPS)
+                     set( NO_INHERIT_OBJC_DEPS OFF)
+                  endif()
+                  list( APPEND _TMP_INHERIT_OBJC_DEPS ${NO_INHERIT_OBJC_DEPS})
+                  set( NO_INHERIT_OBJC_DEPS ON)
                   #
                   include( "${_TMP_LINUX_DIR}/DependenciesAndLibraries.cmake" OPTIONAL)
                   #
+                  list( GET _TMP_INHERIT_OBJC_DEPS -1 NO_INHERIT_OBJC_DEPS)
+                  list( REMOVE_AT _TMP_INHERIT_OBJC_DEPS -1)
                   list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_LINUX_DIR}")
                   #
                   unset( LINUX_DEFINITIONS)
@@ -772,9 +828,17 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
                # use explicit path to avoid "surprises"
                if( IS_DIRECTORY "${_TMP_WINDOWS_DIR}")
                   list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_WINDOWS_DIR}")
+                  # we only want top level INHERIT_OBJC_DEPS, so disable them
+                  if( NOT NO_INHERIT_OBJC_DEPS)
+                     set( NO_INHERIT_OBJC_DEPS OFF)
+                  endif()
+                  list( APPEND _TMP_INHERIT_OBJC_DEPS ${NO_INHERIT_OBJC_DEPS})
+                  set( NO_INHERIT_OBJC_DEPS ON)
                   #
                   include( "${_TMP_WINDOWS_DIR}/DependenciesAndLibraries.cmake" OPTIONAL)
                   #
+                  list( GET _TMP_INHERIT_OBJC_DEPS -1 NO_INHERIT_OBJC_DEPS)
+                  list( REMOVE_AT _TMP_INHERIT_OBJC_DEPS -1)
                   list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_WINDOWS_DIR}")
                   #
                   unset( WINDOWS_DEFINITIONS)
