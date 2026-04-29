@@ -44,7 +44,7 @@ enum
 @end
 
 
-@interface NSProcessInfo ( Future)
+@interface NSProcessInfo( Future) < MulleObjCFuture>
 
 - (NSString *) hostName;
 

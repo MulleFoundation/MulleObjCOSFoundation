@@ -101,7 +101,7 @@ enum _MulleObjCSeekMode
 
 
 
-@interface NSFileHandle( SubclassFuture)
+@interface NSFileHandle( SubclassFuture) < MulleObjCFuture>
 
 + (instancetype) fileHandleWithStandardInput;
 + (instancetype) fileHandleWithStandardOutput;

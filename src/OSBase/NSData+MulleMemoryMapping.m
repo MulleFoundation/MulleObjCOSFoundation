@@ -77,7 +77,7 @@
 @end
 
 
-@interface NSData( Future)
+@interface NSData( Future) < MulleObjCFuture>
 
 - (instancetype) initWithContentsOfFile:(NSString *) path;
 

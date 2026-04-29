@@ -47,7 +47,7 @@ enum _MulleObjCIsDirectoryState
 };
 
 
-@interface NSDirectoryEnumerator( Future)
+@interface NSDirectoryEnumerator( Future) < MulleObjCFuture>
 
 - (instancetype) initWithFileManager:(NSFileManager *) manager
                             rootPath:(NSString *) root

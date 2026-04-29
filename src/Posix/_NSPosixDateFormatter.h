@@ -30,7 +30,7 @@
 
 // not really future anymore hmmm... move to private
 // or make public ?
-@interface NSDateFormatter( PosixFuture)
+@interface NSDateFormatter( PosixFuture) < MulleObjCFuture>
 
 - (size_t) _printTM:(struct tm *) tm
              buffer:(char *) buf

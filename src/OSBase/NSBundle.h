@@ -92,7 +92,7 @@
 
 
 // stuff we need to implement
-@interface NSBundle ( Future)
+@interface NSBundle ( Future) < MulleObjCFuture>
 
 // default returns NO
 + (BOOL) isBundleFilesystemExtension:(NSString *) extension;
@@ -116,7 +116,7 @@
 
 
 // OS Specific stuff stuff we need to implement
-@interface NSBundle ( OSSpecificFuture)
+@interface NSBundle ( OSSpecificFuture) < MulleObjCFuture>
 
 // rename from load because of the wrong type
 - (BOOL) loadBundle;
@@ -128,6 +128,14 @@
 // stores where ?
 //
 + (NSBundle *) bundleForClass:(Class) aClass;
+
+@end
+
+
+@interface NSBundle ( MulleSymbolLookup)
+
+- (void *) mulleLookupSymbolUTF8String:(char *) name;
+- (void *) mulleLookupSymbol:(NSString *) name;
 
 @end
 

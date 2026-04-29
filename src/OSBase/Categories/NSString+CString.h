@@ -41,7 +41,7 @@
 
 
 
-@interface NSString( CStringFuture)
+@interface NSString( CStringFuture) < MulleObjCFuture>
 
 - (NSUInteger) cStringLength;
 
