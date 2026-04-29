@@ -44,7 +44,7 @@
 @end
 
 
-@interface NSUserDefaults( Future)
+@interface NSUserDefaults( Future) < MulleObjCFuture>
 
 + (void) resetStandardUserDefaults;
 

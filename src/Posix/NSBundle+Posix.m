@@ -83,6 +83,10 @@
    fileManager = [NSFileManager defaultManager];
    if( [fileManager isExecutableFileAtPath:_path])
       return( _path);
+   // .so files on Linux are not executable, but dlopen only needs +r
+   if( [[self class] isBundleFilesystemExtension:[_path pathExtension]])
+      if( [fileManager isReadableFileAtPath:_path])
+         return( _path);
    return( nil);
 }
 
@@ -218,6 +222,24 @@ static char   *dlerror_or_errno( int errnocode)
 {
    // BUG: Can the load failure be obscured by another thread using NSBundle ?
    return( [NSString stringWithCString:dlerror_or_errno( 0)]);
+}
+
+@end
+
+
+@implementation NSBundle( MulleSymbolLookup)
+
+- (void *) mulleLookupSymbolUTF8String:(char *) name
+{
+   if( ! name || ! _handle)
+      return( NULL);
+   return( dlsym( _handle, name));
+}
+
+
+- (void *) mulleLookupSymbol:(NSString *) name
+{
+   return( [self mulleLookupSymbolUTF8String:(char *) [name UTF8String]]);
 }
 
 @end

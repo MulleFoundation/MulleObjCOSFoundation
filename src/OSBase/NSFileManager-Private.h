@@ -22,7 +22,7 @@ enum _MulleObjCFilenameType
 };
 
 
-@interface NSFileManager( PrivateFuture)
+@interface NSFileManager( PrivateFuture) < MulleObjCFuture>
 
 - (enum _MulleObjCFilenameType) _isValidDirectoryContentsFilenameAsCString:(char *) s;
 

@@ -13,7 +13,7 @@
 @end
 
 
-@interface NSDateFormatter( WindowsFuture)
+@interface NSDateFormatter( WindowsFuture) < MulleObjCFuture>
 
 - (size_t) _printTM:(struct tm *) tm
              buffer:(char *) buf

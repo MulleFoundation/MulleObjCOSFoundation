@@ -83,7 +83,7 @@ struct mulle_locale_key_info   mulle_locale_map_string_key_to_local_key( NSStrin
 id    mulle_locale_lconv_value( struct lconv *conv, int code);
 
 
-@interface NSLocale( Posix_PrivateFuture)
+@interface NSLocale( Posix_PrivateFuture) < MulleObjCFuture>
 
 - (locale_t) xlocale;
 

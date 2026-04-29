@@ -6,7 +6,7 @@
 //  Copyright © 2016 Mulle kybernetiK. All rights reserved.
 //
 
-@interface NSDate( OSBase_PrivateFuture)
+@interface NSDate( OSBase_PrivateFuture) < MulleObjCFuture>
 
 - (size_t) _printDate:(NSDate *) date
                buffer:(char *) buf

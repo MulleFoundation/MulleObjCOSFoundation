@@ -119,7 +119,7 @@ shouldProceedAfterError:(NSError *)error
 @end
 
 
-@interface NSFileManager (Future)
+@interface NSFileManager( Future) < MulleObjCFuture>
 
 - (char *) fileSystemRepresentationWithPath:(NSString *) path;
 - (NSString *) stringWithFileSystemRepresentation:(char *) s

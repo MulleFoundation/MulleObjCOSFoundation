@@ -34,7 +34,7 @@ typedef NSUInteger   NSDataReadingOptions;
 @end
 
 
-@interface NSData( OSBaseFuture)
+@interface NSData( OSBaseFuture) < MulleObjCFuture>
 
 - (instancetype) initWithContentsOfFile:(NSString *) path;
 

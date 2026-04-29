@@ -69,7 +69,7 @@
 @end
 
 
-@interface NSString( OSBaseFuture)
+@interface NSString( OSBaseFuture) < MulleObjCFuture>
 
 - (instancetype) initWithContentsOfFile:(NSString *) path;
 

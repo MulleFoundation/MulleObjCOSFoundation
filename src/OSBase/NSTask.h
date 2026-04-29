@@ -73,7 +73,7 @@ typedef NSInteger   NSTaskTerminationReason;
 @end
 
 
-@interface NSTask ( Future)
+@interface NSTask( Future) < MulleObjCFuture>
 
 + (char **) _environment;
 

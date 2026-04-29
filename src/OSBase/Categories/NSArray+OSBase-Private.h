@@ -11,7 +11,7 @@
  *  $Id$
  *
  */
-@interface NSArray( Posix_PrivateFuture)
+@interface NSArray( Posix_PrivateFuture) < MulleObjCFuture>
 
 + (instancetype) _newWithArgc:(int) argc
                          argv:(char **) argv;

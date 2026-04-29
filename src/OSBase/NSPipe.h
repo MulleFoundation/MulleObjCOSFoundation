@@ -34,7 +34,7 @@
 @end
 
 
-@interface NSPipe( Future)
+@interface NSPipe( Future) < MulleObjCFuture>
 
 - (instancetype) init;
 

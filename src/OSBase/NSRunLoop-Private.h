@@ -22,7 +22,7 @@
 @end
 
 
-@interface NSRunLoop( PrivateFuture)
+@interface NSRunLoop( PrivateFuture) < MulleObjCFuture>
 
 - (void) _addObject:(NSObject <_NSFileDescriptor> *) handle
             forMode:(NSRunLoopMode) mode;

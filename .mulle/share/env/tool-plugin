@@ -10,7 +10,6 @@ chgrp;required
 chmod;required
 chown;required
 clear
-cmp
 column
 cp;required
 cs
