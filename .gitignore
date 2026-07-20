@@ -93,3 +93,5 @@ plans/
 .roam
 .graveyard
 *.tmp.*
+*.test.*
+.idea

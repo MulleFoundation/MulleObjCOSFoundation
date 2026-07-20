@@ -1,6 +1,6 @@
 {
    "name" : "MulleObjCOSFoundation",
-   "version" : "0.26.0",
+   "version" : "0.26.1",
    "description" : "💻 Platform-dependent classes and categories like NSTask, NSPipe",
    "keywords" : [],
    "license" : "BSD-3-Clause",
