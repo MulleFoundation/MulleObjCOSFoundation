@@ -6,7 +6,7 @@ PASSED
 Testing environment...
   Environment has PATH: YES
   Environment has USERNAME: YES
-  Environment has SYSTEMROOT: NO
+  Environment has SYSTEMROOT: YES
 PASSED
 Testing executablePath...
 PASSED
