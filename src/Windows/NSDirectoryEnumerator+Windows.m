@@ -56,11 +56,7 @@
    _dir           = hFind;
    _manager       = [manager retain];
    _rootPath      = [root copy];
-   
-   _inheritedPath = [[manager stringWithFileSystemRepresentationUTF16:findData.cFileName
-                                                                length:wcslen( findData.cFileName)] retain];
-   
-   _isDirectory = (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) ? 1 : 0;
+   _inheritedPath = [inherited copy];
 
    return( self);
 }
@@ -71,7 +67,6 @@
    WIN32_FIND_DATAW   findData;
    HANDLE             hFind;
    NSString           *filename;
-   BOOL               result;
 
    MulleObjCSetWindowsErrorDomain();
 
@@ -81,30 +76,8 @@
 
    *is_dir = _MulleObjCIsMaybeADirectory;
 
-   if( _inheritedPath)
-   {
-      filename       = [_inheritedPath autorelease];
-      _inheritedPath = nil;
-      
-      if( _isDirectory)
-         *is_dir = _MulleObjCIsADirectory;
-      else
-         *is_dir = _MulleObjCIsNotADirectory;
-      
-      switch( [_manager _isValidDirectoryContentsFilenameAsCString:(char *) [filename UTF8String]])
-      {
-      case _MulleObjCFilenameIsDot:
-      case _MulleObjCFilenameIsDotDot:
-      case _MulleObjCFilenameIsNoFile:
-         goto retry;
-      default:
-         return( filename);
-      }
-   }
-
 retry:
-   result = FindNextFileW( hFind, &findData);
-   if( ! result)
+   if( ! FindNextFileW( hFind, &findData))
    {
       if( GetLastError() == ERROR_NO_MORE_FILES)
          return( nil);

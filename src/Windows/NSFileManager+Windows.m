@@ -33,6 +33,25 @@
 @dependency NSFileManager;
 
 
+- (int) _isValidDirectoryContentsFilenameAsCString:(char *) s
+{
+   int  c;
+
+   if( ! s || ! *s)
+      return( _MulleObjCFilenameIsNoFile);
+   if( *s != '.')
+      return( _MulleObjCFilenameIsNormal);
+   c = s[ 1];
+   if( ! c)
+      return( _MulleObjCFilenameIsDot);
+   if( c == '_')
+      return( _MulleObjCFilenameIsSystem);
+   if( c == '.' && ! s[ 2])
+      return( _MulleObjCFilenameIsDotDot);
+   return( _MulleObjCFilenameIsHidden);
+}
+
+
 - (char *) fileSystemRepresentationWithPath:(NSString *) path
 {
    NSString   *converted;
