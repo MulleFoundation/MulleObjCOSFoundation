@@ -64,3 +64,9 @@ export MULLE_MATCH_IGNORE_PATH="src/BSD:src/Darwin:src/FreeBSD:src/Linux:src/Loc
 
 
 
+#
+#
+#
+export vibecoding="off"
+
+

@@ -14,6 +14,10 @@
 #import "import.h"
 
 
+@interface NSLocale( Posix)
+@end
+
+
 @interface NSLocale( PosixFuture) < MulleObjCFuture>
 
 + (NSString *) systemLocalePath;
