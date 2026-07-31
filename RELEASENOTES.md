@@ -1,24 +1,9 @@
 ### 0.26.1
 
-Various small improvements
 
-## 0.26.0
+feature: add NSLocale( Posix) category for platform-specific locale extensions
 
+* new NSLocale( Posix) category declaration
+feature: add NSLocale( Posix) category for platform-specific locale extensions
 
-
-
-
-
-
-
-  NSCalendarDate, `_NSWindowsDateFormatter`
-
-
-
-
-
-
-feature: add Windows platform implementations and refresh OS-specific Foundation code
-
-* Add Windows implementations for core Foundation classes (NSFileManager, NSTask, NSRunLoop, NSString/NSDate helpers) with UTF-16 filesystem support and Unix↔Windows path conversion.
-* Refresh and align POSIX/BSD/Darwin/FreeBSD/Linux implementations and expand tests (NSDateFormatter, NSFileManager, NSTask) to ensure consistent cross-platform behavior.
+* new NSLocale( Posix) category declaration
