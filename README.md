@@ -39,6 +39,11 @@ It builds differently on each platform.
 
 
 
+## Documentation & Guides
+
+* [API Summary](asset/dox/api/toc)
+
+
 
 
 ## Requirements

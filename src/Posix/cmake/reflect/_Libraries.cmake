@@ -17,7 +17,13 @@ endif()
 # Disable for this platform: `mulle-sourcetree mark MulleObjCOSBaseFoundation no-cmake-platform-${MULLE_UNAME}`
 # Disable for a sdk: `mulle-sourcetree mark MulleObjCOSBaseFoundation no-cmake-sdk-<name>`
 #
-if( NOT MULLE_OBJC_OS_BASE_FOUNDATION_HEADER)
+foreach( _TMP_MULLE_OBJC_OS_BASE_FOUNDATION_HEADER_TARGET_TARGET MulleObjCOSBaseFoundation)
+   if( TARGET ${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_HEADER_TARGET_TARGET})
+      set( MULLE_OBJC_OS_BASE_FOUNDATION_HEADER_TARGET ${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_HEADER_TARGET_TARGET})
+      break()
+   endif()
+endforeach()
+if( NOT MULLE_OBJC_OS_BASE_FOUNDATION_HEADER AND NOT MULLE_OBJC_OS_BASE_FOUNDATION_HEADER_TARGET)
    find_file( MULLE_OBJC_OS_BASE_FOUNDATION_HEADER NAMES
       MulleObjCOSBaseFoundation/MulleObjCOSBaseFoundation.h MulleObjCOSBaseFoundation/MulleObjCOSBaseFoundation.h
       NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH

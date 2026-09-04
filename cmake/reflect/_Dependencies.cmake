@@ -36,34 +36,41 @@ if( COLLECT_ALL_LOAD_DEPENDENCY_LIBRARIES_AS_NAMES)
    list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES "MulleObjC")
 else()
    if( NOT MULLE_OBJC_LIBRARY)
-      find_library( MULLE_OBJC_LIBRARY NAMES
-         ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjC${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
-         ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjC${MULLE_PREFERRED_LIBRARY_SUFFIX}
-         ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjC${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
-         ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjC${MULLE_FALLBACK_LIBRARY_SUFFIX}
-         MulleObjC
-         NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
-      )
-      if( NOT MULLE_OBJC_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+      foreach( _TMP_MULLE_OBJC_LIBRARY_TARGET MulleObjC)
+         if( TARGET ${_TMP_MULLE_OBJC_LIBRARY_TARGET})
+            set( MULLE_OBJC_LIBRARY ${_TMP_MULLE_OBJC_LIBRARY_TARGET})
+            break()
+         endif()
+      endforeach()
+      if( NOT MULLE_OBJC_LIBRARY)
          find_library( MULLE_OBJC_LIBRARY NAMES
             ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjC${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
             ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjC${MULLE_PREFERRED_LIBRARY_SUFFIX}
             ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjC${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
             ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjC${MULLE_FALLBACK_LIBRARY_SUFFIX}
             MulleObjC
+            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
          )
+         if( NOT MULLE_OBJC_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+            find_library( MULLE_OBJC_LIBRARY NAMES
+               ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjC${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
+               ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjC${MULLE_PREFERRED_LIBRARY_SUFFIX}
+               ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjC${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
+               ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjC${MULLE_FALLBACK_LIBRARY_SUFFIX}
+               MulleObjC
+            )
+         endif()
       endif()
       message( STATUS "MULLE_OBJC_LIBRARY is ${MULLE_OBJC_LIBRARY}")
-      #
-      # The order looks ascending, but due to the way this file is read
-      # it ends up being descending, which is what we need.
-      #
-      if( MULLE_OBJC_LIBRARY)
+   endif()
+   if( MULLE_OBJC_LIBRARY)
          #
          # Add MULLE_OBJC_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
          # Disable with: `mulle-sourcetree mark MulleObjC no-cmake-add`
          #
-         list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${MULLE_OBJC_LIBRARY})
+         if( NOT ${MULLE_OBJC_LIBRARY} IN_LIST ALL_LOAD_DEPENDENCY_LIBRARIES)
+            list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${MULLE_OBJC_LIBRARY})
+         endif()
          #
          # Inherit information from dependency.
          # Encompasses: no-cmake-searchpath,no-cmake-dependency,no-cmake-loader
@@ -119,14 +126,13 @@ else()
                endif()
             endforeach()
          endif()
-      else()
-         # Disable with: `mulle-sourcetree mark MulleObjC no-require-link`
-         message( SEND_ERROR "MULLE_OBJC_LIBRARY was not found in ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjC${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
+   else()
+      # Disable with: `mulle-sourcetree mark MulleObjC no-require-link`
+      message( SEND_ERROR "MULLE_OBJC_LIBRARY was not found in ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjC${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
 ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjC${MULLE_PREFERRED_LIBRARY_SUFFIX}
 ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjC${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
 ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjC${MULLE_FALLBACK_LIBRARY_SUFFIX}
 MulleObjC")
-      endif()
    endif()
 endif()
 
@@ -141,34 +147,41 @@ if( COLLECT_ALL_LOAD_DEPENDENCY_LIBRARIES_AS_NAMES)
    list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES "MulleObjCOSBaseFoundation")
 else()
    if( NOT OS_BASE_LIBRARY)
-      find_library( OS_BASE_LIBRARY NAMES
-         ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
-         ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
-         ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
-         ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
-         MulleObjCOSBaseFoundation
-         NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
-      )
-      if( NOT OS_BASE_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+      foreach( _TMP_OS_BASE_LIBRARY_TARGET MulleObjCOSBaseFoundation)
+         if( TARGET ${_TMP_OS_BASE_LIBRARY_TARGET})
+            set( OS_BASE_LIBRARY ${_TMP_OS_BASE_LIBRARY_TARGET})
+            break()
+         endif()
+      endforeach()
+      if( NOT OS_BASE_LIBRARY)
          find_library( OS_BASE_LIBRARY NAMES
             ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
             ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
             ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
             ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
             MulleObjCOSBaseFoundation
+            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
          )
+         if( NOT OS_BASE_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+            find_library( OS_BASE_LIBRARY NAMES
+               ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
+               ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
+               ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
+               ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
+               MulleObjCOSBaseFoundation
+            )
+         endif()
       endif()
       message( STATUS "OS_BASE_LIBRARY is ${OS_BASE_LIBRARY}")
-      #
-      # The order looks ascending, but due to the way this file is read
-      # it ends up being descending, which is what we need.
-      #
-      if( OS_BASE_LIBRARY)
+   endif()
+   if( OS_BASE_LIBRARY)
          #
          # Add OS_BASE_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
          # Disable with: `mulle-sourcetree mark src/OSBase no-cmake-add`
          #
-         list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${OS_BASE_LIBRARY})
+         if( NOT ${OS_BASE_LIBRARY} IN_LIST ALL_LOAD_DEPENDENCY_LIBRARIES)
+            list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${OS_BASE_LIBRARY})
+         endif()
          #
          # Inherit information from dependency.
          # Encompasses: no-cmake-searchpath,no-cmake-dependency,no-cmake-loader
@@ -224,14 +237,13 @@ else()
                endif()
             endforeach()
          endif()
-      else()
-         # Disable with: `mulle-sourcetree mark src/OSBase no-require-link`
-         message( SEND_ERROR "OS_BASE_LIBRARY was not found in ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
+   else()
+      # Disable with: `mulle-sourcetree mark src/OSBase no-require-link`
+      message( SEND_ERROR "OS_BASE_LIBRARY was not found in ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
 ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
 ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
 ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCOSBaseFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
 MulleObjCOSBaseFoundation")
-      endif()
    endif()
 endif()
 
@@ -247,34 +259,41 @@ if( NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
       list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES "MulleObjCPosixFoundation")
    else()
       if( NOT POSIX_LIBRARY)
-         find_library( POSIX_LIBRARY NAMES
-            ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
-            ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCPosixFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
-            ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
-            ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCPosixFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
-            MulleObjCPosixFoundation
-            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
-         )
-         if( NOT POSIX_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+         foreach( _TMP_POSIX_LIBRARY_TARGET MulleObjCPosixFoundation)
+            if( TARGET ${_TMP_POSIX_LIBRARY_TARGET})
+               set( POSIX_LIBRARY ${_TMP_POSIX_LIBRARY_TARGET})
+               break()
+            endif()
+         endforeach()
+         if( NOT POSIX_LIBRARY)
             find_library( POSIX_LIBRARY NAMES
                ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
                ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCPosixFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
                ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
                ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCPosixFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
                MulleObjCPosixFoundation
+               NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
             )
+            if( NOT POSIX_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+               find_library( POSIX_LIBRARY NAMES
+                  ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
+                  ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCPosixFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
+                  ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
+                  ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCPosixFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
+                  MulleObjCPosixFoundation
+               )
+            endif()
          endif()
          message( STATUS "POSIX_LIBRARY is ${POSIX_LIBRARY}")
-         #
-         # The order looks ascending, but due to the way this file is read
-         # it ends up being descending, which is what we need.
-         #
-         if( POSIX_LIBRARY)
+      endif()
+      if( POSIX_LIBRARY)
             #
             # Add POSIX_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
             # Disable with: `mulle-sourcetree mark src/Posix no-cmake-add`
             #
-            list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${POSIX_LIBRARY})
+            if( NOT ${POSIX_LIBRARY} IN_LIST ALL_LOAD_DEPENDENCY_LIBRARIES)
+               list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${POSIX_LIBRARY})
+            endif()
             #
             # Inherit information from dependency.
             # Encompasses: no-cmake-searchpath,no-cmake-dependency,no-cmake-loader
@@ -330,14 +349,13 @@ if( NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
                   endif()
                endforeach()
             endif()
-         else()
-            # Disable with: `mulle-sourcetree mark src/Posix no-require-link`
-            message( SEND_ERROR "POSIX_LIBRARY was not found in ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
+      else()
+         # Disable with: `mulle-sourcetree mark src/Posix no-require-link`
+         message( SEND_ERROR "POSIX_LIBRARY was not found in ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
 ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCPosixFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
 ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCPosixFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
 ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCPosixFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
 MulleObjCPosixFoundation")
-         endif()
       endif()
    endif()
 endif()
@@ -354,34 +372,41 @@ if( NOT (${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES 
       list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES "MulleObjCBSDFoundation")
    else()
       if( NOT BSD_LIBRARY)
-         find_library( BSD_LIBRARY NAMES
-            ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCBSDFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
-            ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCBSDFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
-            ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCBSDFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
-            ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCBSDFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
-            MulleObjCBSDFoundation
-            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
-         )
-         if( NOT BSD_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+         foreach( _TMP_BSD_LIBRARY_TARGET MulleObjCBSDFoundation)
+            if( TARGET ${_TMP_BSD_LIBRARY_TARGET})
+               set( BSD_LIBRARY ${_TMP_BSD_LIBRARY_TARGET})
+               break()
+            endif()
+         endforeach()
+         if( NOT BSD_LIBRARY)
             find_library( BSD_LIBRARY NAMES
                ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCBSDFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
                ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCBSDFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
                ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCBSDFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
                ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCBSDFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
                MulleObjCBSDFoundation
+               NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
             )
+            if( NOT BSD_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+               find_library( BSD_LIBRARY NAMES
+                  ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCBSDFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
+                  ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCBSDFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
+                  ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCBSDFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
+                  ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCBSDFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
+                  MulleObjCBSDFoundation
+               )
+            endif()
          endif()
          message( STATUS "BSD_LIBRARY is ${BSD_LIBRARY}")
-         #
-         # The order looks ascending, but due to the way this file is read
-         # it ends up being descending, which is what we need.
-         #
-         if( BSD_LIBRARY)
+      endif()
+      if( BSD_LIBRARY)
             #
             # Add BSD_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
             # Disable with: `mulle-sourcetree mark src/BSD no-cmake-add`
             #
-            list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${BSD_LIBRARY})
+            if( NOT ${BSD_LIBRARY} IN_LIST ALL_LOAD_DEPENDENCY_LIBRARIES)
+               list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${BSD_LIBRARY})
+            endif()
             #
             # Inherit information from dependency.
             # Encompasses: no-cmake-searchpath,no-cmake-dependency,no-cmake-loader
@@ -437,14 +462,13 @@ if( NOT (${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES 
                   endif()
                endforeach()
             endif()
-         else()
-            # Disable with: `mulle-sourcetree mark src/BSD no-require-link`
-            message( SEND_ERROR "BSD_LIBRARY was not found in ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCBSDFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
+      else()
+         # Disable with: `mulle-sourcetree mark src/BSD no-require-link`
+         message( SEND_ERROR "BSD_LIBRARY was not found in ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCBSDFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
 ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCBSDFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
 ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCBSDFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
 ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCBSDFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
 MulleObjCBSDFoundation")
-         endif()
       endif()
    endif()
 endif()
@@ -461,34 +485,41 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
       list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES "MulleObjCFreeBSDFoundation")
    else()
       if( NOT FREE_BSD_LIBRARY)
-         find_library( FREE_BSD_LIBRARY NAMES
-            ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
-            ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
-            ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
-            ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
-            MulleObjCFreeBSDFoundation
-            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
-         )
-         if( NOT FREE_BSD_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+         foreach( _TMP_FREE_BSD_LIBRARY_TARGET MulleObjCFreeBSDFoundation)
+            if( TARGET ${_TMP_FREE_BSD_LIBRARY_TARGET})
+               set( FREE_BSD_LIBRARY ${_TMP_FREE_BSD_LIBRARY_TARGET})
+               break()
+            endif()
+         endforeach()
+         if( NOT FREE_BSD_LIBRARY)
             find_library( FREE_BSD_LIBRARY NAMES
                ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
                ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
                ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
                ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
                MulleObjCFreeBSDFoundation
+               NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
             )
+            if( NOT FREE_BSD_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+               find_library( FREE_BSD_LIBRARY NAMES
+                  ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
+                  ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
+                  ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
+                  ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
+                  MulleObjCFreeBSDFoundation
+               )
+            endif()
          endif()
          message( STATUS "FREE_BSD_LIBRARY is ${FREE_BSD_LIBRARY}")
-         #
-         # The order looks ascending, but due to the way this file is read
-         # it ends up being descending, which is what we need.
-         #
-         if( FREE_BSD_LIBRARY)
+      endif()
+      if( FREE_BSD_LIBRARY)
             #
             # Add FREE_BSD_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
             # Disable with: `mulle-sourcetree mark src/FreeBSD no-cmake-add`
             #
-            list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${FREE_BSD_LIBRARY})
+            if( NOT ${FREE_BSD_LIBRARY} IN_LIST ALL_LOAD_DEPENDENCY_LIBRARIES)
+               list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${FREE_BSD_LIBRARY})
+            endif()
             #
             # Inherit information from dependency.
             # Encompasses: no-cmake-searchpath,no-cmake-dependency,no-cmake-loader
@@ -544,14 +575,13 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
                   endif()
                endforeach()
             endif()
-         else()
-            # Disable with: `mulle-sourcetree mark src/FreeBSD no-require-link`
-            message( SEND_ERROR "FREE_BSD_LIBRARY was not found in ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
+      else()
+         # Disable with: `mulle-sourcetree mark src/FreeBSD no-require-link`
+         message( SEND_ERROR "FREE_BSD_LIBRARY was not found in ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
 ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
 ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
 ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCFreeBSDFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
 MulleObjCFreeBSDFoundation")
-         endif()
       endif()
    endif()
 endif()
@@ -568,34 +598,41 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
       list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES "MulleObjCDarwinFoundation")
    else()
       if( NOT DARWIN_LIBRARY)
-         find_library( DARWIN_LIBRARY NAMES
-            ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCDarwinFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
-            ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCDarwinFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
-            ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCDarwinFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
-            ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCDarwinFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
-            MulleObjCDarwinFoundation
-            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
-         )
-         if( NOT DARWIN_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+         foreach( _TMP_DARWIN_LIBRARY_TARGET MulleObjCDarwinFoundation)
+            if( TARGET ${_TMP_DARWIN_LIBRARY_TARGET})
+               set( DARWIN_LIBRARY ${_TMP_DARWIN_LIBRARY_TARGET})
+               break()
+            endif()
+         endforeach()
+         if( NOT DARWIN_LIBRARY)
             find_library( DARWIN_LIBRARY NAMES
                ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCDarwinFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
                ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCDarwinFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
                ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCDarwinFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
                ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCDarwinFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
                MulleObjCDarwinFoundation
+               NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
             )
+            if( NOT DARWIN_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+               find_library( DARWIN_LIBRARY NAMES
+                  ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCDarwinFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
+                  ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCDarwinFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
+                  ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCDarwinFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
+                  ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCDarwinFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
+                  MulleObjCDarwinFoundation
+               )
+            endif()
          endif()
          message( STATUS "DARWIN_LIBRARY is ${DARWIN_LIBRARY}")
-         #
-         # The order looks ascending, but due to the way this file is read
-         # it ends up being descending, which is what we need.
-         #
-         if( DARWIN_LIBRARY)
+      endif()
+      if( DARWIN_LIBRARY)
             #
             # Add DARWIN_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
             # Disable with: `mulle-sourcetree mark src/Darwin no-cmake-add`
             #
-            list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${DARWIN_LIBRARY})
+            if( NOT ${DARWIN_LIBRARY} IN_LIST ALL_LOAD_DEPENDENCY_LIBRARIES)
+               list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${DARWIN_LIBRARY})
+            endif()
             #
             # Inherit information from dependency.
             # Encompasses: no-cmake-searchpath,no-cmake-dependency,no-cmake-loader
@@ -651,14 +688,13 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                   endif()
                endforeach()
             endif()
-         else()
-            # Disable with: `mulle-sourcetree mark src/Darwin no-require-link`
-            message( SEND_ERROR "DARWIN_LIBRARY was not found in ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCDarwinFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
+      else()
+         # Disable with: `mulle-sourcetree mark src/Darwin no-require-link`
+         message( SEND_ERROR "DARWIN_LIBRARY was not found in ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCDarwinFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
 ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCDarwinFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
 ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCDarwinFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
 ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCDarwinFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
 MulleObjCDarwinFoundation")
-         endif()
       endif()
    endif()
 endif()
@@ -675,34 +711,41 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES "Linu
       list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES "MulleObjCLinuxFoundation")
    else()
       if( NOT LINUX_LIBRARY)
-         find_library( LINUX_LIBRARY NAMES
-            ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCLinuxFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
-            ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCLinuxFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
-            ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCLinuxFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
-            ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCLinuxFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
-            MulleObjCLinuxFoundation
-            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
-         )
-         if( NOT LINUX_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+         foreach( _TMP_LINUX_LIBRARY_TARGET MulleObjCLinuxFoundation)
+            if( TARGET ${_TMP_LINUX_LIBRARY_TARGET})
+               set( LINUX_LIBRARY ${_TMP_LINUX_LIBRARY_TARGET})
+               break()
+            endif()
+         endforeach()
+         if( NOT LINUX_LIBRARY)
             find_library( LINUX_LIBRARY NAMES
                ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCLinuxFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
                ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCLinuxFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
                ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCLinuxFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
                ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCLinuxFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
                MulleObjCLinuxFoundation
+               NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
             )
+            if( NOT LINUX_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+               find_library( LINUX_LIBRARY NAMES
+                  ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCLinuxFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
+                  ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCLinuxFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
+                  ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCLinuxFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
+                  ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCLinuxFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
+                  MulleObjCLinuxFoundation
+               )
+            endif()
          endif()
          message( STATUS "LINUX_LIBRARY is ${LINUX_LIBRARY}")
-         #
-         # The order looks ascending, but due to the way this file is read
-         # it ends up being descending, which is what we need.
-         #
-         if( LINUX_LIBRARY)
+      endif()
+      if( LINUX_LIBRARY)
             #
             # Add LINUX_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
             # Disable with: `mulle-sourcetree mark src/Linux no-cmake-add`
             #
-            list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${LINUX_LIBRARY})
+            if( NOT ${LINUX_LIBRARY} IN_LIST ALL_LOAD_DEPENDENCY_LIBRARIES)
+               list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${LINUX_LIBRARY})
+            endif()
             #
             # Inherit information from dependency.
             # Encompasses: no-cmake-searchpath,no-cmake-dependency,no-cmake-loader
@@ -758,14 +801,13 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Android" OR ${CMAKE_SYSTEM_NAME} MATCHES "Linu
                   endif()
                endforeach()
             endif()
-         else()
-            # Disable with: `mulle-sourcetree mark src/Linux no-require-link`
-            message( SEND_ERROR "LINUX_LIBRARY was not found in ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCLinuxFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
+      else()
+         # Disable with: `mulle-sourcetree mark src/Linux no-require-link`
+         message( SEND_ERROR "LINUX_LIBRARY was not found in ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCLinuxFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
 ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCLinuxFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
 ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCLinuxFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
 ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCLinuxFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
 MulleObjCLinuxFoundation")
-         endif()
       endif()
    endif()
 endif()
@@ -782,34 +824,41 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
       list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES "MulleObjCWindowsFoundation")
    else()
       if( NOT WINDOWS_LIBRARY)
-         find_library( WINDOWS_LIBRARY NAMES
-            ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCWindowsFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
-            ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCWindowsFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
-            ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCWindowsFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
-            ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCWindowsFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
-            MulleObjCWindowsFoundation
-            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
-         )
-         if( NOT WINDOWS_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+         foreach( _TMP_WINDOWS_LIBRARY_TARGET MulleObjCWindowsFoundation)
+            if( TARGET ${_TMP_WINDOWS_LIBRARY_TARGET})
+               set( WINDOWS_LIBRARY ${_TMP_WINDOWS_LIBRARY_TARGET})
+               break()
+            endif()
+         endforeach()
+         if( NOT WINDOWS_LIBRARY)
             find_library( WINDOWS_LIBRARY NAMES
                ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCWindowsFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
                ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCWindowsFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
                ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCWindowsFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
                ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCWindowsFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
                MulleObjCWindowsFoundation
+               NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
             )
+            if( NOT WINDOWS_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+               find_library( WINDOWS_LIBRARY NAMES
+                  ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCWindowsFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
+                  ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCWindowsFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
+                  ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCWindowsFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
+                  ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCWindowsFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
+                  MulleObjCWindowsFoundation
+               )
+            endif()
          endif()
          message( STATUS "WINDOWS_LIBRARY is ${WINDOWS_LIBRARY}")
-         #
-         # The order looks ascending, but due to the way this file is read
-         # it ends up being descending, which is what we need.
-         #
-         if( WINDOWS_LIBRARY)
+      endif()
+      if( WINDOWS_LIBRARY)
             #
             # Add WINDOWS_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
             # Disable with: `mulle-sourcetree mark src/Windows no-cmake-add`
             #
-            list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${WINDOWS_LIBRARY})
+            if( NOT ${WINDOWS_LIBRARY} IN_LIST ALL_LOAD_DEPENDENCY_LIBRARIES)
+               list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${WINDOWS_LIBRARY})
+            endif()
             #
             # Inherit information from dependency.
             # Encompasses: no-cmake-searchpath,no-cmake-dependency,no-cmake-loader
@@ -865,14 +914,13 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
                   endif()
                endforeach()
             endif()
-         else()
-            # Disable with: `mulle-sourcetree mark src/Windows no-require-link`
-            message( SEND_ERROR "WINDOWS_LIBRARY was not found in ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCWindowsFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
+      else()
+         # Disable with: `mulle-sourcetree mark src/Windows no-require-link`
+         message( SEND_ERROR "WINDOWS_LIBRARY was not found in ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCWindowsFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
 ${MULLE_PREFERRED_LIBRARY_PREFIX}MulleObjCWindowsFoundation${MULLE_PREFERRED_LIBRARY_SUFFIX}
 ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCWindowsFoundation${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
 ${MULLE_FALLBACK_LIBRARY_PREFIX}MulleObjCWindowsFoundation${MULLE_FALLBACK_LIBRARY_SUFFIX}
 MulleObjCWindowsFoundation")
-         endif()
       endif()
    endif()
 endif()

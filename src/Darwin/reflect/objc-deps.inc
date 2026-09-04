@@ -3,5 +3,6 @@
       { @selector( NSFileManager), @selector( Darwin) },      // 56d57ffc;NSFileManager;6d352c2f;Darwin
       { @selector( NSProcessInfo), @selector( Darwin) },      // 208b1df5;NSProcessInfo;6d352c2f;Darwin
       { @selector( NSString), @selector( Darwin) },      // 1994a171;NSString;6d352c2f;Darwin
+      { @selector( NSString), @selector( FileSystemString) },      // 1994a171;NSString;fd996c34;FileSystemString
       { @selector( NSTask), @selector( Darwin) },      // 90ec29ba;NSTask;6d352c2f;Darwin
       { @selector( _NSPathUtilityVectorTable_Loader), @selector( Darwin) },      // ad89cd30;_NSPathUtilityVectorTable_Loader;6d352c2f;Darwin

@@ -21,20 +21,27 @@ if( COLLECT_ALL_LOAD_OS_SPECIFIC_LIBRARIES_AS_NAMES)
    list( APPEND ALL_LOAD_OS_SPECIFIC_LIBRARIES "MulleObjCOSBaseFoundation")
 else()
    if( NOT MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY)
-      find_library( MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY NAMES
-         MulleObjCOSBaseFoundation
-      )
+      foreach( _TMP_MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY_TARGET MulleObjCOSBaseFoundation)
+         if( TARGET ${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY_TARGET})
+            set( MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY ${_TMP_MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY_TARGET})
+            break()
+         endif()
+      endforeach()
+      if( NOT MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY)
+         find_library( MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY NAMES
+            MulleObjCOSBaseFoundation
+         )
+      endif()
       message( STATUS "MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY is ${MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY}")
-      #
-      # The order looks ascending, but due to the way this file is read
-      # it ends up being descending, which is what we need.
-      #
-      if( MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY)
+   endif()
+   if( MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY)
          #
          # Add MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY to ALL_LOAD_OS_SPECIFIC_LIBRARIES list.
          # Disable with: `mulle-sourcetree mark MulleObjCOSBaseFoundation no-cmake-add`
          #
-         list( APPEND ALL_LOAD_OS_SPECIFIC_LIBRARIES ${MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY})
+         if( NOT ${MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY} IN_LIST ALL_LOAD_OS_SPECIFIC_LIBRARIES)
+            list( APPEND ALL_LOAD_OS_SPECIFIC_LIBRARIES ${MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY})
+         endif()
          #
          # Inherit information from dependency.
          # Encompasses: no-cmake-searchpath,no-cmake-dependency,no-cmake-loader
@@ -90,9 +97,8 @@ else()
                endif()
             endforeach()
          endif()
-      else()
-         # Disable with: `mulle-sourcetree mark MulleObjCOSBaseFoundation no-require-link`
-         message( SEND_ERROR "MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY was not found in MulleObjCOSBaseFoundation")
-      endif()
+   else()
+      # Disable with: `mulle-sourcetree mark MulleObjCOSBaseFoundation no-require-link`
+      message( SEND_ERROR "MULLE_OBJC_OS_BASE_FOUNDATION_LIBRARY was not found in MulleObjCOSBaseFoundation")
    endif()
 endif()
