@@ -1,5 +1,5 @@
 //
-//  NSConditionLock+NSString.m
+//  NSCondition+NSString.m
 //  MulleObjCOSFoundation
 //
 //  Copyright (c) 2022 Nat! - Mulle kybernetiK.

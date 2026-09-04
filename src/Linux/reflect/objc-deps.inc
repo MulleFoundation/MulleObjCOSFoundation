@@ -4,6 +4,7 @@
       { @selector( NSFileManager), @selector( Linux) },      // 56d57ffc;NSFileManager;4f302bd9;Linux
       { @selector( NSLocale), @selector( Linux) },      // 22b7d78c;NSLocale;4f302bd9;Linux
       { @selector( NSProcessInfo), @selector( Linux) },      // 208b1df5;NSProcessInfo;4f302bd9;Linux
+      { @selector( NSString), @selector( FileSystemString) },      // 1994a171;NSString;fd996c34;FileSystemString
       { @selector( NSString), @selector( Linux) },      // 1994a171;NSString;4f302bd9;Linux
       { @selector( NSTask), @selector( Linux) },      // 90ec29ba;NSTask;4f302bd9;Linux
       { @selector( NSTimeZone), @selector( Linux) },      // 190d1ade;NSTimeZone;4f302bd9;Linux

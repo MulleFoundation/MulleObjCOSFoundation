@@ -26,6 +26,11 @@ int   main( int argc, const char * argv[])
    }
 
    cString = [NSString stringWithCString:(char *) argv[ 0]];
+
+   // Normalize both to Unix format for cross-platform comparison
+   s       = [s mulleUnixFileSystemString];
+   cString = [cString mulleUnixFileSystemString];
+
    if( ! [s isEqualToString:cString])
       mulle_printf( "failed\n");
 

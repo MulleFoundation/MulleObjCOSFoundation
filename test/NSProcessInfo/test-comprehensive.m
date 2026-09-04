@@ -266,15 +266,23 @@ static void   test_set_process_name()
    NSProcessInfo *info = [NSProcessInfo processInfo];
    NSString *originalName = [info processName];
 
-   // Try to set process name (should be no-op on Windows)
+   // Try to set process name
    [info setProcessName:@"TestProcess"];
 
    NSString *newName = [info processName];
 
-   // Name should remain unchanged (like Linux implementation)
+#ifdef __APPLE__
+   // On Darwin, NSProcessInfo( BSD) uses setprogname()/getprogname(), so
+   // setProcessName: genuinely changes the process name.
+   TEST_ASSERT([newName isEqualToString:@"TestProcess"], "setProcessName should change process name on Darwin");
+
+   mulle_printf("  Process name changed: %s\n", [newName UTF8String] ?: "(null)");
+#else
+   // On Linux/Windows setProcessName: is a no-op.
    TEST_ASSERT([originalName isEqualToString:newName], "setProcessName should not change process name");
 
    mulle_printf("  Process name unchanged: %s\n", [newName UTF8String] ?: "(null)");
+#endif
 
    TEST_PASS();
 }

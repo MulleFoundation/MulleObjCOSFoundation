@@ -1,4 +1,3 @@
-      { @selector( MulleObjCDeps), @selector( MulleFoundationBase) },      // 47a9beb6;MulleObjCDeps;efab19ea;MulleFoundationBase
       { @selector( NSCalendarDate), @selector( BSD) },      // b8742fcb;NSCalendarDate;999e852d;BSD
       { @selector( NSDate), @selector( BSD) },      // cfcedd21;NSDate;999e852d;BSD
       { @selector( NSDateFormatter), @selector( BSD) },      // 6d2cd542;NSDateFormatter;999e852d;BSD
