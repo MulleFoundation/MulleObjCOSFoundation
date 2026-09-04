@@ -1,3 +1,0 @@
-# these are installed and the envelope header includes them directly
-include-private.h
-import-private.h
