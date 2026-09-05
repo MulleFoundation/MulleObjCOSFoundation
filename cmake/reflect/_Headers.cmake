@@ -56,6 +56,5 @@ src/generic/include.h
 set( PUBLIC_HEADERS
 src/MulleObjCDeps+MulleObjCOSFoundation.h
 src/MulleObjCOSFoundation.h
-src/reflect/_MulleObjCOSFoundation-versioncheck.h
 )
 
