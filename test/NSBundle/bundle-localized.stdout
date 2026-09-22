@@ -1,0 +1,5 @@
+missing-key=1
+nil-key-value=1
+nil-key-nil-value=1
+missing-key-default=1
+empty-table=1

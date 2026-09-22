@@ -37,4 +37,5 @@
 #include <stdint.h>
 
 // feed linker
+MULLE_OBJC_OS_FOUNDATION_GLOBAL_VAR
 uint32_t   MulleObjCOSFoundationVersion = MULLE_OBJC_OS_FOUNDATION_VERSION;

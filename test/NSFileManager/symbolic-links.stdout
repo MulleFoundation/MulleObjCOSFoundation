@@ -1,0 +1,17 @@
+create.link=1
+dest.link=<a>
+dest.link.len=1
+exists.link=1
+copy.link=1
+copy.link.dest=<a>
+contents.links.equal=1
+contents.link.file.equal=0
+copy.link.again=0
+move.link=1
+move.link.src.gone=0
+move.link.dest=<a>
+dangling.create=1
+dangling.dest=<nonexistent>
+dangling.exists=0
+copy.dangling=1
+copy.dangling.dest=<nonexistent>

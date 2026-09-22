@@ -1,0 +1,8 @@
+os-version-non-nil=1
+globally-unique-non-nil=1
+globally-unique-unique=1
+pid-positive=1
+host-non-nil=1
+process-name-stable=1
+environment-set=1
+environment-unset=1

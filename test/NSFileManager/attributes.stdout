@@ -1,0 +1,12 @@
+attrs.file.type.regular=1
+attrs.file.size=1
+attrs.file.perms=1
+attrs.link.traverse.regular=1
+attrs.link.nottraverse.link=1
+item.link.link=1
+item.file.regular=1
+item.file.size=1
+item.none.isnil=1
+attrs.none.isnil=1
+attrs.dangling.traverse.isnil=1
+attrs.dangling.nottraverse.link=1

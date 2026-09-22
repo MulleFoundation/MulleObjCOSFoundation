@@ -32,9 +32,13 @@ int   main( int argc, char * argv[])
    bundle_exe = [bundle executablePath];
    argv_exe   = [NSString stringWithCString:argv[ 0]];
 
+   // the emulator may invoke us with a relative argv[0]
+   if( ! [argv_exe isAbsolutePath])
+      argv_exe = [[[NSFileManager defaultManager] currentDirectoryPath] stringByAppendingPathComponent:argv_exe];
+
    // Normalize both to Unix format for comparison
-   bundle_exe = [bundle_exe mulleUnixFileSystemString];
-   argv_exe   = [argv_exe mulleUnixFileSystemString];
+   bundle_exe = [[bundle_exe mulleUnixFileSystemString] stringByStandardizingPath];
+   argv_exe   = [[argv_exe mulleUnixFileSystemString] stringByStandardizingPath];
 
    mulle_fprintf( stderr, "DEBUG: argv[0]:    '%s'\n", argv[ 0]);
    mulle_fprintf( stderr, "DEBUG: argv_exe:   '%s'\n", [argv_exe UTF8String]);

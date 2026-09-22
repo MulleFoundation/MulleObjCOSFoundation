@@ -1,0 +1,5 @@
+runmode-yes=1
+timer-fired=1
+acceptinput-fired=1
+invalidate-no-fire=1
+perform-after-timer=1

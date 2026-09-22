@@ -1,0 +1,12 @@
+home-non-nil=1
+home-absolute=1
+home-exists=1
+temporary-non-nil=1
+temporary-exists=1
+user-non-nil=1
+full-user-non-nil=1
+root-non-nil=1
+home-for-user-non-nil=1
+search-non-nil=1
+search-array=1
+search-all-non-nil=1

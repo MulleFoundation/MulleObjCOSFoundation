@@ -271,10 +271,10 @@ static void   test_set_process_name()
 
    NSString *newName = [info processName];
 
-#ifdef __APPLE__
-   // On Darwin, NSProcessInfo( BSD) uses setprogname()/getprogname(), so
+#if defined(__APPLE__) || defined(__FreeBSD__)
+   // On Darwin/FreeBSD, NSProcessInfo uses setprogname()/getprogname(), so
    // setProcessName: genuinely changes the process name.
-   TEST_ASSERT([newName isEqualToString:@"TestProcess"], "setProcessName should change process name on Darwin");
+   TEST_ASSERT([newName isEqualToString:@"TestProcess"], "setProcessName should change process name on Darwin/FreeBSD");
 
    mulle_printf("  Process name changed: %s\n", [newName UTF8String] ?: "(null)");
 #else

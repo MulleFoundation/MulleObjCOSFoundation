@@ -37,24 +37,6 @@
 
 #import "import.h"
 
-
-// BSD, OS X, Linux
-
-// want to have alloca available from now on
-
-#ifdef __APPLE__
-# include <alloca.h>
-#else
-# ifdef __linux__
-#  include <alloca.h>
-# else
-#  ifdef __unix__
-#   include <stdlib.h> // has alloca
-#  endif
-# endif
-#endif
-
-
 #ifdef __has_include
 # if __has_include( "_MulleObjCOSFoundation-versioncheck.h")
 #  include "_MulleObjCOSFoundation-versioncheck.h"

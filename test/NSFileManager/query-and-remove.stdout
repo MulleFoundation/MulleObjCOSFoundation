@@ -1,0 +1,17 @@
+exists.file=1
+exists.dir=1
+exists.none=0
+isdir.dir=1
+isdir.file=0
+r.file=1
+w.file=1
+x.file=0
+d.file=1
+r.file0000=0
+w.file0000=0
+x.file0000=0
+d.file0000=1
+x.dir=1
+remove.none=0
+remove.file=1
+exists.file.after=0

@@ -1,0 +1,5 @@
+fast.count=6
+fast.contents=<a,d1,d1/b,d1/d2,d1/d2/c,lf>
+fast.lf.present=1
+skip.before.count=6
+nonexistent=1

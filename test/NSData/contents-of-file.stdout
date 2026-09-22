@@ -1,0 +1,8 @@
+roundtrip.small=1
+roundtrip.small.atomic=1
+roundtrip.4096=1
+roundtrip.big=1
+roundtrip.empty=1
+read.none.isnil=1
+read.dir.isnil=1
+write.badpath=1

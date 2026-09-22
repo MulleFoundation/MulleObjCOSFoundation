@@ -1,7 +1,7 @@
 #
 #
 #
-export MULLE_SDE_CLEAN_DEFAULT="Posix:OSBase:Windows:Linux:FreeBSD:Darwin:BSD:MulleObjCOSFoundation"
+
 
 
 #
@@ -44,5 +44,17 @@ export MULLE_SDE_CLEAN_DEFAULT="Posix:OSBase:Windows:Linux:FreeBSD:Darwin:BSD:Mu
 #
 #
 export MULLE_TEST_CLEAN_TARGET="MulleFoundationBase"
+
+
+#
+#
+#
+export MULLE_SDE_CLEAN_DEFAULT="MulleObjCOSFoundation"
+
+
+#
+#
+#
+export MULLE_SDE_CLEAN_BEFORE_CRAFT="YES"
 
 

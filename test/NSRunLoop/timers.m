@@ -11,7 +11,6 @@
 # import <Foundation/Foundation.h>
 #endif
 
-
 //#import "MulleStandaloneObjCFoundation.h"
 @interface Foo : NSObject
 @end
@@ -31,13 +30,10 @@
 int   main( int argc, const char * argv[])
 {
    NSRunLoop         *runLoop;
-   NSDate            *date;
-   NSTimeInterval    now;
+   NSDate            *fireDate;
    NSTimer           *timer;
-   NSTimeInterval    interval;
    Foo               *foo;
    id                argument;
-   int               i;
 
 #ifdef __MULLE_OBJC__
    if( mulle_objc_global_check_universe( __MULLE_OBJC_UNIVERSENAME__) != mulle_objc_universe_is_ok)
@@ -54,20 +50,19 @@ int   main( int argc, const char * argv[])
                                              selector:@selector( a:)
                                              userInfo:argument
                                               repeats:NO];
+      fireDate = [timer fireDate];
 
+      // running until a date well before the fire date must not fire it
       mulle_printf( "1. \n");
-      now = [NSDate timeIntervalSinceReferenceDate];
-      [runLoop runUntilDate:[NSDate dateWithTimeIntervalSinceReferenceDate:now]];
+      [runLoop runUntilDate:[NSDate dateWithTimeIntervalSinceReferenceDate:0.0]];
 
-      // now should be later than
-      if( [timer mulleFireTimeInterval] > now + 0.1000)
-         mulle_printf( "Hein ???\n");
-
+      // running up to the timer's own fire date fires it, deterministically
       mulle_printf( "2. \n");
-      [runLoop runUntilDate:[NSDate dateWithTimeIntervalSinceReferenceDate:now + 0.1000]];
+      [runLoop runUntilDate:fireDate];
 
+      // and it does not fire again
       mulle_printf( "3. \n");
-      [runLoop runUntilDate:[NSDate dateWithTimeIntervalSinceReferenceDate:now + 0.1000]];
+      [runLoop runUntilDate:fireDate];
 
       mulle_printf( "4. \n");
    }

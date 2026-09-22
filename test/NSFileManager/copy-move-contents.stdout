@@ -1,0 +1,17 @@
+copy.file.ok=1
+copy.file.same=1
+copy.file.again=0
+move.file.ok=1
+move.file.src.gone=0
+move.file.dst=1
+move.onto.existing=0
+copy.dir.ok=1
+copy.dir.sub=1
+contents.file.notnil=1
+contents.file.length=1
+contents.dir.isnil=1
+contents.equal.files=1
+contents.equal.self=1
+contents.equal.dirs=1
+dir.contents=<.h,x,y,z>
+dir.none.isnil=1

@@ -1,0 +1,9 @@
+fs.notnil=1
+fs.size.positive=1
+fs.free.le.size=1
+fs.nodes.positive=1
+fs.freenodes.le.nodes=1
+fs.number.present=1
+fs.error.api.same.size=1
+item.systemnumber.matches.fs=1
+fs.none.isnil=1

@@ -1,0 +1,5 @@
+resource-non-nil=1
+private-frameworks=1
+shared-frameworks=1
+shared-support=1
+auxiliary=1

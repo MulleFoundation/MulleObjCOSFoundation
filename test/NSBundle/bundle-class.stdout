@@ -1,0 +1,7 @@
+class-named=1
+missing-class=1
+nil-class=1
+principal-class-nil=1
+os-identifier=1
+main-bundle-path-exists=1
+bundle-path-exists=1

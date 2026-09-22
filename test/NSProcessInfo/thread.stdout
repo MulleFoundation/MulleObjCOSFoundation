@@ -1,0 +1,7 @@
+main-arguments=1
+main-environment=1
+main-executable=1
+worker-arguments=1
+worker-environment=1
+worker-executable=1
+worker-unique=1

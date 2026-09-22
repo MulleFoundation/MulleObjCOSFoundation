@@ -1,0 +1,13 @@
+enum.a=1
+enum.sub=1
+enum.sub.b=1
+enum.sub2=1
+enum.sub2.b.gone=1
+level.a=1
+level.sub=1
+level.sub.b=2
+level.sub2=1
+skip.sub=1
+skip.sub.b.gone=1
+dirattrs.isdir=1
+fileattrs.notnil=1

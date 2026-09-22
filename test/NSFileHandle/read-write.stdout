@@ -1,0 +1,14 @@
+open.read=1
+read.2=1
+read.rest=1
+read.eof.empty=1
+read.end.empty=1
+offset.5=1
+offset.1=1
+read.ell=1
+seek.end=1
+open.read.missing=1
+open.write.missing=1
+write.xyllo=1
+truncate.offset=1
+truncate.len=1

@@ -1,0 +1,7 @@
+cwd.notnil=1
+chdir.relative=1
+chdir.suffix=1
+chdir.bad=1
+chdir.bad.unchanged=1
+chdir.back=1
+chdir.back.same=1

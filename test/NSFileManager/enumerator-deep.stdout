@@ -1,0 +1,17 @@
+enum.count=7
+level.a=1
+level.d1=1
+level.d1.b=2
+level.d1.d2=2
+level.d1.d2.c=3
+level.d1.d2.d3=3
+level.d1.d2.d3.e=4
+skip.count=2
+skip.d1.b.gone=1
+skipdescendents.count=2
+fileattrs.b.regular=1
+fileattrs.d2.dir=1
+dirattrs.dir=1
+empty.count=0
+file.enum.notnil=1
+file.enum.first.nil=1

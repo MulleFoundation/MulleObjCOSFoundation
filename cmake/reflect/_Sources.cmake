@@ -18,5 +18,5 @@ src/MulleObjCOSFoundation.m
 # contents selected with patternfile ??-source--stage2-sources
 #
 set( STAGE2_SOURCES
-src/MulleObjCDeps+MulleObjCOSFoundation.m
+src/generic/MulleObjCDeps+MulleObjCOSFoundation.m
 )

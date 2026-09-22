@@ -27,9 +27,13 @@ int   main( int argc, const char * argv[])
 
    cString = [NSString stringWithCString:(char *) argv[ 0]];
 
+   // the emulator may invoke us with a relative argv[0]
+   if( ! [cString isAbsolutePath])
+      cString = [[[NSFileManager defaultManager] currentDirectoryPath] stringByAppendingPathComponent:cString];
+
    // Normalize both to Unix format for cross-platform comparison
-   s       = [s mulleUnixFileSystemString];
-   cString = [cString mulleUnixFileSystemString];
+   s       = [[s mulleUnixFileSystemString] stringByStandardizingPath];
+   cString = [[cString mulleUnixFileSystemString] stringByStandardizingPath];
 
    if( ! [s isEqualToString:cString])
       mulle_printf( "failed\n");

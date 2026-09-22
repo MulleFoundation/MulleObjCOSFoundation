@@ -7,24 +7,23 @@
    "repo" : "MulleFoundation/MulleObjCOSFoundation",
    "src" : [
       "asset/dox/api/toc/index.md",
-      "src/generic/import-private.h",
       "src/generic/import.h",
-      "src/generic/include-private.h",
       "src/generic/include.h",
-      "src/MulleObjCDeps+MulleObjCOSFoundation.h",
-      "src/MulleObjCDeps+MulleObjCOSFoundation.m",
+      "src/generic/MulleObjCDeps+MulleObjCOSFoundation.h",
+      "src/generic/MulleObjCDeps+MulleObjCOSFoundation.m",
       "src/MulleObjCOSFoundation.h",
       "src/MulleObjCOSFoundation.m",
       "src/reflect/objc-deps.inc",
-      "src/reflect/_MulleObjCOSFoundation-export.h",
-      "src/reflect/_MulleObjCOSFoundation-import-private.h",
-      "src/reflect/_MulleObjCOSFoundation-import.h",
-      "src/reflect/_MulleObjCOSFoundation-include-private.h",
-      "src/reflect/_MulleObjCOSFoundation-include.h",
-      "src/reflect/_MulleObjCOSFoundation-provide.h"
+      "src/reflect/_MulleObjCOSFoundation-import.h"
    ],
    "dependencies" : {
-      "mulle-objc/MulleObjC": "*",
+      "MulleFoundation/MulleObjCOSBaseFoundation": "*",
+      "MulleFoundation/MulleObjCPosixFoundation": "*",
+      "MulleFoundation/MulleObjCBSDFoundation": "*",
+      "MulleFoundation/MulleObjCFreeBSDFoundation": "*",
+      "MulleFoundation/MulleObjCDarwinFoundation": "*",
+      "MulleFoundation/MulleObjCLinuxFoundation": "*",
+      "MulleFoundation/MulleObjCWindowsFoundation": "*",
       "mulle-objc/mulle-objc-list": "*"
    }
 }

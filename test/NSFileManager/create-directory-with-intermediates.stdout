@@ -1,0 +1,5 @@
+all-new                   rval=1 exists=1
+under-existing            rval=1 exists=1
+component-exists          rval=1 exists=1
+with-attributes           rval=1 exists=1
+absolute                  rval=1 exists=1

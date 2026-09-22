@@ -17,29 +17,10 @@ src
 )
 
 #
-# contents selected with patternfile ??-header--private-generated-headers
-#
-set( PRIVATE_GENERATED_HEADERS
-src/reflect/_MulleObjCOSFoundation-import-private.h
-src/reflect/_MulleObjCOSFoundation-include-private.h
-)
-
-#
-# contents selected with patternfile ??-header--private-generic-headers
-#
-set( PRIVATE_GENERIC_HEADERS
-src/generic/import-private.h
-src/generic/include-private.h
-)
-
-#
 # contents selected with patternfile ??-header--public-generated-headers
 #
 set( PUBLIC_GENERATED_HEADERS
-src/reflect/_MulleObjCOSFoundation-export.h
 src/reflect/_MulleObjCOSFoundation-import.h
-src/reflect/_MulleObjCOSFoundation-include.h
-src/reflect/_MulleObjCOSFoundation-provide.h
 )
 
 #
@@ -54,7 +35,7 @@ src/generic/include.h
 # contents selected with patternfile ??-header--public-headers
 #
 set( PUBLIC_HEADERS
-src/MulleObjCDeps+MulleObjCOSFoundation.h
 src/MulleObjCOSFoundation.h
+src/generic/MulleObjCDeps+MulleObjCOSFoundation.h
 )
 
