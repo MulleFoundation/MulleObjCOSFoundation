@@ -1,0 +1,9 @@
+default-launch-path=1
+default-arguments=1
+default-current-directory=1
+default-environment=1
+default-standard-output=1
+launch-path-roundtrip=1
+environment-roundtrip=1
+output-identity=1
+output-is-pipe=1
