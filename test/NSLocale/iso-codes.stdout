@@ -1,0 +1,9 @@
+languages-shape=YES
+countries-shape=YES
+currencies-shape=YES
+languages-unique=YES
+countries-unique=YES
+currencies-unique=YES
+languages-cover=YES
+countries-cover=YES
+currencies-cover=YES

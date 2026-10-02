@@ -1,0 +1,17 @@
+en_US.languageCode=en
+en_US.countryCode=US
+en_US.scriptCode=(nil)
+zh.languageCode=zh
+zh.scriptCode=Hans
+zh.countryCode=CN
+de.countryCode=DE
+de.variantCode=euro
+bare.languageCode=de
+bare.countryCode=(nil)
+nil=(nil)
+empty.count=0
+zh.identifier=zh_Hans_CN
+de.identifier=de_DE@euro
+bare.identifier=en
+empty.identifier=(nil)
+roundtrip=zh_Hans_CN

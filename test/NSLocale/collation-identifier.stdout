@@ -1,0 +1,9 @@
+plain=(nil)
+plain.agrees=YES
+modifier=(nil)
+collation=phonebook
+collation.accessor=phonebook
+collation.agrees=YES
+multi=phonebook
+script=(nil)
+c=(nil)

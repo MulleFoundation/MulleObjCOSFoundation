@@ -1,0 +1,5 @@
+process-locale-is-utf8=YES
+cstring-encoding-is-utf8=YES
+class-matches-instance=YES
+ascii-roundtrip=YES
+getcstring-ascii=YES

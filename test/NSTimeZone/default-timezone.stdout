@@ -1,9 +1,9 @@
-Default timezone: (null)
-Default abbreviation: GMT
-Default seconds from GMT: 0
-
-System timezone: (null)
-System abbreviation: GMT
-System seconds from GMT: 0
-
-PASS: Default timezone is GMT/UTC
+gmt zone loaded: PASS
+gmt offset is 0: PASS
+bogus name is nil: PASS
+nil name is nil: PASS
+localTimeZone is defaultTimeZone: PASS
+localTimeZone name set: PASS
+GMT name: GMT
+knownTimeZoneNames non-empty: PASS
+system zone has a name: PASS

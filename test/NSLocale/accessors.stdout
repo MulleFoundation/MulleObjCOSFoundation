@@ -1,0 +1,10 @@
+de.collatorIdentifier=de_DE
+de.measurementSystem=Metric
+de.usesMetricSystem=1
+de.agrees=1
+us.collatorIdentifier=en_US
+us.measurementSystem=U.S.
+us.usesMetricSystem=0
+c.collatorIdentifier=C
+c.measurementSystem=Metric
+c.usesMetricSystem=1

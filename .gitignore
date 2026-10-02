@@ -95,3 +95,5 @@ plans/
 *.tmp.*
 *.test.*
 .idea
+test/NSData/mapped
+test/NSTask/localhost-2905312-1789822411-2.txt
