@@ -52,3 +52,9 @@ export PROJECT_EXTENSIONS="m:aam"
 
 
 
+#
+#
+#
+export MULLE_TEST_PLATFORMS="linux"
+
+
