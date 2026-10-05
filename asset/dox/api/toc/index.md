@@ -1,411 +1,1027 @@
 # MulleObjCOSFoundation Library Documentation for AI
-<!-- Keywords: filesystem, os-integration -->
+<!-- Keywords: filesystem, process, task, pipe, runloop, userdefaults, platform -->
 
 ## 1. Introduction & Purpose
 
-MulleObjCOSFoundation provides platform-dependent Objective-C classes for operating system interaction including file I/O (NSFileManager), process management (NSTask), inter-process communication (NSPipe), environment access (NSProcessInfo), filesystem enumeration (NSDirectoryEnumerator), plugin loading (NSBundle), and event loop management (NSRunLoop). Abstracts platform differences (Unix, Linux, BSD, Darwin, Windows) behind unified Objective-C interfaces.
+MulleObjCOSFoundation is the umbrella library that gives mulle-objc programs
+access to operating-system functionality through Foundation-style Objective-C
+classes: filesystem management (`NSFileManager`, `NSDirectoryEnumerator`),
+file-descriptor I/O (`NSFileHandle`), inter-process pipes (`NSPipe`),
+subprocess execution (`NSTask`), process metadata (`NSProcessInfo`),
+preferences (`NSUserDefaults`), event loops (`NSRunLoop`) and plugin/resource
+loading (`NSBundle`).
+
+It solves the problem of platform divergence by exposing one API that is
+implemented differently on Unix/POSIX, Linux, BSD, Darwin and Windows. The
+library itself is largely a facade: it declares its own version symbol and
+re-exports the OS-specific classes provided by `MulleObjCOSBaseFoundation`
+(platform-neutral) and the platform libraries (`MulleObjCPosixFoundation`,
+`MulleObjCBSDFoundation`, `MulleObjCFreeBSDFoundation`,
+`MulleObjCDarwinFoundation`, `MulleObjCLinuxFoundation`,
+`MulleObjCWindowsFoundation`). Importing `MulleObjCOSFoundation.h` is enough to
+obtain all of them.
 
 ## 2. Key Concepts & Design Philosophy
 
-- **Platform Abstraction**: Hides OS-specific details behind common API
-- **Singleton Pattern**: Core services (NSFileManager, NSProcessInfo) use singletons
-- **Delegate Pattern**: File operations support delegates for callbacks
-- **Error Handling**: NSError integration for detailed error reporting
-- **Thread-Safety**: Core components marked thread-safe where applicable
-- **Native Encoding**: NSString categories handle platform-specific C string encodings
+- **Platform abstraction.** One Objective-C API; the concrete implementation
+  (POSIX `select`/`fork`, Windows handles/registry, etc.) is chosen by the
+  platform-specific library that is linked in.
+- **Singletons.** Long-lived services (`NSFileManager`, `NSProcessInfo`,
+  `NSUserDefaults`) are accessed through `+defaultManager`, `+processInfo` and
+  `+standardUserDefaults`, not created directly.
+- **"Future" categories.** Many methods that Apple marks as optional/deprecated
+  live in categories (e.g. `NSFileManager(Future)`, `NSTask(Future)`) and are
+  flagged with the `MulleObjCFuture` protocol. They are available at runtime but
+  must be treated as optional. Tests exercise them heavily.
+- **Handler / delegate callbacks.** File operations can report progress and
+  errors through `NSFileManagerHandler` and `NSFileManagerDelegate`.
+- **File-descriptor based I/O.** `NSFileHandle` wraps a raw fd and implements
+  the mulle-objc stream protocols (`MulleObjCInputStream`,
+  `MulleObjCOutputStream`); `NSPipe` hands out a read and a write handle.
+- **Thread safety.** `NSFileManager`, `NSProcessInfo`, `NSUserDefaults`,
+  `NSBundle` and `NSFileHandle` are declared `MulleObjCThreadSafe`. An
+  `NSRunLoop` belongs to exactly one thread and must not be shared.
+- **Native C-string encoding.** `NSString(CString)` converts between the
+  platform's native C string encoding and `NSString`.
 
 ## 3. Core API & Data Structures
 
-### NSFileManager - Filesystem Operations
+Signatures are copied verbatim from the public headers. Methods shown under a
+"Future" heading belong to a `(Future)` category (optional at runtime).
 
-#### Singleton Access
+### 3.1. `NSFileManager.h`
 
-- `+ defaultManager` → `instancetype`: Get shared file manager instance
+#### `NSFileManager`
+- **Purpose:** High-level filesystem manipulation and directory enumeration.
+- **Lifecycle:** Obtain the shared instance with `+defaultManager`. Do not
+  `-init` a new manager for ordinary use; create a private instance only when
+  you attach a delegate.
+- **Key property:**
+  - `@property( assign) id delegate;` — receives `NSFileManagerDelegate`
+    callbacks.
 
-#### Properties
-
-- `delegate` (id): Delegate receiving file operation callbacks
-
-#### File Operations
-
-- `- createFileAtPath:(NSString *)path contents:(NSData *)contents attributes:(NSDictionary *)attrs` → `BOOL`: Create file with data
-- `- removeFileAtPath:(NSString *)path handler:(id)handler` → `BOOL`: Delete file
-- `- contentsAtPath:(NSString *)path` → `NSData *`: Read file contents
-- `- contentsEqualAtPath:(NSString *)path1 andPath:(NSString *)path2` → `BOOL`: Compare files
-
-#### Directory Operations
-
-- `- createDirectoryAtPath:(NSString *)path attributes:(NSDictionary *)attrs` → `BOOL`: Create directory
-- `- createSymbolicLinkAtPath:(NSString *)path pathContent:(NSString *)target` → `BOOL`: Create symlink
-- `- enumeratorAtPath:(NSString *)path` → `NSDirectoryEnumerator *`: Iterate directory contents
-
-#### Delegate Protocol
-
+**Creation / singleton**
 ```objc
-@protocol NSFileManagerDelegate
-- (BOOL)fileManager:(NSFileManager *)fm shouldRemoveItemAtPath:(NSString *)path;
-- (BOOL)fileManager:(NSFileManager *)fm shouldMoveItemAtPath:(NSString *)src toPath:(NSString *)dst;
-- (BOOL)fileManager:(NSFileManager *)fm shouldCopyItemAtPath:(NSString *)src toPath:(NSString *)dst;
-- (BOOL)fileManager:(NSFileManager *)fm shouldLinkItemAtPath:(NSString *)src toPath:(NSString *)dst;
-- (BOOL)fileManager:(NSFileManager *)fm shouldProceedAfterError:(NSError *)err removingItemAtPath:(NSString *)path;
-@end
++ (NSFileManager *) defaultManager;
 ```
 
-### NSDirectoryEnumerator - Directory Traversal
+**Core operations**
+```objc
+- (NSDirectoryEnumerator *) enumeratorAtPath:(NSString *) path;
 
-#### Enumeration
+- (BOOL) createFileAtPath:(NSString *) path
+                 contents:(NSData *) contents
+               attributes:(NSDictionary *)attributes;
 
-- `- nextObject` → `NSString *`: Next file/directory path (nil when exhausted)
-- `- fileAttributes` → `NSDictionary *`: Attributes of current file
-- `- skipDescendents` → `void`: Skip descending into current directory
+- (NSData *) contentsAtPath:(NSString *) path;
+- (BOOL) contentsEqualAtPath:(NSString *) path1
+                     andPath:(NSString *) path2;
 
-### NSFileHandle - Low-Level File I/O
+- (BOOL) removeFileAtPath:(NSString *) path
+                  handler:(id) handler;
 
-#### Opening Files
+- (BOOL) createDirectoryAtPath:(NSString *)path
+                    attributes:(NSDictionary *)attributes;
 
-- `+ fileHandleForReadingAtPath:(NSString *)path` → `instancetype`: Open for reading
-- `+ fileHandleForWritingAtPath:(NSString *)path` → `instancetype`: Open for writing
-- `+ fileHandleForUpdatingAtPath:(NSString *)path` → `instancetype`: Open for read/write
+- (BOOL) createSymbolicLinkAtPath:(NSString *) path
+                      pathContent:(NSString *) otherpath;
+```
 
-#### Reading
+**Future operations**
+```objc
+- (char *) fileSystemRepresentationWithPath:(NSString *) path;
+- (NSString *) stringWithFileSystemRepresentation:(char *) s
+                                           length:(NSUInteger) len;
 
-- `- readDataToEndOfFile` → `NSData *`: Read remaining file
-- `- readDataOfLength:(NSUInteger)length` → `NSData *`: Read specific bytes
-- `- availableData` → `NSData *`: Read available data without blocking
+- (BOOL) changeCurrentDirectoryPath:(NSString *) path;
+- (NSString *) currentDirectoryPath;
+- (BOOL) fileExistsAtPath:(NSString *) path;
+- (BOOL) fileExistsAtPath:(NSString *) path
+              isDirectory:(BOOL *) isDirectory;
+- (BOOL) isDeletableFileAtPath:(NSString *) path;
+- (BOOL) isExecutableFileAtPath:(NSString *) path;
+- (BOOL) isReadableFileAtPath:(NSString *) path;
+- (BOOL) isWritableFileAtPath:(NSString *) path;
 
-#### Writing
+- (BOOL) createSymbolicLinkAtPath:(NSString *) path
+              withDestinationPath:(NSString *) otherpath
+                            error:(NSError **) error;
 
-- `- writeData:(NSData *)data` → `void`: Write data to file
-- `- seekToFileOffset:(unsigned long long)offset` → `void`: Seek to position
-- `- seekToEndOfFile` → `unsigned long long`: Seek to end, return position
+- (BOOL) createDirectoryAtPath:(NSString *) path
+   withIntermediateDirectories:(BOOL) createIntermediates
+                    attributes:(NSDictionary *) attributes
+                         error:(NSError **) error;
 
-#### Control
+- (NSString *) pathContentOfSymbolicLinkAtPath:(NSString *) path;
+- (NSArray *) directoryContentsAtPath:(NSString *) path;
 
-- `- closeFile` → `void`: Close file handle
-- `- synchronizeFile` → `void`: Flush data to disk
+- (NSDictionary *) fileSystemAttributesAtPath:(NSString *) path;
+- (NSDictionary *) fileAttributesAtPath:(NSString *) path
+                           traverseLink:(BOOL) flag;
 
-### NSTask - Process Management
+- (NSDictionary *) attributesOfItemAtPath:(NSString *) path
+                                    error:(NSError **) error;
+- (NSDictionary *) attributesOfFileSystemForPath:(NSString *) path
+                                           error:(NSError **) error;
 
-#### Creation
+- (BOOL) setAttributes:(NSDictionary *) attributes
+          ofItemAtPath:(NSString *) path
+                 error:(NSError **) error;
 
-- `+ launchedTaskWithLaunchPath:(NSString *)path arguments:(NSArray *)args` → `instancetype`: Create and start process
-- `- init` → `instancetype`: Create unstarted process
+- (BOOL) removeItemAtPath:(NSString *) path
+                    error:(NSError **) error;
 
-#### Configuration (before launch)
+- (BOOL) movePath:(NSString *) src
+           toPath:(NSString *) dest
+          handler:(id) handler;
+- (BOOL) copyPath:(NSString *) src
+           toPath:(NSString *) dest
+          handler:(id) handler;
 
-- `launchPath` (NSString *): Path to executable
-- `arguments` (NSArray *): Array of argument strings
-- `currentDirectoryPath` (NSString *): Working directory
-- `environment` (NSDictionary *): Environment variables
+- (BOOL) moveItemAtPath:(NSString *) srcPath
+                 toPath:(NSString *) dstPath
+                  error:(NSError **) error;
+- (BOOL) copyItemAtPath:(NSString *) fromPath
+                 toPath:(NSString *) toPath
+                  error:(NSError **) error;
+```
 
-#### I/O
+**File attribute keys (globals):** `NSFileType`, `NSFileSize`,
+`NSFileModificationDate`, `NSFileReferenceCount`, `NSFileDeviceIdentifier`,
+`NSFileOwnerAccountName`, `NSFileGroupOwnerAccountName`, `NSFilePosixPermissions`,
+`NSFileSystemNumber`, `NSFileSystemFileNumber`, `NSFileSystemFreeNodes`,
+`NSFileSystemFreeSize`, `NSFileSystemNodes`, `NSFileSystemSize`,
+`NSFileExtensionHidden`, `NSFileHFSCreatorCode`, `NSFileHFSTypeCode`,
+`NSFileImmutable`, `NSFileAppendOnly`, `NSFileCreationDate`,
+`NSFileOwnerAccountID`, `NSFileGroupOwnerAccountID`, `NSFileBusy`.
 
-- `standardInput` (NSPipe *): Pipe for stdin
-- `standardOutput` (NSPipe *): Pipe for stdout
-- `standardError` (NSPipe *): Pipe for stderr
+**File type values:** `NSFileTypeDirectory`, `NSFileTypePipe`,
+`NSFileTypeRegular`, `NSFileTypeSymbolicLink`, `NSFileTypeSocket`,
+`NSFileTypeCharacterSpecial`, `NSFileTypeBlockSpecial`, `NSFileTypeUnknown`.
 
-#### Control
+#### `NSFileManagerHandler` protocol
+```objc
+@optional
+- (void)  fileManager:(NSFileManager *) fileManager
+      willProcessPath:(NSString *) path;
+```
 
-- `- launch` → `void`: Start the process
-- `- terminate` → `void`: Terminate process
-- `- waitUntilExit` → `void`: Block until process exits
+#### `NSFileManagerDelegate` protocol
+All methods are `@optional`; each returns `BOOL` to allow/deny the operation:
+```objc
+- (BOOL) fileManager:(NSFileManager *) fileManager
+shouldRemoveItemAtPath:(NSString *) path;
 
-#### Status
+- (BOOL) fileManager:(NSFileManager *) fileManager
+shouldMoveItemAtPath:(NSString *) srcPath
+              toPath:(NSString *) dstPath;
 
-- `- isRunning` → `BOOL`: Check if still running
-- `terminationStatus` (int): Exit code
+- (BOOL) fileManager:(NSFileManager *) fileManager
+shouldCopyItemAtPath:(NSString *) srcPath
+              toPath:(NSString *) dstPath;
 
-### NSPipe - Inter-Process Communication
+- (BOOL) fileManager:(NSFileManager *) fileManager
+shouldProceedAfterError:(NSError *) error
+  removingItemAtPath:(NSString *) path;
 
-#### Creation
+- (BOOL) fileManager:(NSFileManager *) fileManager
+shouldProceedAfterError:(NSError *)error
+   copyingItemAtPath:(NSString *) srcPath
+              toPath:(NSString *) dstPath;
 
-- `+ pipe` → `instancetype`: Create pipe pair
+- (BOOL) fileManager:(NSFileManager *) fileManager
+shouldLinkItemAtPath:(NSString *) srcPath
+              toPath:(NSString *) dstPath;
 
-#### Endpoints
+- (BOOL) fileManager:(NSFileManager *) fileManager
+shouldProceedAfterError:(NSError *) error
+   linkingItemAtPath:(NSString *) srcPath
+              toPath:(NSString *) dstPath;
 
-- `fileHandleForReading` (NSFileHandle *): Reading end
-- `fileHandleForWriting` (NSFileHandle *): Writing end
+- (BOOL) fileManager:(NSFileManager *)fileManager
+shouldProceedAfterError:(NSError *)error
+   movingItemAtPath:(NSString *)srcPath
+             toPath:(NSString *)dstPath;
+```
 
-### NSProcessInfo - Process Metadata
+### 3.2. `NSDirectoryEnumerator.h`
 
-#### Singleton
+#### `NSDirectoryEnumerator` (subclass of `NSEnumerator`)
+- **Purpose:** Recursively walk a directory tree rooted at the path given to
+  `-[NSFileManager enumeratorAtPath:]`.
+- **Iteration:** `-nextObject` (inherited from `NSEnumerator`) returns the next
+  relative path, or `nil` when exhausted. The enumerator also conforms to
+  `NSFastEnumeration`.
+- **Operations:**
+```objc
+- (NSDictionary *) directoryAttributes;
+- (NSDictionary *) fileAttributes;
+- (NSUInteger) count;
+- (NSUInteger) level;
+- (void) skipDescendants;
+- (void) skipDescendents;
+```
+`-level` is the recursion depth (0 = top level). `-skipDescendants` (and the
+misspelled Apple-compatible `-skipDescendents`) prunes the current subtree.
 
-- `+ processInfo` → `instancetype`: Get process information
+### 3.3. `NSFileHandle.h`
 
-#### Environment Access
+#### `NSFileHandle` (`MulleObjCInputStream`, `MulleObjCOutputStream`, `MulleObjCThreadSafe`)
+- **Purpose:** Buffered/available-data I/O on a raw file descriptor. A handle
+  should be used by one thread at a time even though the class is marked
+  thread-safe.
+- **Creation:**
+```objc
++ (instancetype) fileHandleForReadingAtPath:(NSString *) path;
++ (instancetype) fileHandleForWritingAtPath:(NSString *) path;
++ (instancetype) fileHandleForUpdatingAtPath:(NSString *) path;
++ (instancetype) fileHandleWithNullDevice;
 
-- `environment` (NSDictionary *): Environment variables
-- `arguments` (NSArray *): Command-line arguments
-- `processIdentifier` (int): PID
-- `processName` (NSString *): Process name
-- `hostName` (NSString *): Computer hostname
-- `userName` (NSString *): Current user name
+- (instancetype) initWithFileDescriptor:(int) fd;
+```
+- **Reading:**
+```objc
+- (NSData *) availableData;
+- (NSData *) readDataToEndOfFile;
+- (NSData *) readDataOfLength:(NSUInteger) length;
+```
+- **Positioning / writing:**
+```objc
+- (unsigned long long) offsetInFile;
+- (unsigned long long) seekToEndOfFile;
+- (void) seekToFileOffset:(unsigned long long) offset;
+- (void) truncateFileAtOffset:(unsigned long long) offset;
 
-### NSUserDefaults - Preferences Storage
+- (void) writeData:(NSData *) data;
 
-#### Singleton
+- (NSInteger) fileDescriptor;
+- (void) closeFile;
+```
+- **mulle additions:**
+```objc
+- (void) mulleWriteBytes:(void *) bytes
+                  length:(NSUInteger) len;   // len == (NSUInteger) -1 -> strlen
 
-- `+ standardUserDefaults` → `instancetype`: Get standard defaults
+- (void) mulleAddToStateBits:(NSUInteger) bits;
+- (NSUInteger) mulleGetStateBits;
+```
+- **Future (subclass hooks / standard streams):**
+```objc
++ (instancetype) fileHandleWithStandardInput;
++ (instancetype) fileHandleWithStandardOutput;
++ (instancetype) fileHandleWithStandardError;
 
-#### Access
+- (instancetype) initWithFileDescriptor:(int) fd
+                         closeOnDealloc:(BOOL) flag;
+- (void) synchronizeFile;
+```
+- **State bits:** `NSFileHandleStateEOF`, `NSFileHandleStatePipe`,
+  `NSFileHandleStateAgain`; global `NSFileHandleOperationException`.
 
-- `- objectForKey:(NSString *)key` → `id`: Retrieve value
-- `- setObject:(id)value forKey:(NSString *)key` → `void`: Store value
-- `- removeObjectForKey:(NSString *)key` → `void`: Delete value
-- `- synchronize` → `BOOL`: Write to disk
+### 3.4. `NSPipe.h`
 
-#### Type-Specific Access
+#### `NSPipe`
+- **Purpose:** A unidirectional pipe pair between processes or threads.
+- **API:**
+```objc
++ (instancetype) pipe;
 
-- `- stringForKey:(NSString *)key` → `NSString *`
-- `- integerForKey:(NSString *)key` → `NSInteger`
-- `- doubleForKey:(NSString *)key` → `double`
-- `- boolForKey:(NSString *)key` → `BOOL`
-- `- arrayForKey:(NSString *)key` → `NSArray *`
-- `- dictionaryForKey:(NSString *)key` → `NSDictionary *`
+- (NSFileHandle *) fileHandleForReading;
+- (NSFileHandle *) fileHandleForWriting;
 
-### NSRunLoop - Event Processing
+- (NSInteger) _fileDescriptorForReading;
+- (NSInteger) _fileDescriptorForWriting;
+```
 
-#### Access
+### 3.5. `NSTask.h` and `NSTask+System.h`
 
-- `+ currentRunLoop` → `instancetype`: Get current thread's run loop
-- `+ mainRunLoop` → `instancetype`: Get main thread run loop
+#### `NSTask`
+- **Purpose:** Start and control a child process (`fork`/`exec` style).
+- **Creation:**
+```objc
++ (NSTask *) launchedTaskWithLaunchPath:(NSString *) path
+                              arguments:(NSArray *) arguments;
+```
+`+launchedTaskWithLaunchPath:arguments:` creates, configures and launches in one
+step. To configure first, create with `[[NSTask new] autorelease]`.
+- **Configuration (before launch):**
+```objc
+- (void) setArguments:(NSArray *) arguments;
+- (void) setCurrentDirectoryPath:(NSString *) path;
+- (void) setEnvironment:(NSDictionary *) environmentDictionary;
+- (void) setLaunchPath:(NSString *) path;
+- (void) setStandardError:(id) file;
+- (void) setStandardInput:(id) file;
+- (void) setStandardOutput:(id) file;
+```
+- **Introspection:**
+```objc
+- (NSInteger) processIdentifier;
+- (NSInteger) terminationStatus;
 
-#### Event Loop Control
+- (id) standardError;
+- (id) standardInput;
+- (id) standardOutput;
 
-- `- run` → `void`: Run indefinitely
-- `- runUntilDate:(NSDate *)date` → `void`: Run until timeout
-- `- runMode:(NSString *)mode beforeDate:(NSDate *)date` → `BOOL`: Run in mode
+- (NSArray *) arguments;
+- (NSString *) launchPath;
+- (NSString *) currentDirectoryPath;
+- (NSDictionary *) environment;
+```
+- **Future (control):**
+```objc
+- (BOOL) isRunning;
 
-#### File Handle Monitoring
+- (void) interrupt;
+- (void) launch;
+- (BOOL) resume;
+- (BOOL) suspend;
+- (void) terminate;
+- (void) waitUntilExit;
+- (NSTaskTerminationReason) terminationReason;
+```
+- **Termination reason:** `NSTaskTerminationReasonExit`,
+  `NSTaskTerminationReasonUncaughtSignal`.
 
-- `- addFileHandle:(NSFileHandle *)fh forMode:(NSString *)mode` → `void`: Monitor file I/O
+#### `NSTask(System)` convenience calls
+Return a dictionary describing the run. Keys: `NSTaskExceptionKey`,
+`NSTaskTerminationStatusKey`, `NSTaskStandardOutputDataKey`,
+`NSTaskStandardOutputStringKey`, `NSTaskStandardErrorDataKey`,
+`NSTaskStandardErrorStringKey`. Options are a bitmask:
+`NSTaskSystemSendStandardInput` (0x1), `NSTaskSystemReceiveStandardOutput`
+(0x2), `NSTaskSystemReceiveStandardError` (0x4); default is all three.
 
-### NSBundle - Plugin & Resource Loading
+```objc
++ (NSDictionary *) mulleDataSystemCallWithArguments:(NSArray *) argv
+                                        environment:(NSDictionary *) environment
+                                   workingDirectory:(NSString *) dir
+                                  standardInputData:(NSData *) inputData
+                                            options:(NSTaskSystemOptions) options;
 
-#### Access
++ (NSDictionary *) mulleDataSystemCallWithArguments:(NSArray *) argv
+                                   workingDirectory:(NSString *) dir
+                                  standardInputData:(NSData *) inputData
+                                            options:(NSTaskSystemOptions) options;
 
-- `+ mainBundle` → `instancetype`: Main application bundle
-- `+ bundleWithPath:(NSString *)path` → `instancetype`: Load bundle from path
-- `- bundlePath` → `NSString *`: Get bundle directory path
++ (NSDictionary *) mulleDataSystemCallWithArguments:(NSArray *) argv
+                                        environment:(NSDictionary *) environment
+                                  standardInputData:(NSData *) data;
 
-#### Resource Loading
++ (NSDictionary *) mulleStringSystemCallWithArguments:(NSArray *) argv
+                                          environment:(NSDictionary *) environment
+                                     workingDirectory:(NSString *) dir
+                                  standardInputString:(NSString *) stdinString
+                                              options:(NSTaskSystemOptions) options;
 
-- `- resourcePath` → `NSString *`: Resources directory
-- `- executablePath` → `NSString *`: Executable file path
++ (NSDictionary *) mulleStringSystemCallWithArguments:(NSArray *) argv
+                                     workingDirectory:(NSString *) dir
+                                  standardInputString:(NSString *) stdinString
+                                              options:(NSTaskSystemOptions) options;
 
-### NSLog & Functions
++ (NSDictionary *) mulleStringSystemCallWithArguments:(NSArray *) argv
+                                          environment:(NSDictionary *) environment
+                                  standardInputString:(NSString *) stdinString;
 
-#### Logging
++ (NSDictionary *) mulleStringSystemCallWithArguments:(NSArray *) argv
+                                  standardInputString:(NSString *) stdinString;
 
-- `NSLog(format, ...)`: Print timestamped log message to stderr
++ (NSDictionary *) mulleStringSystemCallWithArguments:(NSArray *) argv
+                                          environment:(NSDictionary *) environment;
 
-#### Path Utilities
++ (NSDictionary *) mulleStringSystemCallWithArguments:(NSArray *) argv;
 
-- `NSHomeDirectory()` → `NSString *`: User home directory
-- `NSTemporaryDirectory()` → `NSString *`: Temporary directory
-- `NSUserName()` → `NSString *`: Current user name
-- `NSFullUserName()` → `NSString *`: Full user name
++ (NSDictionary *) mulleStringSystemCallWithCommandString:(NSString *) s
+                                         workingDirectory:(NSString *) dir
+                                              environment:(NSDictionary *) environment
+                                      standardInputString:(NSString *) stdinString;
+
++ (NSDictionary *) mulleStringSystemCallWithCommandString:(NSString *) s
+                                              environment:(NSDictionary *) environment
+                                      standardInputString:(NSString *) stdinString;
+
++ (NSDictionary *) mulleStringSystemCallWithCommandString:(NSString *) s
+                                      standardInputString:(NSString *) stdinString;
+
++ (NSDictionary *) mulleStringSystemCallWithCommandString:(NSString *) s
+                                              environment:(NSString *) environment;
+
++ (NSDictionary *) mulleStringSystemCallWithCommandString:(NSString *) s;
+```
+The `...WithCommandString:` variants split the string into arguments.
+
+### 3.6. `NSProcessInfo.h`
+
+#### `NSProcessInfo` (`MulleObjCSingleton`, `MulleObjCThreadSafe`)
+```objc
++ (NSProcessInfo *) processInfo;
+```
+- **Future accessors:**
+```objc
+- (NSString *) hostName;
+
+- (NSUInteger) operatingSystem;
+- (NSString *) operatingSystemName;
+- (NSString *) operatingSystemVersionString;
+
+- (NSArray *) arguments;
+- (NSDictionary *) environment;
+- (NSString *) _executablePath;
+
+- (NSString *) processName;
+- (void) setProcessName:(NSString *) name;
+
+- (NSString *) globallyUniqueString;
+- (NSInteger) processIdentifier;
+
+- (void) mulleSetEnvironmentValue:(NSString *) value
+                           forKey:(NSString *) key;   // calls setenv
+```
+- **Operating system constants:** `NSWindowsNTOperatingSystem`,
+  `NSWindows95OperatingSystem`, `NSSolarisOperatingSystem`,
+  `NSHPUXOperatingSystem`, `NSDarwinOperatingSystem`, `NSSunOSOperatingSystem`,
+  `NSOSF1OperatingSystem`, `NSLinuxOperatingSystem`, `NSBSDOperatingSystem`.
+
+### 3.7. `NSUserDefaults.h`
+
+#### `NSUserDefaults` (`MulleObjCSingleton`, `MulleObjCThreadSafe`)
+- **Purpose:** Persisted application preferences. On Darwin a plist, on Linux
+  `.config`, on Windows the registry.
+- **Access:**
+```objc
++ (NSUserDefaults *)  standardUserDefaults;
+
+- (instancetype) init;
+
+- (id) objectForKey:(id) key;
+- (void) setObject:(id) value
+            forKey:(id <NSObject, MulleObjCImmutableCopying>) key;
+- (void) removeObjectForKey:(id) key;
+
+- (void) registerDefaults:(NSDictionary *) registrationDictionary;
+
+- (NSDictionary *) dictionaryRepresentation;
+- (BOOL) synchronize;
+```
+- **Future:** `+ (void) resetStandardUserDefaults;`
+- **Conveniences:**
+```objc
+- (BOOL)                 boolForKey:(NSString *) key;
+- (double)             doubleForKey:(NSString *) key;
+- (float)               floatForKey:(NSString *) key;
+- (NSArray *)           arrayForKey:(NSString *) key;
+- (NSArray *)     stringArrayForKey:(NSString *) key;
+- (NSData *)             dataForKey:(NSString *) key;
+- (NSDictionary *) dictionaryForKey:(NSString *) key;
+- (NSInteger)         integerForKey:(NSString *) key;
+- (NSString *)         stringForKey:(NSString *) key;
+
+- (void) setInteger:(NSInteger)value forKey:(NSString *) key;
+- (void) setFloat:(float) value        forKey:(NSString *) key;
+- (void) setDouble:(double) value      forKey:(NSString *) key;
+- (void) setBool:(BOOL) value          forKey:(NSString *) key;
+```
+- **Domain globals:** `NSGlobalDomain`, `NSArgumentDomain`,
+  `NSRegistrationDomain`.
+
+### 3.8. `NSRunLoop.h`
+
+#### `NSRunLoop`
+- **Purpose:** Per-thread event loop, usually a wrapper around `select(2)`.
+  Must not be shared across threads.
+```objc
++ (NSRunLoop *) currentRunLoop;
++ (NSRunLoop *) mainRunLoop;
++ (NSRunLoop *) mulleCurrentRunLoop;   // nil when the thread is shutting down
+
+- (NSRunLoopMode) currentMode;
+
+- (void) acceptInputForMode:(NSRunLoopMode) modeName
+                 beforeDate:(NSDate *) limitDate;
+
+- (void) run;
+- (void) runUntilDate:(NSDate *) limitDate;
+- (BOOL) runMode:(NSRunLoopMode) modeName
+      beforeDate:(NSDate *) limitDate;
+
+- (NSDate *) limitDateForMode:(NSRunLoopMode) modeName;
+
+- (void) performSelector:(SEL) aSelector
+                  target:(id) target
+                argument:(id) arg
+                   order:(NSUInteger) order
+                   modes:(NSArray *) modes;
+
+- (void) cancelPerformSelector:(SEL) aSelector
+                        target:(id) target
+                      argument:(id) arg;
+- (void) cancelPerformSelectorsWithTarget:(id) target;
+
+- (void) addTimer:(NSTimer *) timer
+          forMode:(NSRunLoopMode) modeName;
+```
+`NSRunLoopMode` is `NSString *`. The default mode global is
+`NSDefaultRunLoopMode`.
+
+- **`NSFileHandle(NSRunLoop)`** — background reading notifications:
+```objc
+- (void) readInBackgroundAndNotify;
+- (void) readInBackgroundAndNotifyForModes:(NSArray *) modes;
+```
+Notification names: `NSFileHandleConnectionAcceptedNotification`,
+`NSFileHandleDataAvailableNotification`,
+`NSFileHandleReadToEndOfFileCompletionNotification`,
+`NSFileHandleReadCompletionNotification`, `NSFileHandleNotificationDataItem`,
+`NSFileHandleNotificationFileHandleItem`.
+
+- **`NSObject(NSRunLoop)`** — delayed perform:
+```objc
+- (void) performSelector:(SEL) aSelector
+              withObject:(id) anArgument
+              afterDelay:(NSTimeInterval) delay
+                 inModes:(NSArray *) modes;
+
+- (void) performSelector:(SEL) aSelector
+              withObject:(id) anArgument
+              afterDelay:(NSTimeInterval) delay;
+
++ (void) cancelPreviousPerformRequestsWithTarget:(id) aTarget
+                                        selector:(SEL) aSelector
+                                          object:(id) anArgument;
++ (void) cancelPreviousPerformRequestsWithTarget:(id) aTarget;
+```
+
+- **`NSTimer(NSRunLoop)`**:
+```objc
++ (NSTimer *) scheduledTimerWithTimeInterval:(NSTimeInterval) timeInterval
+                                      target:(id) target
+                                    selector:(SEL) selector
+                                    userInfo:(id) userInfo
+                                     repeats:(BOOL) repeats;
+
++ (NSTimer *) scheduledTimerWithTimeInterval:(NSTimeInterval) timeInterval
+                                  invocation:(NSInvocation *) invocation
+                                     repeats:(BOOL) repeats;
+
+- (void) invalidate;
+```
+
+### 3.9. `NSBundle.h`
+
+#### `NSBundle` (`MulleObjCThreadSafe`)
+- **Purpose:** Locate and load code and resources (plugins, frameworks, images).
+- **Creation / lookup:**
+```objc
++ (NSBundle *) mainBundle;
++ (NSArray *) allFrameworks;
++ (NSArray *) allBundles;
++ (NSBundle *) bundleWithPath:(NSString *) path;
++ (NSBundle *) bundleWithIdentifier:(NSString *) identifier;
+
+- (instancetype) initWithPath:(NSString *) fullPath;
+```
+- **Properties / resources:**
+```objc
+- (NSString *) bundleIdentifier;
+- (Class) principalClass;
+
+- (NSString *) resourcePath;
+- (NSString *) executablePath;
+- (NSString *) bundlePath;
+- (BOOL) isLoaded;
+
+- (NSString *) pathForResource:(NSString *) name
+                        ofType:(NSString *) extension;
+- (NSString *) pathForResource:(NSString *) name
+                        ofType:(NSString *) extension
+                   inDirectory:(NSString *) subpath;
+- (NSArray *) pathsForResourcesOfType:(NSString *) extension
+                          inDirectory:(NSString *) subpath;
+
+- (Class) classNamed:(NSString *) className;
+
+- (NSString *) localizedStringForKey:(NSString *) key
+                               value:(NSString *) comment
+                               table:(NSString *) tableName;
+
+- (id) objectForInfoDictionaryKey:(NSString *) key;
+- (NSDictionary *) infoDictionary;
+
+- (NSString *) developmentLocalization;
+- (NSArray *) localizations;
+- (NSArray *) preferredLocalizations;
+- (NSDictionary *) localizedInfoDictionary;
+```
+- **Future / OS-specific:**
+```objc
++ (BOOL) isBundleFilesystemExtension:(NSString *) extension;   // default NO
++ (NSBundle *) bundleForClass:(Class) aClass;
+- (BOOL) loadBundle;
+- (BOOL) unloadBundle;
+```
+- **Symbol lookup (mulle addition):**
+```objc
+- (void *) mulleLookupSymbolUTF8String:(char *) name;
+- (void *) mulleLookupSymbol:(NSString *) name;
+```
+- **Globals / helpers:** `NSLoadedClasses`, `NSBundleDidLoadNotification`,
+  `MulleObjCBundleLocalizedStringFromTable(...)`, and the
+  `NSLocalizedString*` macros.
+
+### 3.10. Supporting Categories & Functions
+
+**`NSString(CString)`** — platform C-string conversion:
+```objc
+NSStringEncoding   mulle_cstring_encoding_for_codeset( char *codeset);
+
++ (instancetype) stringWithCString:(char *) s;
++ (instancetype) stringWithCString:(char *) s
+                            length:(NSUInteger) length;
+
+- (instancetype) initWithCString:(char *) s
+                          length:(NSUInteger) len;
+- (instancetype) initWithCString:(char *) s;
+
+- (instancetype) initWithCStringNoCopy:(char *) s
+                                length:(NSUInteger) length
+                          freeWhenDone:(BOOL) flag;
+
+- (void) getCString:(char *) bytes;
+- (void) getCString:(char *) bytes
+          maxLength:(NSUInteger) maxLength;
+- (void) getCString:(char *) bytes
+          maxLength:(NSUInteger) maxLength
+           encoding:(NSStringEncoding) encoding;
+- (void) getCString:(char *) bytes
+          maxLength:(NSUInteger) maxLength
+              range:(NSRange) aRange
+     remainingRange:(NSRangePointer) leftoverRange;
+```
+Future: `cStringLength`, `defaultCStringEncoding`, `_cStringEncoding`,
+`cString`.
+
+**`NSString(OSBase)`** — path handling:
+```objc
++ (instancetype) pathWithComponents:(NSArray *) components;
+
+- (BOOL) isAbsolutePath;
+- (NSString *) lastPathComponent;
+- (NSString *) pathExtension;
+- (NSString *) stringByAppendingPathComponent:(NSString *) component;
+- (NSString *) stringByAppendingPathExtension:(NSString *) extension;
+- (NSString *) stringByDeletingLastPathComponent;
+- (NSString *) stringByDeletingPathExtension;
+- (NSString *) stringByExpandingTildeInPath;
+- (NSString *) stringByResolvingSymlinksInPath;
+- (NSString *) stringByStandardizingPath;
+
+- (NSArray *) pathComponents;
+- (NSString *) initWithPathComponents:(NSArray *) components;
+
+- (char *) fileSystemRepresentation;
+- (BOOL) getFileSystemRepresentation:(char *) buf
+                           maxLength:(NSUInteger) max;
+
++ (instancetype) stringWithContentsOfFile:(NSString *) path;
+
+- (NSUInteger) completePathIntoString:(NSString **) outputName
+                        caseSensitive:(BOOL) flag
+                     matchesIntoArray:(NSArray **) outputArray
+                          filterTypes:(NSArray *) filterTypes;
+
+- (instancetype) mulleInitWithLossyContentsOfFile:(NSString *) path;
++ (instancetype) mulleStringWithLossyContentsOfFile:(NSString *) path;
+- (NSString *) mulleStringBySimplifyingPath;
+
+- (BOOL) writeToFile:(NSString *) path atomically:(BOOL) flag;
+- (BOOL) writeToFile:(NSString *) path
+          atomically:(BOOL) flag
+            encoding:(NSStringEncoding) encoding
+               error:(NSError **) error;
+```
+`NSString(FileSystemString)`: `-mulleUnixFileSystemString`,
+`-mulleWindowsFileSystemString`.
+
+**`NSArray(OSBase)` / `NSDictionary(OSBase)`** — property-list file I/O:
+```objc
++ (instancetype) arrayWithContentsOfFile:(NSString *) path;
+- (instancetype) initWithContentsOfFile:(NSString *) path;
+- (BOOL) writeToFile:(NSString *) path atomically:(BOOL) flag;
+
++ (instancetype) dictionaryWithContentsOfFile:(NSString *) path;
+- (instancetype) initWithContentsOfFile:(NSString *) path;
+- (BOOL) writeToFile:(NSString *) path atomically:(BOOL) flag;
+```
+
+**`NSData(OSBase)`** — file loading:
+```objc
++ (instancetype) dataWithContentsOfFile:(NSString *) path;
++ (instancetype) dataWithContentsOfFile:(NSString *) path
+                                options:(NSDataReadingOptions) options
+                                  error:(NSError **) error;
+```
+Reading options: `NSDataReadingMappedIfSafe`, `NSDataReadingUncached`,
+`NSDataReadingMappedAlways`.
+
+**`NSData(MulleMemoryMapping)` / `NSMutableData(MulleMemoryMapping)`**:
+```objc
+- (instancetype) initWithContentsOfMappedFile:(NSString *) path;
++ (instancetype) dataWithContentsOfMappedFile:(NSString *) path;
+```
+
+**`NSLog.h`**:
+```objc
+void   NSLog( NSString *format, ...);
+void   NSLogv( NSString *format, va_list args);
+void   NSLogArguments( NSString *format, mulle_vararg_list args);
+```
+
+**`NSPathUtilities.h`**:
+```objc
+NSString  *NSFullUserName( void);
+NSString  *NSHomeDirectory( void);
+NSString  *NSHomeDirectoryForUser( NSString *userName);
+NSString  *NSOpenStepRootDirectory( void);
+NSArray   *NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory directory,
+                                                NSSearchPathDomainMask domainMask,
+                                                BOOL expandTilde);
+NSString  *NSTemporaryDirectory( void);
+NSString  *NSUserName( void);
+```
+Domain masks: `NSUserDomainMask`, `NSLocalDomainMask`, `NSNetworkDomainMask`,
+`NSSystemDomainMask`, `NSAllDomainsMask` (type `NSSearchPathDomainMask`).
+Directory constants: `NSApplicationDirectory` … `NSAllLibrariesDirectory`
+(type `NSSearchPathDirectory`).
+
+**`NSPageAllocation.h`**:
+```objc
+void   *NSAllocateMemoryPages( NSUInteger size);
+void   NSDeallocateMemoryPages( void *ptr, NSUInteger size);
+
+NSUInteger   NSPageSize( void);
+NSUInteger   NSLogPageSize( void);
+
+static inline NSUInteger   NSRoundDownToMultipleOfPageSize(NSUInteger bytes);
+static inline NSUInteger   NSRoundUpToMultipleOfPageSize( NSUInteger bytes);
+```
 
 ## 4. Performance Characteristics
 
-- **File I/O**: O(n) for file operations (n = file size)
-- **Directory Enumeration**: O(1) per entry
-- **Process Launching**: Significant startup cost (fork/exec)
-- **Pipes**: Efficient IPC; limited buffer (typically 64KB)
-- **Filesystem**: Performance depends on underlying OS and storage
-- **Thread-Safety**: Core components thread-safe; NSFileHandle not thread-safe per instance
+- **Filesystem metadata** (`fileExistsAtPath:`, attribute queries): O(1) stat
+  calls per path; results depend on the underlying OS.
+- **Directory enumeration:** O(1) per entry, but recursively O(n) in the number
+  of entries; `-skipDescendants` prunes subtrees to avoid O(subtree) work.
+- **File content I/O:** O(n) in the number of bytes; `availableData` returns
+  whatever is currently buffered and may block less than
+  `readDataToEndOfFile`.
+- **`NSTask` launch:** dominated by `fork`/`exec`/`CreateProcess`; subprocess
+  startup is expensive relative to in-process calls. The
+  `mulle*SystemCall*` helpers add dictionary construction and full output
+  buffering (O(n) memory).
+- **Pipes:** efficient IPC with a fixed OS buffer (typically 64 KiB); writing
+  more than the buffer without a concurrent reader can deadlock.
+- **`NSUserDefaults`:** in-memory dictionary lookups are O(1); `-synchronize`
+  does file/registry I/O and is O(size of domain).
+- **Thread safety:** `NSFileManager`, `NSProcessInfo`, `NSUserDefaults`,
+  `NSBundle`, `NSFileHandle` are `MulleObjCThreadSafe`. `NSRunLoop` is
+  per-thread and not shareable. Use a private `NSFileManager` when a delegate
+  is set.
 
 ## 5. AI Usage Recommendations & Patterns
 
-### Best Practices
+**Best practices**
+- Import only `#import <MulleObjCOSFoundation/MulleObjCOSFoundation.h>`; it
+  re-exports all OS classes.
+- Use singletons: `+[NSFileManager defaultManager]`,
+  `+[NSProcessInfo processInfo]`, `+[NSUserDefaults standardUserDefaults]`.
+- Check `BOOL` results and pass an `NSError **` to the `...error:` variants for
+  diagnostics.
+- Prefer `+launchedTaskWithLaunchPath:arguments:` for one-shot subprocesses and
+  the `mulle*SystemCall*` helpers when you just need stdout/stderr as data.
+- Call `-waitUntilExit` (or poll `-isRunning`) before reading
+  `-terminationStatus`, to avoid zombies.
+- Drain a subprocess pipe while it runs; do not wait for exit before reading,
+  or the pipe buffer may deadlock.
+- Call `-closeFile` on `NSFileHandle` instances you opened.
+- Use `NSFileHandle fileHandleWithNullDevice` as a safe discard sink.
+- Call `-synchronize` on `NSUserDefaults` when persistence is required.
 
-- **Use NSFileManager**: For high-level file operations
-- **Check Errors**: File operations return BOOL; check for failures
-- **Delegate Handling**: Set delegate for batch operations to handle errors
-- **Process Cleanup**: Call waitUntilExit() or check isRunning before process exit
-- **Pipe Buffering**: Read output from pipes during process execution to avoid deadlock
-- **Close Resources**: Always close NSFileHandle when done
+**Common pitfalls**
+- Do not assume all `NSFileManager`/`NSTask` methods are always implemented:
+  many live in `(Future)` categories. Check for the selector or handle a
+  `nil`/`NO` result gracefully.
+- `NSDirectoryEnumerator` paths are **relative** to the enumeration root, not
+  absolute.
+- `-fileAttributes` / `-directoryAttributes` refer to the enumerator's current
+  position; call them after `-nextObject`.
+- Do not reuse an `NSTask` that has already terminated; create a new one.
+- `-setEnvironment:` replaces the child environment; use the
+  `environment:`-taking `mulle*SystemCall*` methods to *add* to it.
+- `-mulleSetEnvironmentValue:forKey:` mutates the process environment via
+  `setenv` and the cached dictionary.
+- No dot-syntax in mulle-objc code; use explicit message sends.
 
-### Common Pitfalls
-
-- **Pipe Deadlock**: If process writes lots to stdout, buffer fills and deadlock occurs; read continuously
-- **Process Zombies**: Not waiting for process leaves zombie; call waitUntilExit()
-- **File Handle Leaks**: NSFileHandle not auto-closed; must closeFile()
-- **NSTask Reuse**: Cannot relaunch same NSTask; create new instance
-- **Platform Differences**: Some APIs vary by OS (Windows limitations, etc.)
-- **Environment Variables**: Changes to process environment don't affect existing NSTask
-
-### Idiomatic Usage
-
+**Idiomatic usage**
 ```objc
-// Pattern 1: File I/O with error checking
-NSFileManager *fm = [NSFileManager defaultManager];
-NSError *error = nil;
-NSData *contents = [NSFileContents contentsAtPath:@"/tmp/file.txt"];
+NSFileManager   *fileManager;
+NSTask          *task;
+NSPipe          *pipe;
+NSData          *output;
 
-// Pattern 2: Running subprocess and capturing output
-NSTask *task = [NSTask new];
-task.launchPath = @"/bin/echo";
-task.arguments = @[@"Hello"];
-NSPipe *pipe = [NSPipe pipe];
-task.standardOutput = pipe;
-[task launch];
-NSData *output = [[pipe fileHandleForReading] readDataToEndOfFile];
+fileManager = [NSFileManager defaultManager];
+[fileManager removeItemAtPath:@"build" error:NULL];
+
+task = [NSTask launchedTaskWithLaunchPath:@"/bin/echo"
+                                arguments:@[ @"hello" ]];
+pipe = [NSPipe pipe];
+[task setStandardOutput:pipe];
 [task waitUntilExit];
-
-// Pattern 3: Delegate-based file operations
-fm.delegate = self;
-[fm removeFileAtPath:@"/tmp/file"];
-
-// Pattern 4: Enumerating directory
-NSDirectoryEnumerator *enumerator = [fm enumeratorAtPath:@"/tmp"];
-NSString *file;
-while ((file = [enumerator nextObject])) {
-    NSLog(@"File: %@", file);
-}
+output = [[pipe fileHandleForReading] readDataToEndOfFile];
 ```
 
 ## 6. Integration Examples
 
-### Example 1: Read File Contents
+### Example 1: Run a Subprocess and Capture stdout
 
 ```objc
 #import <MulleObjCOSFoundation/MulleObjCOSFoundation.h>
 
-int main() {
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSData *data = [fm contentsAtPath:@"/tmp/test.txt"];
-    
-    if (data) {
-        NSString *content = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        NSLog(@"Content: %@", content);
-        [content release];
-    } else {
-        NSLog(@"File not found or unreadable");
-    }
-    
-    return 0;
+int   main( int argc, const char * argv[])
+{
+   NSTask        *task;
+   NSPipe        *pipe;
+   NSFileHandle  *handle;
+   NSData        *data;
+
+   task = [[NSTask new] autorelease];
+   pipe = [NSPipe pipe];
+
+   [task setLaunchPath:@"/bin/echo"];
+   [task setArguments:@[ @"hello", @"world" ]];
+   [task setStandardOutput:pipe];
+
+   [task launch];
+
+   handle = [pipe fileHandleForReading];
+   data   = [handle readDataToEndOfFile];
+
+   [task waitUntilExit];
+
+   mulle_printf( "%.*s", (int) [data length], (char *) [data bytes]);
+   return( 0);
 }
 ```
 
-### Example 2: Create and Write File
+### Example 2: Enumerate a Directory Tree
 
 ```objc
 #import <MulleObjCOSFoundation/MulleObjCOSFoundation.h>
 
-int main() {
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSString *content = @"Hello, World!";
-    NSData *data = [content dataUsingEncoding:NSUTF8StringEncoding];
-    
-    BOOL success = [fm createFileAtPath:@"/tmp/output.txt" 
-                               contents:data 
-                             attributes:nil];
-    
-    if (success) {
-        NSLog(@"File created successfully");
-    } else {
-        NSLog(@"Failed to create file");
-    }
-    
-    return 0;
+int   main( int argc, const char * argv[])
+{
+   NSFileManager           *fileManager;
+   NSDirectoryEnumerator   *enumerator;
+   NSString                *path;
+   NSDictionary            *attributes;
+   id                      object;
+
+   fileManager = [NSFileManager defaultManager];
+   enumerator  = [fileManager enumeratorAtPath:@"."];
+
+   while( (object = [enumerator nextObject]))
+   {
+      path       = object;
+      attributes = [enumerator fileAttributes];
+
+      mulle_printf( "%*s%s\n",
+                    (int) ([enumerator level] * 2), "",
+                    [path UTF8String]);
+      if( [[attributes objectForKey:NSFileType] isEqualToString:NSFileTypeDirectory])
+         continue;
+   }
+
+   return( 0);
 }
 ```
 
-### Example 3: Run External Command
+### Example 3: Write and Read a File with NSFileHandle
 
 ```objc
 #import <MulleObjCOSFoundation/MulleObjCOSFoundation.h>
 
-int main() {
-    NSTask *task = [[NSTask alloc] init];
-    task.launchPath = @"/bin/ls";
-    task.arguments = @[@"-la", @"/tmp"];
-    
-    NSPipe *pipe = [NSPipe pipe];
-    task.standardOutput = pipe;
-    
-    [task launch];
-    
-    NSData *output = [[pipe fileHandleForReading] readDataToEndOfFile];
-    NSString *result = [[NSString alloc] initWithData:output encoding:NSUTF8StringEncoding];
-    NSLog(@"Output:\n%@", result);
-    
-    [task waitUntilExit];
-    
-    [result release];
-    [task release];
-    
-    return 0;
+int   main( int argc, const char * argv[])
+{
+   NSFileManager   *fileManager;
+   NSFileHandle    *handle;
+   NSData          *data;
+
+   fileManager = [NSFileManager defaultManager];
+
+   [fileManager removeItemAtPath:@"example.txt" error:NULL];
+   [fileManager createFileAtPath:@"example.txt"
+                        contents:[NSData data]
+                      attributes:nil];
+
+   handle = [NSFileHandle fileHandleForWritingAtPath:@"example.txt"];
+   [handle mulleWriteBytes:(void *) "payload"
+                    length:(NSUInteger) -1];
+   [handle synchronizeFile];
+   [handle closeFile];
+
+   handle = [NSFileHandle fileHandleForReadingAtPath:@"example.txt"];
+   data   = [handle readDataToEndOfFile];
+   [handle closeFile];
+
+   mulle_printf( "read: %.*s\n", (int) [data length], (char *) [data bytes]);
+   [fileManager removeItemAtPath:@"example.txt" error:NULL];
+   return( 0);
 }
 ```
 
-### Example 4: Enumerate Directory
+### Example 4: Persist Preferences with NSUserDefaults
 
 ```objc
 #import <MulleObjCOSFoundation/MulleObjCOSFoundation.h>
 
-int main() {
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSDirectoryEnumerator *enumerator = [fm enumeratorAtPath:@"/tmp"];
-    
-    NSString *file;
-    while ((file = [enumerator nextObject])) {
-        NSLog(@"File: %@", file);
-    }
-    
-    return 0;
+int   main( int argc, const char * argv[])
+{
+   NSUserDefaults   *defaults;
+   NSString         *name;
+   NSInteger        score;
+
+   defaults = [NSUserDefaults standardUserDefaults];
+
+   [defaults setObject:@"MyApplication" forKey:@"AppName"];
+   [defaults setInteger:100 forKey:@"Score"];
+   [defaults synchronize];
+
+   name  = [defaults stringForKey:@"AppName"];
+   score = [defaults integerForKey:@"Score"];
+
+   mulle_printf( "app=%s score=%ld\n",
+                 [name UTF8String], (long) score);
+   return( 0);
 }
 ```
 
-### Example 5: Access Environment and Process Info
+### Example 5: One-Shot System Call Convenience
 
 ```objc
 #import <MulleObjCOSFoundation/MulleObjCOSFoundation.h>
 
-int main() {
-    NSProcessInfo *pi = [NSProcessInfo processInfo];
-    
-    NSLog(@"Process name: %@", pi.processName);
-    NSLog(@"Process ID: %d", pi.processIdentifier);
-    NSLog(@"User: %@", pi.userName);
-    NSLog(@"Hostname: %@", pi.hostName);
-    
-    NSDictionary *env = pi.environment;
-    NSString *path = [env objectForKey:@"PATH"];
-    NSLog(@"PATH: %@", path);
-    
-    return 0;
+int   main( int argc, const char * argv[])
+{
+   NSDictionary   *result;
+   NSString       *output;
+   NSInteger      status;
+
+   result = [NSTask mulleStringSystemCallWithArguments:@[ @"/bin/echo", @"hi" ]
+                                             environment:nil
+                                        workingDirectory:nil
+                                     standardInputString:nil
+                                                 options:NSTaskSystemOptionsDefault];
+
+   output = [result objectForKey:NSTaskStandardOutputStringKey];
+   status = [[result objectForKey:NSTaskTerminationStatusKey] integerValue];
+
+   mulle_printf( "status=%ld output=%s\n",
+                 (long) status, [output UTF8String]);
+   return( 0);
 }
 ```
 
-### Example 6: User Defaults (Preferences)
+### Example 6: Process Information
 
 ```objc
 #import <MulleObjCOSFoundation/MulleObjCOSFoundation.h>
 
-int main() {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
-    // Store value
-    [defaults setObject:@"MyApplication" forKey:@"AppName"];
-    [defaults setInteger:100 forKey:@"Score"];
-    [defaults synchronize];
-    
-    // Retrieve value
-    NSString *appName = [defaults stringForKey:@"AppName"];
-    NSInteger score = [defaults integerForKey:@"Score"];
-    
-    NSLog(@"App: %@, Score: %ld", appName, score);
-    
-    return 0;
+int   main( int argc, const char * argv[])
+{
+   NSProcessInfo   *processInfo;
+   NSDictionary    *environment;
+   NSString        *path;
+
+   processInfo = [NSProcessInfo processInfo];
+   environment = [processInfo environment];
+   path        = [environment objectForKey:@"PATH"];
+
+   mulle_printf( "name=%s pid=%ld os=%s\n",
+                 [[processInfo processName] UTF8String],
+                 (long) [processInfo processIdentifier],
+                 [[processInfo operatingSystemName] UTF8String]);
+   mulle_printf( "PATH=%s\n", [path UTF8String]);
+   return( 0);
 }
 ```
 
 ## 7. Dependencies
 
-- MulleObjCValueFoundation (NSString, NSData, NSDictionary)
-- MulleObjCContainerFoundation (NSArray)
-- MulleObjCTimeFoundation (NSDate, NSTimeInterval)
-- MulleFoundationBase
-- Platform C libraries (POSIX, Windows API, etc.)
+Direct `mulle-sde` dependencies (from `.mulle/etc/sourcetree/config`):
+
+- `MulleObjCOSBaseFoundation` — platform-neutral OS classes re-exported here.
+- `MulleObjCPosixFoundation` — POSIX implementation (non-Windows).
+- `MulleObjCBSDFoundation` — BSD specifics.
+- `MulleObjCFreeBSDFoundation` — FreeBSD specifics.
+- `MulleObjCDarwinFoundation` — Darwin/macOS specifics.
+- `MulleObjCLinuxFoundation` — Linux/Android specifics.
+- `MulleObjCWindowsFoundation` — Windows specifics.
+- `mulle-objc-tools` — build-time tooling (`mulle-objc-list`, etc.).
