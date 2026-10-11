@@ -23,7 +23,7 @@ int   main( int argc, const char * argv[])
    NSArray        *contents;
 
    rover    = [[NSFileManager defaultManager] enumeratorAtPath:@"demo2"];
-   contents = [rover allObjects];
+   contents = (NSArray *) [rover allObjects];
    contents = [contents sortedArrayUsingSelector:@selector( compare:)];
    mulle_printf( "%s\n", [[contents description] UTF8String]);
 
