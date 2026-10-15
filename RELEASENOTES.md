@@ -1,6 +1,7 @@
 ## 0.27.0
 
 
+
 * comprehensive verbatim signatures for NSFileManager, NSFileHandle, NSTask, NSPipe, NSProcessInfo, NSUserDefaults, NSRunLoop and NSBundle
 * document (Future) category methods as runtime-optional so callers guard against unimplemented selectors
 * add NSString(CString)/NSString(OSBase), NSArray/NSDictionary plist I/O and NSData memory-mapping categories plus NSPathUtilities and NSPageAllocation helpers
